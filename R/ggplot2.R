@@ -117,10 +117,20 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
 }
 
 
+#' Save ggplots to file in multiple formats
 #'
+#' @param filename
+#' @param my.plot
+#' @param base.directory
+#' @param out.format
+#' @param width
+#' @param height
+#' @param separate.directory
 #'
-#' save ggplots
+#' @return
+#' @export
 #'
+#' @examples
 my.save.ggplot <- function(filename, my.plot = last_plot(), base.directory, out.format = c('pdf', 'png'),
                            width = 6, height = 4, separate.directory = T) {
   # duplicate the device and save

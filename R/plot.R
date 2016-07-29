@@ -2,8 +2,21 @@
 #'
 #' Very useful when trying to create new combination of plots
 #'
-#' @examples
-#' draw.empty.plot(c(0,0.5), c(0,10))
+#' @param xlim
+#' @param ylim
+#' @param xaxs
+#' @param yaxs
+#' @param border.color
+#' @param small.grid
+#' @param title
+#' @param xlab
+#' @param ylab
+#' @param sub
+#'
+#' @return
+#' @export
+#'
+#' @examples draw.empty.plot(c(0,0.5), c(0,10))
 draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = 'gray25', small.grid = T,
                             title = '',xlab = '', ylab = '', sub = '') {
   plot.new()
@@ -35,6 +48,17 @@ draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = '
 
 #' Function to save plots to multiple formats
 #'
+#' @param filename
+#' @param base.directory
+#' @param out.format
+#' @param width
+#' @param height
+#' @param separate.directory
+#'
+#' @return
+#' @export
+#'
+#' @examples
 my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'), width = 10, height = 7, separate.directory = T) {
   # duplicate the device and save
   for (out.device in out.format) {
@@ -66,6 +90,19 @@ my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'),
   }
 }
 
+#' Plot multiple residuals
+#'
+#' @param my.residuals
+#' @param prefix
+#' @param my.ylim
+#' @param my.xlim
+#' @param filename
+#' @param title
+#'
+#' @return
+#' @export
+#'
+#' @examples
 my.plot.residuals <- function(my.residuals, prefix,
                               my.ylim  = NULL, my.xlim = NULL,
                               filename = NULL, title   = '') {

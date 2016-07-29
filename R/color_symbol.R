@@ -1,8 +1,11 @@
-
-#
-#
-# My custom pallete
-#
+#' Custom pallete of colors
+#'
+#' @param ix
+#'
+#' @return
+#' @export
+#'
+#' @examples
 my.colors <- function(ix = NULL){
   ret.colors <- c('navyblue',  'forestgreen',  'tomato4',    'tan1',
                   'turquoise', 'springgreen1', 'brown',      'violetred1',
@@ -16,10 +19,14 @@ my.colors <- function(ix = NULL){
   return(ret.colors[ix])
 }
 
-#
-#
-#
-#
+#' Custom pallete of symbols in plots
+#'
+#' @param ix
+#'
+#' @return
+#' @export
+#'
+#' @examples
 my.symbols <- function(ix = NULL) {
   ret.symbols <- c(0,4,1,8,5,
                    3,6,7,2,
