@@ -11,19 +11,21 @@ Proper
 One of such is a proper function that capitalizes a string.
 
 ``` r
-x <- "OnE oF sUcH iA a proPer function that capitalizes a string."
+x <- "OnE oF sUcH iS a proPer function that capitalizes a string."
 proper(x)
-#> [1] "One Of Such Ia A Proper Function That Capitalizes A String."
+#> [1] "One Of Such Is A Proper Function That Capitalizes A String."
 ```
 
-my.colors & my.symbols
-----------------------
+my.colors & my.symbols & draw.empty.plot
+----------------------------------------
 
 `my.colors()` and `my.symbols()` can be used to improve plot readability.
 
+In this example, draw.empty.plot is also used to create an empty plot to show data points after.
+
 ``` r
 xdata <- -10:10
-draw.empty.plot(xlim = c(-10,10), ylim = c(0,23))
+draw.empty.plot(xlim = c(min(xdata),max(xdata)), ylim = c(0,23))
 for (ix in 1:22) {
   points(xdata, 1/10 * xdata * xdata + ix, pch = my.symbols(ix), col = my.colors(ix), cex = .9)
 }
