@@ -2,12 +2,16 @@
 % Please edit documentation in R/fun_plot.R
 \name{draw.empty.plot}
 \alias{draw.empty.plot}
+\title{Draw empty plot.}
 \usage{
 draw.empty.plot(xlim, ylim, xaxs = "i", yaxs = "i",
   border.color = "gray25", small.grid = T, title = "", xlab = "",
   ylab = "", sub = "")
 }
-\arguments{
-\item{sub}{}
+\description{
+Very useful when trying to create new combination of plots
+}
+\examples{
+draw.empty.plot(c(0,0.5), c(0,10))
 }
 

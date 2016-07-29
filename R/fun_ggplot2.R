@@ -53,10 +53,10 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
   prognostic.index.df$group <- factor(dplyr:::mapvalues(prognostic.index.df$group, from = 1:(2*length(chosen.btas)), to = new.factor.str))
   #
   # Generate the Kaplan-Meier survival object
-  km        <- survival:::survfit(Surv(time, status) ~ group,  data = prognostic.index.df)
+  km        <- survival::survfit(Surv(time, status) ~ group,  data = prognostic.index.df)
   # Calculate the logrank test p-value
-  surv.prob <- survival:::survdiff(Surv(time, status) ~ group,  data = prognostic.index.df)
-  p_value   <- 1 - pchisq(surv.prob$chisq, df = 1)
+  surv.prob <- survival::survdiff(Surv(time, status) ~ group,  data = prognostic.index.df)
+  p_value   <- 1 - stats::pchisq(surv.prob$chisq, df = 1)
   #
   # if p-value is all that is wanted, return it, otherwise plot survival curves
   #
@@ -74,7 +74,7 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
     my.alpha <- 1
   }
   # plot using ggfortify library's autoplot.survfit
-  p1 <- autoplot(km, conf.int = FALSE,
+  p1 <- ggplot2::autoplot(km, conf.int = FALSE,
                  xlab = 'Time (month)', ylab = 'Cumulative Survival',
                  surv.size = 1, censor.alpha = .8, surv.alpha = my.alpha)
   # generate title name
@@ -82,28 +82,28 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
   titlename <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", titlename, perl=TRUE)
   #
   # add light theme (that has a white grid)
-  p1 <- p1 + theme_light()
+  p1 <- p1 + ggplot2::theme_light()
   # change legend options in ggplot
-  p1 <- p1 + theme(legend.key = element_blank(), legend.title = element_text(colour = "grey10", size = 10),
+  p1 <- p1 + ggplot2::theme(legend.key = element_blank(), legend.title = element_text(colour = "grey10", size = 10),
                    legend.background = element_rect(colour = "gray"))
   # make sure the 0% is shown
-  p1 <- p1 + expand_limits(y=.047)
+  p1 <- p1 + ggplot2::expand_limits(y=.047)
   # limit the x axis if needed
   if (!is.null(xlim))
-    p1 <- p1 + coord_cartesian(xlim=c(0,115))
+    p1 <- p1 + ggplot2::coord_cartesian(xlim=c(0,115))
   #
   # colors for the lines
   #  if more than one btas then paired curves (low and high) should have the same color
   #  otherwise, red and green!
   if (length(chosen.btas) > 1) {
-    p1 <- p1 + scale_colour_manual(values = rep(my.colors()[1:length(chosen.btas)],2))
-    p1 <- p1 + theme(legend.title = element_blank())
+    p1 <- p1 + ggplot2::scale_colour_manual(values = rep(my.colors()[1:length(chosen.btas)],2))
+    p1 <- p1 + ggplot2::theme(legend.title = element_blank())
     width <- 8
     height <- 4
   } else {
-    p1 <- p1 + scale_colour_manual(values = c('indianred2','seagreen'))
-    p1 <- p1 + labs(colour = paste0("p-value = ", format(p_value)))
-    p1 <- p1 + theme(legend.position = c(1,1),legend.justification = c(1, 1))
+    p1 <- p1 + ggplot2::scale_colour_manual(values = c('indianred2','seagreen'))
+    p1 <- p1 + ggplot2::labs(colour = paste0("p-value = ", format(p_value)))
+    p1 <- p1 + ggplot2::theme(legend.position = c(1,1),legend.justification = c(1, 1))
     width <- 6
     height <- 4
   }
@@ -111,7 +111,7 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
   my.save.ggplot(paste0('km_', filename), my.plot = p1, base.directory = file.path('output', 'kaplan-meier'),
                  width = width, height = height)
   # after saving, show title in R plot
-  p1 <- p1 + ggtitle(paste0(gsub('_', ' ', filename),'\np_value = ',p_value))
+  p1 <- p1 + ggplot2::ggtitle(paste0(gsub('_', ' ', filename),'\np_value = ',p_value))
   # return p-value, plot and km object
   return(list(pvalue = p_value, plot = p1, km = km))
 }
@@ -146,7 +146,7 @@ my.save.ggplot <- function(filename, my.plot = last_plot(), base.directory, out.
         #my.height <- my.height * 10
       }
       my.plot
-      ggsave(file.path(output.directory, paste0(filename, '.', out.device)), plot = my.plot,
+      ggplot2::ggsave(file.path(output.directory, paste0(filename, '.', out.device)), plot = my.plot,
              device = out.device, width = my.width, height = my.height)#, units = 'cm', limitsize = F)
     }, error = function(e){
       print(paste0('Error in ', out.device, ': ', e))

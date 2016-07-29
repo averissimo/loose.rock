@@ -1,24 +1,10 @@
-#
-#
-# Draw empty plot. Very useful when trying to create new combination of plots
-#
-# draw.empty.plot(c(0,0.5), c(0,10))
+#' Draw empty plot.
 #'
-#' @param xlim
-#' @param ylim
-#' @param xaxs
-#' @param yaxs
-#' @param border.color
-#' @param small.grid
-#' @param title
-#' @param xlab
-#' @param ylab
-#' @param sub
+#' Very useful when trying to create new combination of plots
 #'
-#' @return
-#' @export
 #'
 #' @examples
+#' draw.empty.plot(c(0,0.5), c(0,10))
 draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = 'gray25', small.grid = T,
                             title = '',xlab = '', ylab = '', sub = '') {
   plot.new()
