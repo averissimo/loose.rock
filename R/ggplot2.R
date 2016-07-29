@@ -18,8 +18,10 @@
 #'
 #' @examples
 #'
-draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(.5, .5),
-                                 save.plot = T, xlim = NULL) {''
+draw.kaplan <- function(chosen.btas, xdata, ydata,
+                        sep = c(.5, .5), filename = 'SurvivalCurves', save.plot = F,
+                        xlim = NULL, ylim = NULL, expand.yzero = F) {
+  #
   # creates a matrix from list of chosen.btas
   chosen.btas.mat <- sapply(chosen.btas, function(e){as.vector(e)})
   # calculate prognostic indexes for each patient and btas
@@ -32,11 +34,11 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
     # threshold
     #
     temp.group <- array(-1, dim(prognostic.index)[1])
-    pi.thres <- quantile(prognostic.index[,ix], probs = c(sep[1], sep[2]))
+    pi.thres <- quantile(prognostic.index[,ix])#, probs = c(sep[1], sep[2]))
     # low risk
-    temp.group[prognostic.index[,ix] <  pi.thres[1]] <- (2 * ix) - 1
+    temp.group[prognostic.index[,ix] <=  pi.thres[1]] <- (2 * ix) - 1
     # high risk
-    temp.group[prognostic.index[,ix] >= pi.thres[2]] <- (2 * ix)
+    temp.group[prognostic.index[,ix] > pi.thres[2]] <- (2 * ix)
     #
     valid_ix <- temp.group != -1
     #
@@ -50,18 +52,13 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
   prognostic.index.df$group <- factor(prognostic.index.df$group)
   # rename the factor to low / high risk
   new.factor.str            <- as.vector(sapply(names(chosen.btas), function(e){paste0(c('Low risk - ', 'High risk - '),e)}))
-  prognostic.index.df$group <- factor(dplyr:::mapvalues(prognostic.index.df$group, from = 1:(2*length(chosen.btas)), to = new.factor.str))
+  prognostic.index.df$group <- factor(plyr:::mapvalues(prognostic.index.df$group, from = 1:(2*length(chosen.btas)), to = new.factor.str))
   #
   # Generate the Kaplan-Meier survival object
   km        <- survival::survfit(Surv(time, status) ~ group,  data = prognostic.index.df)
   # Calculate the logrank test p-value
   surv.prob <- survival::survdiff(Surv(time, status) ~ group,  data = prognostic.index.df)
   p_value   <- 1 - stats::pchisq(surv.prob$chisq, df = 1)
-  #
-  # if p-value is all that is wanted, return it, otherwise plot survival curves
-  #
-  if (!save.plot)
-    return(list(pvalue = p_value, km = km))
   #
   # Plot survival curve
   #
@@ -87,10 +84,13 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
   p1 <- p1 + ggplot2::theme(legend.key = element_blank(), legend.title = element_text(colour = "grey10", size = 10),
                    legend.background = element_rect(colour = "gray"))
   # make sure the 0% is shown
-  p1 <- p1 + ggplot2::expand_limits(y=.047)
+  if (expand.yzero)
+    p1 <- p1 + ggplot2::expand_limits(y=.047)
   # limit the x axis if needed
   if (!is.null(xlim))
-    p1 <- p1 + ggplot2::coord_cartesian(xlim=c(0,115))
+    p1 <- p1 + ggplot2::coord_cartesian(xlim=xlim)
+  if (!is.null(ylim))
+    p1 <- p1 + ggplot2::coord_cartesian(ylim=ylim)
   #
   # colors for the lines
   #  if more than one btas then paired curves (low and high) should have the same color
@@ -108,10 +108,17 @@ draw.kaplan <- function(filename = 'kaplan', chosen.btas, xdata, ydata, sep = c(
     height <- 4
   }
   # save to file
-  my.save.ggplot(paste0('km_', filename), my.plot = p1, base.directory = file.path('output', 'kaplan-meier'),
-                 width = width, height = height)
+  #
+  if (save.plot) {
+    my.save.ggplot(paste0('km_', filename), my.plot = p1, base.directory = file.path('output', 'kaplan-meier'),
+                   width = width, height = height)
+  }
   # after saving, show title in R plot
-  p1 <- p1 + ggplot2::ggtitle(paste0(gsub('_', ' ', filename),'\np_value = ',p_value))
+  if (length(chosen.btas) == 1) {
+    p1 <- p1 + ggplot2::ggtitle(paste0(gsub('_', ' ', filename),'\np_value = ',p_value))
+  } else {
+    p1 <- p1 + ggplot2::ggtitle(paste0(gsub('_', ' ', filename)))
+  }
   # return p-value, plot and km object
   return(list(pvalue = p_value, plot = p1, km = km))
 }

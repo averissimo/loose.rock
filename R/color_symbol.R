@@ -14,8 +14,12 @@ my.colors <- function(ix = NULL){
   if (is.null(ix)) {
     return(ret.colors)
   }
-  if (ix %% length(ret.colors) == 0)
+  if (ix %% length(ret.colors) == 0) {
     ix <- length(ret.colors)
+  }
+  else {
+    ix <- ix %% length(ret.colors)
+  }
   return(ret.colors[ix])
 }
 
@@ -36,7 +40,10 @@ my.symbols <- function(ix = NULL) {
   if (is.null(ix)) {
     return(ret.symbols)
   }
-  if (ix %% length(ret.symbols) == 0)
+  if (ix %% length(ret.symbols) == 0) {
     ix <- length(ret.symbols)
+  } else {
+    ix <- ix %% length(ret.symbols)
+  }
   return(ret.symbols[ix])
 }

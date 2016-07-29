@@ -4,12 +4,11 @@
 \alias{draw.kaplan}
 \title{draw.kaplan}
 \usage{
-draw.kaplan(filename = "kaplan", chosen.btas, xdata, ydata, sep = c(0.5,
-  0.5), save.plot = T, xlim = NULL)
+draw.kaplan(chosen.btas, xdata, ydata, sep = c(0.5, 0.5),
+  filename = "SurvivalCurves", save.plot = F, xlim = NULL, ylim = NULL,
+  expand.yzero = F)
 }
 \arguments{
-\item{filename}{name of file to save the plot}
-
 \item{chosen.btas}{list of testing coefficients to calculate prognostic indexes}
 
 \item{xdata}{n x m matrix with n observations and m variables}
@@ -17,6 +16,8 @@ draw.kaplan(filename = "kaplan", chosen.btas, xdata, ydata, sep = c(0.5,
 \item{ydata}{Survival object}
 
 \item{sep}{How to separate high and low risk patients 50\%-50\% is the default, but for top and bottom 40\% -> c(.4,.6)}
+
+\item{filename}{name of file to save the plot}
 
 \item{save.plot}{TRUE plots everything and save, FALSE only calculates p-valeu}
 
