@@ -2,7 +2,6 @@
 #'
 #' Very useful when trying to create new combination of plots
 #'
-#'
 #' @examples
 #' draw.empty.plot(c(0,0.5), c(0,10))
 draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = 'gray25', small.grid = T,
@@ -34,8 +33,6 @@ draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = '
   axis(2, col = border.color, lwd = 1)
 }
 
-#'
-#'
 #' Function to save plots to multiple formats
 #'
 my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'), width = 10, height = 7, separate.directory = T) {
@@ -69,10 +66,6 @@ my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'),
   }
 }
 
-#
-#
-#
-#
 my.plot.residuals <- function(my.residuals, prefix,
                               my.ylim  = NULL, my.xlim = NULL,
                               filename = NULL, title   = '') {
