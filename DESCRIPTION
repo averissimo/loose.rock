@@ -1,8 +1,8 @@
 Package: verissimo
-Title: What the Package Does (one line, title case)
+Title: A lot of generic functions that can be reused
 Version: 0.0.0.9000
 Authors@R: person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: A lot of generic functions that can be reused
 Depends:
     R (>= 3.3.1)
 License: GNU GPL v3
