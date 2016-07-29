@@ -10,8 +10,17 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+devtools::load_all(".")
 ```
 
 # Verissimo r-package
 
 With personal functions I like to reuse everytime!
+
+One of such is a proper function that capitalizes a string.
+
+```{r proper}
+x <- "OnE oF sUcH iA a proPer function that capitalizes a string."
+proper(x)
+```
+
