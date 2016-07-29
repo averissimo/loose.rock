@@ -17,6 +17,13 @@ suppressMessages(devtools::load_all("."))
 
 With personal functions I like to reuse everytime!
 
+- proper() : Capitalize string using regexpression
+- draw.kaplan() : Draw kaplan curves based on Prognostic Index of Risk (calculated by coxph or something else)
+- my.colors() : My own pallete
+- my.symbols() : Same with symbols to plots
+- draw.empty.plot() : Draws an empty plot with grid to add data points or lines afterwards
+- ... check out rest of R folder
+
 ## Proper
 
 One of such is a proper function that capitalizes a string.
