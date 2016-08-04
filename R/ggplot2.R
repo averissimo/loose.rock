@@ -34,7 +34,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     # threshold
     #
     temp.group <- array(-1, dim(prognostic.index)[1])
-    pi.thres <- quantile(prognostic.index[,ix])#, probs = c(sep[1], sep[2]))
+    pi.thres <- quantile(prognostic.index[,ix], probs = c(sep[1], sep[2]))
     # low risk
     temp.group[prognostic.index[,ix] <=  pi.thres[1]] <- (2 * ix) - 1
     # high risk
