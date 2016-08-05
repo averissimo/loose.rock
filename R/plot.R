@@ -105,7 +105,8 @@ my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'),
 #' @examples
 my.plot.residuals <- function(my.residuals, prefix,
                               my.ylim  = NULL, my.xlim = NULL,
-                              filename = NULL, title   = '') {
+                              filename = NULL, title   = '',
+                              base.directory = file.path('output', 'residuals')) {
   #
   len <- length(my.residuals)
   #
@@ -143,7 +144,7 @@ my.plot.residuals <- function(my.residuals, prefix,
   #      ,text.width = leg.wid)
 
   #
-  my.save.plot(filename, file.path('output', 'residuals'))
+  my.save.plot(filename, base.directory)
   return(NULL)
 }
 
