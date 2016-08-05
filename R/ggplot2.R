@@ -20,7 +20,8 @@
 #'
 draw.kaplan <- function(chosen.btas, xdata, ydata,
                         probs = c(.5, .5), filename = 'SurvivalCurves', save.plot = F,
-                        xlim = NULL, ylim = NULL, expand.yzero = F) {
+                        xlim = NULL, ylim = NULL, expand.yzero = F,
+                        base.directory = file.path('output', 'kaplan-meier')) {
   #
   # creates a matrix from list of chosen.btas
   chosen.btas.mat <- sapply(chosen.btas, function(e){as.vector(e)})
@@ -110,7 +111,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   # save to file
   #
   if (save.plot) {
-    my.save.ggplot(paste0('km_', filename), my.plot = p1, base.directory = file.path('output', 'kaplan-meier'),
+    my.save.ggplot(paste0('km_', filename), my.plot = p1, base.directory = base.directory,
                    width = width, height = height)
   }
   # after saving, show title in R plot
