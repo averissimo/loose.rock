@@ -6,7 +6,7 @@
 \usage{
 draw.kaplan(chosen.btas, xdata, ydata, probs = c(0.5, 0.5),
   filename = "SurvivalCurves", save.plot = F, xlim = NULL, ylim = NULL,
-  expand.yzero = F)
+  expand.yzero = F, base.directory = file.path("output", "kaplan-meier"))
 }
 \arguments{
 \item{chosen.btas}{list of testing coefficients to calculate prognostic indexes}

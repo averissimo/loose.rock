@@ -21,7 +21,8 @@
 draw.kaplan <- function(chosen.btas, xdata, ydata,
                         probs = c(.5, .5), filename = 'SurvivalCurves', save.plot = F,
                         xlim = NULL, ylim = NULL, expand.yzero = F,
-                        base.directory = file.path('output', 'kaplan-meier')) {
+                        base.directory = file.path('output', 'kaplan-meier'),
+                        legend.outside = T) {
   #
   # creates a matrix from list of chosen.btas
   chosen.btas.mat <- sapply(chosen.btas, function(e){as.vector(e)})
@@ -97,17 +98,20 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   #  if more than one btas then paired curves (low and high) should have the same color
   #  otherwise, red and green!
   if (length(chosen.btas) > 1) {
-    p1 <- p1 + ggplot2::scale_colour_manual(values = rep(my.colors()[1:length(chosen.btas)],2))
+    p1 <- p1 + ggplot2::scale_colour_manual(values = c(my.colors()[c(1,2,4,3,10,6,12,9,5,7,8,11,13,14,15,16,17)]))
     p1 <- p1 + ggplot2::theme(legend.title = element_blank())
-    width <- 8
+    width <- 6
     height <- 4
   } else {
     p1 <- p1 + ggplot2::scale_colour_manual(values = c('indianred2','seagreen'))
     p1 <- p1 + ggplot2::labs(colour = paste0("p-value = ", format(p_value)))
-    p1 <- p1 + ggplot2::theme(legend.position = c(1,1),legend.justification = c(1, 1))
     width <- 6
     height <- 4
   }
+  if (legend.outside == T)
+    p1 <- p1 + ggplot2::theme(legend.key.size = unit(20,"points"))
+  else
+    p1 <- p1 + ggplot2::theme(legend.position = c(1,1),legend.justification = c(1, 1), legend.key.size = unit(20,"points"))
   # save to file
   #
   if (save.plot) {

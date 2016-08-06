@@ -50,9 +50,9 @@ suppressPackageStartupMessages(library(ggfortify))
 suppressPackageStartupMessages(library(gridExtra))
 data(flchain)
 ydata <- data.frame( time = flchain$futime, status = flchain$death)
-xdata <- cbind(flchain$age, as.numeric(flchain$sex == 'M'))
-page <- draw.kaplan(list(Age= c(1,0)), xdata = xdata, ydata = ydata)$plot
-psex <- draw.kaplan(list(Age= c(0,1)), xdata = xdata, ydata = ydata)$plot
+xdata <- cbind(flchain$age, as.numeric(flchain$sex == 'M'), flchain$sample.yr, flchain$kappa)
+page <- draw.kaplan(list(Age= c(1,0,0,0)), xdata = xdata, ydata = ydata)$plot
+psex <- draw.kaplan(list(Age= c(0,1,0,0)), xdata = xdata, ydata = ydata)$plot
 grid.arrange(page, psex, ncol = 2)
 ```
 
@@ -60,7 +60,7 @@ grid.arrange(page, psex, ncol = 2)
 
 ``` r
 #
-draw.kaplan(list(Age= c(1,0), Sex = c(0,1)), xdata = xdata, ydata = ydata)$plot
+draw.kaplan(list(Age= c(1,0,0,0), Sex = c(0,1,0,0), yr = c(0,0,1,0), kappa = c(0,0,0,1)), xdata = xdata, ydata = ydata)$plot
 ```
 
 ![](README-draw.kaplan-2.png)

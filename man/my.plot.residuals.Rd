@@ -5,7 +5,8 @@
 \title{Plot multiple residuals}
 \usage{
 my.plot.residuals(my.residuals, prefix, my.ylim = NULL, my.xlim = NULL,
-  filename = NULL, title = "")
+  filename = NULL, title = "", base.directory = file.path("output",
+  "residuals"))
 }
 \arguments{
 \item{title}{}
