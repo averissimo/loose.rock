@@ -6,22 +6,29 @@
 \usage{
 draw.kaplan(chosen.btas, xdata, ydata, probs = c(0.5, 0.5),
   filename = "SurvivalCurves", save.plot = F, xlim = NULL, ylim = NULL,
-  expand.yzero = F, base.directory = file.path("output", "kaplan-meier"))
+  expand.yzero = F, base.directory = file.path("output", "kaplan-meier"),
+  legend.outside = T)
 }
 \arguments{
-\item{chosen.btas}{list of testing coefficients to calculate prognostic indexes}
+\item{chosen.btas}{list of testing coefficients to calculate prognostic indexes, for example ``list(Age = some_vector)``}
 
 \item{xdata}{n x m matrix with n observations and m variables}
 
 \item{ydata}{Survival object}
 
-\item{filename}{name of file to save the plot}
+\item{probs}{How to separate high and low risk patients 50\%-50\% is the default, but for top and bottom 40\% -> c(.4,.6)}
+
+\item{filename}{Name of file if save.plot is TRUE}
 
 \item{save.plot}{TRUE plots everything and save, FALSE only calculates p-valeu}
 
 \item{xlim}{Optional argument to limit the x-axis view}
 
-\item{sep}{How to separate high and low risk patients 50\%-50\% is the default, but for top and bottom 40\% -> c(.4,.6)}
+\item{ylim}{Optional argument to limit the y-axis view}
+
+\item{base.directory}{Initial directory where to store files}
+
+\item{legend.outside}{If TRUE legend will be outside plot, otherwise inside}
 }
 \value{
 A list with plot, p-value and kaplan-meier object

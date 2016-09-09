@@ -2,13 +2,16 @@
 #'
 #' Mega function that draws multiple kaplan meyer survival curves (or just 1)
 #'
-#' @param filename name of file to save the plot
-#' @param chosen.btas list of testing coefficients to calculate prognostic indexes
+#' @param chosen.btas list of testing coefficients to calculate prognostic indexes, for example ``list(Age = some_vector)``
 #' @param xdata n x m matrix with n observations and m variables
 #' @param ydata Survival object
-#' @param sep How to separate high and low risk patients 50\%-50\% is the default, but for top and bottom 40\% -> c(.4,.6)
+#' @param probs How to separate high and low risk patients 50\%-50\% is the default, but for top and bottom 40\% -> c(.4,.6)
+#' @param filename Name of file if save.plot is TRUE
 #' @param save.plot TRUE plots everything and save, FALSE only calculates p-valeu
 #' @param xlim Optional argument to limit the x-axis view
+#' @param ylim Optional argument to limit the y-axis view
+#' @param base.directory Initial directory where to store files
+#' @param legend.outside If TRUE legend will be outside plot, otherwise inside
 #'
 #' @return
 #'
