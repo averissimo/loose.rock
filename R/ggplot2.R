@@ -86,8 +86,8 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   # add light theme (that has a white grid)
   p1 <- p1 + ggplot2::theme_light()
   # change legend options in ggplot
-  p1 <- p1 + ggplot2::theme(legend.key = element_blank(), legend.title = element_text(colour = "grey10", size = 10),
-                   legend.background = element_rect(colour = "gray"))
+  p1 <- p1 + ggplot2::theme(legend.key = ggplot2::element_blank(), legend.title = ggplot2::element_text(colour = "grey10", size = 10),
+                   legend.background = ggplot2::element_rect(colour = "gray"))
   # make sure the 0% is shown
   if (expand.yzero)
     p1 <- p1 + ggplot2::expand_limits(y=.047)
@@ -114,7 +114,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   if (legend.outside == T)
     p1 <- p1 + ggplot2::theme(legend.key.size = unit(20,"points"))
   else
-    p1 <- p1 + ggplot2::theme(legend.position = c(1,1),legend.justification = c(1, 1), legend.key.size = unit(20,"points"))
+    p1 <- p1 + ggplot2::theme(legend.position = c(1,1), legend.justification = c(1, 1), legend.key.size = ggplot2::unit(20,"points"))
   # save to file
   #
   if (save.plot) {
