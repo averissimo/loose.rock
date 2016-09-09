@@ -38,9 +38,9 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     temp.group <- array(-1, dim(prognostic.index)[1])
     pi.thres <- quantile(prognostic.index[,ix], probs = c(probs[1], probs[2]))
     # low risk
-    temp.group[prognostic.index[,ix] <=  pi.thres[1]] <- (2 * ix) - 1
+    temp.group[prognostic.index[,ix] <  pi.thres[1]] <- (2 * ix) - 1
     # high risk
-    temp.group[prognostic.index[,ix] > pi.thres[2]] <- (2 * ix)
+    temp.group[prognostic.index[,ix] >= pi.thres[2]] <- (2 * ix)
     #
     valid_ix <- temp.group != -1
     #
@@ -73,9 +73,9 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     my.alpha <- 1
   }
   # plot using ggfortify library's autoplot.survfit
-  p1 <- ggplot2::autoplot(km, conf.int = FALSE,
-                 xlab = 'Time (month)', ylab = 'Cumulative Survival',
-                 surv.size = 1, censor.alpha = .8, surv.alpha = my.alpha)
+  p1 <- ggfortify:::autoplot.survfit(km, conf.int = FALSE,
+                                     xlab = 'Time (month)', ylab = 'Cumulative Survival',
+                                     surv.size = 1, censor.alpha = .8, surv.alpha = my.alpha)
   # generate title name
   titlename <- gsub('_', ' ', filename)
   titlename <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", titlename, perl=TRUE)
@@ -90,9 +90,9 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     p1 <- p1 + ggplot2::expand_limits(y=.047)
   # limit the x axis if needed
   if (!is.null(xlim))
-    p1 <- p1 + ggplot2::coord_cartesian(xlim=xlim)
+    p1 <- p1 + ggplot2::coord_cartesian(xlim=xlim, ylim = ylim)
   if (!is.null(ylim))
-    p1 <- p1 + ggplot2::coord_cartesian(ylim=ylim)
+    p1 <- p1 + ggplot2::coord_cartesian(ylim=ylim, xlim = xlim)
   #
   # colors for the lines
   #  if more than one btas then paired curves (low and high) should have the same color
