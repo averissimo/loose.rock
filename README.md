@@ -10,6 +10,7 @@ With personal functions I like to reuse everytime!
 -   my.colors() : My own pallete
 -   my.symbols() : Same with symbols to plots
 -   draw.empty.plot() : Draws an empty plot with grid to add data points or lines afterwards
+-   balanced\_data: get balanced train/test sets and cv folds.
 -   ... check out rest of R folder
 
 Proper
@@ -50,9 +51,9 @@ suppressPackageStartupMessages(library(ggfortify))
 suppressPackageStartupMessages(library(gridExtra))
 data(flchain)
 ydata <- data.frame( time = flchain$futime, status = flchain$death)
-xdata <- cbind(flchain$age, as.numeric(flchain$sex == 'M'), flchain$sample.yr, flchain$kappa)
+xdata <- cbind(flchain$age, as.numeric(flchain$sex == 'M') * 2 + 1, flchain$sample.yr, flchain$kappa)
 page <- draw.kaplan(list(Age= c(1,0,0,0)), xdata = xdata, ydata = ydata)$plot
-psex <- draw.kaplan(list(Age= c(0,1,0,0)), xdata = xdata, ydata = ydata)$plot
+psex <- draw.kaplan(list(Sex= c(0,1,0,0)), xdata = xdata, ydata = ydata)$plot
 grid.arrange(page, psex, ncol = 2)
 ```
 
@@ -64,3 +65,21 @@ draw.kaplan(list(Age= c(1,0,0,0), Sex = c(0,1,0,0), yr = c(0,0,1,0), kappa = c(0
 ```
 
 ![](README-draw.kaplan-2.png)
+
+Balanced test/train dataset
+---------------------------
+
+This is specially relevant in survival or binary output with few cases of one category that need to be well distributed among test/train datasets or in cross-validation folds.
+
+Example below sets aside 90% of the data to the training set. As samples are already divided in two sets (`set1` and `set2`), it performs the 90% separation for each and then joins (with option `join.all = T`) the result.
+
+``` r
+set1 <- c(T,T,T,T,T,T,T,T,F,T,T,T,T,T,T,T,T,T,F,T)
+set2 <- !set1
+balanced.train.and.test(set1, set2, train.perc = .9, join.all = T)
+#> $train
+#>  [1]  1  2  3  4  5  7  8 10 11 12 13 14 15 17 18 20  9
+#> 
+#> $test
+#> [1]  6 16 19
+```
