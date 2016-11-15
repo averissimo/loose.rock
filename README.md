@@ -78,8 +78,8 @@ set1 <- c(T,T,T,T,T,T,T,T,F,T,T,T,T,T,T,T,T,T,F,T)
 set2 <- !set1
 balanced.train.and.test(set1, set2, train.perc = .9, join.all = T)
 #> $train
-#>  [1]  1  2  3  4  5  7  8 10 11 12 13 14 15 17 18 20  9
+#>  [1]  1  2  3  5  6  7  8 10 11 12 13 14 15 16 17 20  9
 #> 
 #> $test
-#> [1]  6 16 19
+#> [1]  4 18 19
 ```

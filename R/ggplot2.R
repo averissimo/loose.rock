@@ -20,7 +20,6 @@
 #' @export
 #'
 #' @examples
-#'
 draw.kaplan <- function(chosen.btas, xdata, ydata,
                         probs = c(.5, .5), filename = 'SurvivalCurves', save.plot = F,
                         xlim = NULL, ylim = NULL, expand.yzero = F,
