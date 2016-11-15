@@ -44,9 +44,9 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = F) {
         warning('Training set is the same size as test set')
       temp.set <- seq_len(max.ix) %in% temp.set
       #
-      train.set <- c(train.set, list(which(temp.set)))
+      train.set <- c(train.set, list(sort(which(temp.set))))
       if (train.perc >= 1) {
-        test.set <- c(test.set, list(which(temp.set)))
+        test.set <- c(test.set, list(sort(which(temp.set))))
       } else {
         test.temp.set <- !temp.set
         test.temp.set[-ixs] <- FALSE
@@ -64,7 +64,7 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = F) {
         master.train <- c(master.train, train.set[[ix]])
         master.test <- c(master.test, test.set[[ix]])
     }
-    return(list(train = master.train, test = master.test))
+    return(list(train = sort(master.train), test = sort(master.test)))
   }
   return(list(train = train.set, test = test.set))
 }
