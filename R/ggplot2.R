@@ -111,7 +111,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     height <- 4
   }
   if (legend.outside == T)
-    p1 <- p1 + ggplot2::theme(legend.key.size = unit(20,"points"))
+    p1 <- p1 + ggplot2::theme(legend.key.size = ggplot2::unit(20,"points"))
   else
     p1 <- p1 + ggplot2::theme(legend.position = c(1,1), legend.justification = c(1, 1), legend.key.size = ggplot2::unit(20,"points"))
   # save to file

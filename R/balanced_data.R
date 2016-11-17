@@ -78,17 +78,30 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = F) {
 #' @export
 #'
 #' @examples
-#' balanced.cv.folds(1:10, 1:3, nfolds = 2)
-#' balanced.cv.folds(1:10, 1:3, nfolds = 10) # will give a warning
+#' balanced.cv.folds(1:10, 1:3, nfolds = 13)
+#' balanced.cv.folds(1:10, 1:3, nfolds = 14) # will give a warning
 #' balanced.cv.folds(1:100, 1:33, nfolds = 10)
-balanced.cv.folds <- function(..., nfolds = 10) {
+balanced.cv.folds <- function(..., nfolds = 10, compensate = T) {
   input.list <- list(...)
   output.list <- list()
+  if (length(unlist(input.list)) < nfolds) {
+    warning('Number of elements in vector (', length(unlist(input.list)), ') is less than \'nfolds\' (', nfolds, ')')
+  }
   for (my.set in input.list) {
-    if (length(my.set) < nfolds) {
-      warning('Number of elements in vector (', length(my.set), ') is less than \'nfolds\' (', nfolds, ')')
+    #
+    # count previous bins and order sequence on increasing count
+    if (!compensate || length(output.list) == 0) {
+      my.sample <- rep(seq(nfolds),length = length(my.set))
+    } else {
+      my.tmp <- c()
+      for(ix in seq(output.list)) {
+        my.tmp <- c(my.tmp, output.list[[ix]])
+      }
+      my.count <- hist(my.tmp, plot = FALSE, breaks = 0:nfolds)$counts
+      my.sample <- rep(seq(nfolds)[sort(my.count, index.return = TRUE)$ix], length = length(my.set))
     }
-    output.list <- c(output.list, list(sample(rep(seq(nfolds),length = length(my.set)))))
+    #
+    output.list <- c(output.list, list(sample(my.sample)))
   }
   return(list(input = input.list, output = output.list, nfolds = nfolds))
 }
