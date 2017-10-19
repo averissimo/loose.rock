@@ -12,4 +12,3 @@ my.symbols(ix = NULL)
 \description{
 Custom pallete of symbols in plots
 }
-

@@ -17,4 +17,3 @@ Very useful when trying to create new combination of plots
 \examples{
 draw.empty.plot(c(0,0.5), c(0,10))
 }
-

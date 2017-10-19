@@ -12,4 +12,3 @@ my.colors(ix = NULL)
 \description{
 Custom pallete of colors
 }
-

@@ -76,10 +76,41 @@ Example below sets aside 90% of the data to the training set. As samples are alr
 ``` r
 set1 <- c(T,T,T,T,T,T,T,T,F,T,T,T,T,T,T,T,T,T,F,T)
 set2 <- !set1
-balanced.train.and.test(set1, set2, train.perc = .9, join.all = T)
+cat('Set1\n', set1, '\n\nSet2\n', set2, '\n\nTraining / Test set using logical indices\n\n')
+set.seed(1985)
+balanced.train.and.test(set1, set2, train.perc = .9)
+#
+set1 <- which(set1)
+set2 <- which(set2)
+cat('##### Same sets but using numeric indices\n\n', 'Set1\n', set1, '\n\nSet2\n', set2, '\n\nTraining / Test set using numeric indices\n')
+set.seed(1985)
+balanced.train.and.test(set1, set2, train.perc = .9)
+#> Set1
+#>  TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE FALSE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE FALSE TRUE 
+#> 
+#> Set2
+#>  FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE TRUE FALSE 
+#> 
+#> Training / Test set using logical indices
+#> 
 #> $train
-#>  [1]  1  2  3  5  6  7  8 10 11 12 13 14 15 16 17 20  9
+#>  [1]  1  2  3  4  5  6  7  8  9 10 11 13 14 15 16 17 18
 #> 
 #> $test
-#> [1]  4 18 19
+#> [1] 12 19 20
+#> 
+#> ##### Same sets but using numeric indices
+#> 
+#>  Set1
+#>  1 2 3 4 5 6 7 8 10 11 12 13 14 15 16 17 18 20 
+#> 
+#> Set2
+#>  9 19 
+#> 
+#> Training / Test set using numeric indices
+#> $train
+#>  [1]  1  2  3  4  5  6  7  8  9 10 11 13 14 15 16 17 18
+#> 
+#> $test
+#> [1] 12 19 20
 ```

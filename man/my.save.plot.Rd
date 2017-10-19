@@ -13,4 +13,3 @@ my.save.plot(filename, base.directory, out.format = c("pdf", "png"),
 \description{
 Function to save plots to multiple formats
 }
-

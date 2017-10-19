@@ -14,4 +14,3 @@ my.plot.residuals(my.residuals, prefix, my.ylim = NULL, my.xlim = NULL,
 \description{
 Plot multiple residuals
 }
-

@@ -71,9 +71,17 @@ This is specially relevant in survival or binary output with few cases of one ca
 
 Example below sets aside 90% of the data to the training set. As samples are already divided in two sets (`set1` and `set2`), it performs the 90% separation for each and then joins (with option `join.all = T`) the result.
 
-```{r}
+```{r results='hold'}
 set1 <- c(T,T,T,T,T,T,T,T,F,T,T,T,T,T,T,T,T,T,F,T)
 set2 <- !set1
-balanced.train.and.test(set1, set2, train.perc = .9, join.all = T)
+cat('Set1\n', set1, '\n\nSet2\n', set2, '\n\nTraining / Test set using logical indices\n\n')
+set.seed(1985)
+balanced.train.and.test(set1, set2, train.perc = .9)
+#
+set1 <- which(set1)
+set2 <- which(set2)
+cat('##### Same sets but using numeric indices\n\n', 'Set1\n', set1, '\n\nSet2\n', set2, '\n\nTraining / Test set using numeric indices\n')
+set.seed(1985)
+balanced.train.and.test(set1, set2, train.perc = .9)
 ```
 

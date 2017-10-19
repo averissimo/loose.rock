@@ -4,7 +4,7 @@
 \alias{balanced.train.and.test}
 \title{Get a balanced test and train dataset}
 \usage{
-balanced.train.and.test(..., train.perc = 0.9, join.all = F)
+balanced.train.and.test(..., train.perc = 0.9, join.all = T)
 }
 \arguments{
 \item{...}{vectors of index (could be numeric or logical)}
@@ -20,12 +20,14 @@ train and test index vectors (two lists if `join.all = FALSE`, two vectors other
 Get a balanced test and train dataset
 }
 \examples{
-set1 <- c(1,2,3,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20)
-set2 <- c(F,F,F,T,F,F,F,F,F,F,F,F,F,F,F,T,F,F,F,F)
-balanced.train.and.test(set1, set2, train.perc = .9, join.all = F)
+set1 <- seq(20)
+balanced.train.and.test(set1, train.perc = .9)
+####
+set.seed(1985)
+set1 <- rbinom(20, prob = 3/20, size = 1) == 1
+balanced.train.and.test(set1, train.perc = .9)
 ####
 set1 <- c(T,T,T,T,T,T,T,T,F,T,T,T,T,T,T,T,T,T,F,T)
 set2 <- !set1
-balanced.train.and.test(set1, set2, train.perc = .9, join.all = T)
+balanced.train.and.test(set1, set2, train.perc = .9)
 }
-

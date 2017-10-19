@@ -18,4 +18,3 @@ Capitalizes all words in string
 \examples{
 proper('i saw a dEaD parrot')
 }
-

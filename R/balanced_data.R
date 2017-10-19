@@ -8,33 +8,36 @@
 #' @export
 #'
 #' @examples
-#' set1 <- c(1,2,3,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20)
-#' set2 <- c(F,F,F,T,F,F,F,F,F,F,F,F,F,F,F,T,F,F,F,F)
-#' balanced.train.and.test(set1, set2, train.perc = .9, join.all = F)
+#' set1 <- seq(20)
+#' balanced.train.and.test(set1, train.perc = .9)
+#' ####
+#' set.seed(1985)
+#' set1 <- rbinom(20, prob = 3/20, size = 1) == 1
+#' balanced.train.and.test(set1, train.perc = .9)
 #' ####
 #' set1 <- c(T,T,T,T,T,T,T,T,F,T,T,T,T,T,T,T,T,T,F,T)
 #' set2 <- !set1
-#' balanced.train.and.test(set1, set2, train.perc = .9, join.all = T)
-balanced.train.and.test <- function(..., train.perc = .9, join.all = F) {
+#' balanced.train.and.test(set1, set2, train.perc = .9)
+balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
   # get arguments as list
   input.list <- list(...)
   # stop execution if train.perc is not between 1 and 0 (excluding 0)
   if (train.perc <= 0 || train.perc > 1) {
-    error('train.perc argument must be between [1,0[')
+    stop('train.perc argument must be between [1,0[')
   }
   # initialize train set
   train.set <- list()
-  test.set     <- list()
+  test.set  <- list()
   # iterate on elipsis
   for (my.set in input.list) {
     # check if is vector of logical or numeric indexes
     if (is.vector(my.set) && (is.numeric(my.set) || is.logical(my.set))) {
       # make user ixs is a numbered index vector
       if (is.logical(my.set)) {
-        ixs <- seq_len(length(my.set))[my.set]
+        ixs    <- seq_len(length(my.set))[my.set]
         max.ix <- length(my.set)
       } else {
-        ixs <- seq_len(max(my.set))[my.set]
+        ixs    <- seq_len(max(my.set))[my.set]
         max.ix <- max(my.set)
       }
       # sample size to use

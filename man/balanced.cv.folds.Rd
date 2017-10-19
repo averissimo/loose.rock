@@ -22,4 +22,3 @@ balanced.cv.folds(1:10, 1:3, nfolds = 13)
 balanced.cv.folds(1:10, 1:3, nfolds = 14) # will give a warning
 balanced.cv.folds(1:100, 1:33, nfolds = 10)
 }
-

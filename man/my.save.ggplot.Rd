@@ -14,4 +14,3 @@ my.save.ggplot(filename, my.plot = last_plot(), base.directory,
 \description{
 Save ggplots to file in multiple formats
 }
-
