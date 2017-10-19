@@ -81,10 +81,17 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
 #' @export
 #'
 #' @examples
+<<<<<<< HEAD
 #' balanced.cv.folds(1:10, 1:3, nfolds = 13)
 #' balanced.cv.folds(1:10, 1:3, nfolds = 14) # will give a warning
 #' balanced.cv.folds(1:100, 1:33, nfolds = 10)
 balanced.cv.folds <- function(..., nfolds = 10, compensate = T) {
+=======
+#' balanced.cv.folds(1:10, 11:15, nfolds = 2)
+#' balanced.cv.folds(1:10, 11:13, nfolds = 10) # will give a warning
+#' balanced.cv.folds(1:100, 101:133, nfolds = 10)
+balanced.cv.folds <- function(..., nfolds = 10) {
+>>>>>>> minor change in example
   input.list <- list(...)
   output.list <- list()
   if (length(unlist(input.list)) < nfolds) {
