@@ -101,13 +101,13 @@ cat('X generated\n\n')
 data.frame(xdata1)
 cat('cov(X)\n\n')
 data.frame(cov(xdata1))
-ggplot.cov.matrix(xdata1) + ggplot2::ggtitle('X1 Covariance Matrix')
+draw.cov.matrix(xdata1) + ggplot2::ggtitle('X1 Covariance Matrix')
 #
 cat('Using .75^|i-j| to generate co-variance matrix (plotting correlation)\n\n')
 cat('X generated\n\n')
 data.frame(xdata2)
 cat('cov(X)\n\n')
 data.frame(cor(xdata2, method = 'pearson'))
-ggplot.cov.matrix(xdata2, fun = cor, method = 'pearson') + ggplot2::ggtitle('X2 Pearson Correlation Matrix')
+draw.cov.matrix(xdata2, fun = cor, method = 'pearson') + ggplot2::ggtitle('X2 Pearson Correlation Matrix')
 ```
 

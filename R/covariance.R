@@ -6,9 +6,9 @@
 #' @export
 #'
 #' @examples
-#' ggplot.cov.matrix(matrix(rnorm(100), ncol = 10))
-#' ggplot.cov.matrix(gen.synth.xdata(10, 10, .2))
-ggplot.cov.matrix <- function(my.matrix, fun = cov, ...) {
+#' draw.cov.matrix(matrix(rnorm(100), ncol = 10))
+#' draw.cov.matrix(gen.synth.xdata(10, 10, .2))
+draw.cov.matrix <- function(my.matrix, fun = cov, ...) {
   cov.matrix           <- fun(my.matrix, ...)
   rownames(cov.matrix) <- colnames(cov.matrix)
   cov.matrix           <- data.frame(cov.matrix)
