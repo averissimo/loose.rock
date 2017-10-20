@@ -36,6 +36,3 @@ A list with plot, p-value and kaplan-meier object
 \description{
 Mega function that draws multiple kaplan meyer survival curves (or just 1)
 }
-\examples{
-
-}

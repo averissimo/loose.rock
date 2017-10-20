@@ -87,7 +87,7 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
 balanced.cv.folds <- function(..., nfolds = 10) {
   input.list <- list(...)
   output.list <- list()
-  if (length(unlist(input.list)) < nfolds) {
+  if (any(sapply(input.list, function(vec) {length(vec) < nfolds}))) {
     warning('Number of elements in vector (', length(unlist(input.list)), ') is less than \'nfolds\' (', nfolds, ')')
   }
   for (my.set in input.list) {
