@@ -1,6 +1,6 @@
 Package: verissimo
 Title: A lot of generic functions that can be reused
-Version: 0.1.2
+Version: 0.2.0
 Authors@R: person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre"))
 Description: A lot of generic functions that can be reused
 Depends:
@@ -10,7 +10,10 @@ Depends:
     survival,
     stats,
     graphics,
-    grDevices
+    grDevices,
+    ggfortify,
+    MASS
+    reshape2
 License: GNU GPL v3, see LICENSE for more information
 Encoding: UTF-8
 LazyData: true
