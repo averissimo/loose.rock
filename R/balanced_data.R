@@ -93,7 +93,7 @@ balanced.cv.folds <- function(..., nfolds = 10) {
   for (my.set in input.list) {
     #
     # count previous bins and order sequence on increasing count
-    if (!compensate || length(output.list) == 0) {
+    if (length(output.list) == 0) {
       my.sample <- rep(seq(nfolds),length = length(my.set))
     } else {
       my.tmp <- c()
