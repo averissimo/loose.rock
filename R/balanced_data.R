@@ -113,5 +113,9 @@ balanced.cv.folds <- function(..., nfolds = 10) {
     #
     output.list <- c(output.list, list(sample(my.sample)))
   }
+  if (length(output.list) == 1) {
+    output.list = output.list[[1]]
+    input.list = input.list[[1]]
+  }
   return(list(input = input.list, output = output.list, nfolds = nfolds))
 }
