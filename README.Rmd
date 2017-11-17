@@ -13,6 +13,11 @@ knitr::opts_chunk$set(
 suppressMessages(devtools::load_all("."))
 ```
 
+```{r, eval=FALSE, include=FALSE}
+rmarkdown::render('./README.Rmd')
+```
+
+
 # Verissimo r-package
 
 With personal functions I like to reuse everytime!
@@ -110,4 +115,19 @@ cat('cov(X)\n\n')
 data.frame(cor(xdata2, method = 'pearson'))
 draw.cov.matrix(xdata2, fun = cor, method = 'pearson') + ggplot2::ggtitle('X2 Pearson Correlation Matrix')
 ```
+
+## Save in cache
+
+```{r}
+a <- runCache(rnorm, 5)
+b <- runCache(rnorm, 5)
+all(a == b)
+```
+
+```{r}
+a <- runCache(rnorm, 5, seed = 1985)
+b <- runCache(rnorm, 5, seed = 2000)
+all(a == b)
+```
+
 

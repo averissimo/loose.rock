@@ -170,3 +170,21 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
     #> 5 0.3164063 0.421875 0.5625 0.750000 1.0000000
 
 ![](README-show.gen.synth-2.png)
+
+Save in cache
+-------------
+
+``` r
+a <- runCache(rnorm, 5)
+b <- runCache(rnorm, 5)
+#> Loading from cache (not calculating): /tmp/RtmpweB6Ue/generic_cache-H_5ad8f0e049861067f426245b98e11301147e4127.RData
+all(a == b)
+#> [1] TRUE
+```
+
+``` r
+a <- runCache(rnorm, 5, seed = 1985)
+b <- runCache(rnorm, 5, seed = 2000)
+all(a == b)
+#> [1] FALSE
+```
