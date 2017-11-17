@@ -1,4 +1,4 @@
-#' Title
+#' Run function and save cache
 #'
 #' @param base.dir
 #' @param fun
@@ -6,17 +6,25 @@
 #' @param cache.prefix
 #' @param force.recalc
 #'
-#' @return
+#' @return the result of fun(...)
 #' @export
 #'
 #' @examples
-setGeneric("runCache", function(base.dir, fun, ..., cache.prefix = 'generic_cache', force.recalc = FALSE) {
+#' runCache(c, 1, 2, 3, 4)
+#' runCache(c, 1, 2, 3, 4) # should get result from cache
+setGeneric("runCache", function(fun, ..., base.dir = tempdir(), cache.prefix = 'generic_cache', force.recalc = FALSE) {
   cat('Wrong arguments, first argument must be a path and second a function!\n')
   cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5)\n')
   cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5, cache.prefix = \'someFileName\', force.recalc = TRUE)\n')
 })
 
-setMethod('runCache', signature('character', 'function'), function(base.dir, fun, ..., cache.prefix = 'generic_cache', force.recalc = FALSE) {
+setMethod('runCache',
+          signature('function'),
+          function(fun,
+                   ...,
+                   base.dir = tempdir(),
+                   cache.prefix = 'generic_cache',
+                   force.recalc = FALSE) {
   args <- list(...)
   path <- file.path(base.dir, sprintf('%s-H_%s.RData', cache.prefix, digest::sha1(args)))
   if (file.exists(path) && !force.recalc) {

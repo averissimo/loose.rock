@@ -13,7 +13,8 @@ Depends:
     grDevices,
     ggfortify,
     MASS,
-    reshape2
+    reshape2,
+    digest
 License: GNU GPL v3, see LICENSE for more information
 Encoding: UTF-8
 LazyData: true
@@ -27,4 +28,5 @@ Imports: plyr,
     grDevices,
     ggfortify,
     MASS,
-    reshape2
+    reshape2,
+    digest
