@@ -43,7 +43,7 @@ setMethod('runCache',
   if (!is.null(add.to.hash)) {
     args[['runCache.add.to.hash']] <- add.to.hash
   }
-  path <- file.path(base.dir, sprintf('%s-H_%s.RData', cache.prefix, digest::sha1(args)))
+  path <- file.path(base.dir, sprintf('%s-H_%s.RData', cache.prefix, digest::digest(args, algo = 'sha256')))
   if (file.exists(path) && !force.recalc) {
     if (show.message) {
       cat(sprintf('Loading from cache (not calculating): %s\n', path))
