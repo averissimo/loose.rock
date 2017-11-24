@@ -4,12 +4,22 @@
 \alias{runCache}
 \title{Run function and save cache}
 \usage{
-runCache(fun, ..., base.dir = tempdir(), cache.prefix = "generic_cache",
-  force.recalc = FALSE)
+runCache(fun, ..., seed = NULL, base.dir = tempdir(),
+  cache.prefix = "generic_cache", cache.digest = list(),
+  show.message = TRUE, force.recalc = FALSE, add.to.hash = NULL)
 }
 \arguments{
 \item{force.recalc}{}
 }
+\value{
+the result of fun(...)
+}
 \description{
 Run function and save cache
+}
+\examples{
+runCache(c, 1, 2, 3, 4)
+runCache(c, a=1, 2, c=3, 4) # should get result from cache
+cache = list(digest.cache(1))
+runCache(c, 1, 2, 3, 4, cache.digest = cache)
 }
