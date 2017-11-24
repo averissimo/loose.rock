@@ -1,3 +1,16 @@
+#' Default digest method
+#'
+#' @param val
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' digest.cache(c(1,2,3,4,5))
+digest.cache <- function(val) {
+  digest::digest(val, algo = 'sha256')
+}
+
 #' Run function and save cache
 #'
 #' @param base.dir
@@ -12,7 +25,7 @@
 #' @examples
 #' runCache(c, 1, 2, 3, 4)
 #' runCache(c, a=1, 2, c=3, 4) # should get result from cache
-#' cache = list(digest::digest(1, algo = 'sha256'))
+#' cache = list(digest.cache(1))
 #' runCache(c, 1, 2, 3, 4, cache.digest = cache)
 setGeneric("runCache", function(fun,
                                 ...,
@@ -52,11 +65,11 @@ setMethod('runCache',
     if (length(cache.digest) >= ix && !is.null(cache.digest[[ix]])) {
       return(cache.digest[[ix]])
     }
-    digest::digest(args[[ix]], algo = 'sha256')
+    digest.cache(args[[ix]])
   })
 
   dir.create(base.dir, showWarnings = FALSE)
-  my.digest   <- digest::digest(args, algo = 'sha256')
+  my.digest   <- digest.cache(args)
   filename    <- sprintf('%s-H_%s.RData', cache.prefix, my.digest)
   parent.path <- strtrim(my.digest, width = 4)
   #
