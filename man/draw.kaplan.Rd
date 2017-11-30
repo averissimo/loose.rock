@@ -39,4 +39,5 @@ Mega function that draws multiple kaplan meyer survival curves (or just 1)
 \examples{
 data('ovarian', package = 'survival')
 draw.kaplan(c(age = 1), ovarian$age, data.frame(time = ovarian$futime, status = ovarian$fustat))
+draw.kaplan(c(age = 1), c(1,0,1,0,1,0), data.frame(time = runif(6), status = rbinom(6, 1, .5)))
 }

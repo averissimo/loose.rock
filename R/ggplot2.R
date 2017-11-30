@@ -22,6 +22,7 @@
 #' @examples
 #' data('ovarian', package = 'survival')
 #' draw.kaplan(c(age = 1), ovarian$age, data.frame(time = ovarian$futime, status = ovarian$fustat))
+#' draw.kaplan(c(age = 1), c(1,0,1,0,1,0), data.frame(time = runif(6), status = rbinom(6, 1, .5)))
 draw.kaplan <- function(chosen.btas, xdata, ydata,
                         probs = c(.5, .5), filename = 'SurvivalCurves', save.plot = F,
                         xlim = NULL, ylim = NULL, expand.yzero = F,
@@ -36,16 +37,27 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   prognostic.index.df <- data.frame(time = c(), status = c(), group = c())
   # populate a data.frame with all patients (multiple rows per patients if has multiple btas)
   # already calculate high/low risk groups
+
   for (ix in 1:(dim(prognostic.index)[2])) {
     # threshold
     #
+    #
     temp.group <- array(-1, dim(prognostic.index)[1])
     pi.thres <- quantile(prognostic.index[,ix], probs = c(probs[1], probs[2]))
+
+    if (sum(prognostic.index[,ix] <=  pi.thres[1]) == 0 ||
+        sum(prognostic.index[,ix] >  pi.thres[2])) {
+      pi.thres[1] <- median(unique(prognostic.index))
+      flog.info('median %g', pi.thres[1])
+      pi.thres[2] <- pi.thres[1]
+    }
+
     # low risk
     temp.group[prognostic.index[,ix] <=  pi.thres[1]] <- (2 * ix) - 1
     # high risk
     temp.group[prognostic.index[,ix] > pi.thres[2]] <- (2 * ix)
     #
+    flog.info('temp.group',temp.group, capture = T)
     valid_ix <- temp.group != -1
     #
     prognostic.index.df <- rbind(prognostic.index.df,
