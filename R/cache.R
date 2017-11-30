@@ -1,6 +1,6 @@
 #' Default digest method
 #'
-#' @param val
+#' @param val object to calculate hash over
 #'
 #' @return
 #' @export
@@ -11,24 +11,42 @@ digest.cache <- function(val) {
   digest::digest(val, algo = 'sha256')
 }
 
+#' Temporary directory for runCache
+#'
+#' @return a path to a temporary directory used by runCache
+#'
+#' @examples
+#' tempdir.cache()
+tempdir.cache <- function() {
+  base.dir <- tempdir()
+  return(file.path(dirname(base.dir), 'runCache'))
+}
+
 #' Run function and save cache
 #'
-#' @param base.dir
-#' @param fun
-#' @param ...
-#' @param cache.prefix
-#' @param force.recalc
+#' @param base.dir directory where data is stored
+#' @param fun function call name
+#' @param ... parameters for function call
+#' @param seed when function call is random, this allows to set seed beforehand
+#' @param cache.prefix prefix for file name to be generated from parameters (...)
+#' @param cache.digest cache of the digest for one or more of the parameters
+#' @param show.message show message that data is being retrieved from cache
+#' @param force.recalc force the recalculation of the values
+#' @param add.to.hash something to add to the filename generation
 #'
 #' @return the result of fun(...)
 #' @export
 #'
 #' @examples
 #' runCache(c, 1, 2, 3, 4)
+#' # next three should use the same cache
+#' runCache(c, 1, 2, 3, 4)
+#' runCache(c, 1, 2, 3, 4, cache.digest = list(digest.cache(1)))
 #' runCache(c, a=1, 2, c=3, 4) # should get result from cache
 setGeneric("runCache", function(fun,
                                 ...,
                                 seed = NULL,
-                                base.dir = tempdir(),
+                                base.dir = tempdir.cache(),
                                 cache.prefix = 'generic_cache',
                                 cache.digest = list(),
                                 show.message = TRUE,
