@@ -57,7 +57,6 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     # high risk
     temp.group[prognostic.index[,ix] > pi.thres[2]] <- (2 * ix)
     #
-    flog.info('temp.group',temp.group, capture = T)
     valid_ix <- temp.group != -1
     #
     prognostic.index.df <- rbind(prognostic.index.df,
