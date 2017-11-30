@@ -7,7 +7,7 @@
 digest.cache(val)
 }
 \arguments{
-\item{val}{}
+\item{val}{object to calculate hash over}
 }
 \description{
 Default digest method

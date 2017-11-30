@@ -78,7 +78,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   }
   # plot using ggfortify library's autoplot.survfit
   p1 <- ggfortify:::autoplot.survfit(km, conf.int = FALSE,
-                                     xlab = 'Time (month)', ylab = 'Cumulative Survival',
+                                     xlab = 'Time', ylab = 'Cumulative Survival',
                                      surv.size = 1, censor.alpha = .8, surv.alpha = my.alpha)
   # generate title name
   titlename <- gsub('_', ' ', filename)

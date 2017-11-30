@@ -9,7 +9,23 @@ runCache(fun, ..., seed = NULL, base.dir = tempdir.cache(),
   show.message = TRUE, force.recalc = FALSE, add.to.hash = NULL)
 }
 \arguments{
-\item{force.recalc}{}
+\item{fun}{function call name}
+
+\item{...}{parameters for function call}
+
+\item{seed}{when function call is random, this allows to set seed beforehand}
+
+\item{base.dir}{directory where data is stored}
+
+\item{cache.prefix}{prefix for file name to be generated from parameters (...)}
+
+\item{cache.digest}{cache of the digest for one or more of the parameters}
+
+\item{show.message}{show message that data is being retrieved from cache}
+
+\item{force.recalc}{force the recalculation of the values}
+
+\item{add.to.hash}{something to add to the filename generation}
 }
 \value{
 the result of fun(...)
@@ -19,5 +35,8 @@ Run function and save cache
 }
 \examples{
 runCache(c, 1, 2, 3, 4)
+# next three should use the same cache
+runCache(c, 1, 2, 3, 4)
+runCache(c, 1, 2, 3, 4, cache.digest = list(digest.cache(1)))
 runCache(c, a=1, 2, c=3, 4) # should get result from cache
 }
