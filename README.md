@@ -177,7 +177,7 @@ Save in cache
 ``` r
 a <- runCache(rnorm, 5)
 b <- runCache(rnorm, 5)
-#> Loading from cache (not calculating): /tmp/RtmpweB6Ue/generic_cache-H_5ad8f0e049861067f426245b98e11301147e4127.RData
+#> Loading from cache (not calculating): /tmp/RtmpbzmPPc/b5b1/generic_cache-H_b5b102fdea0b1a2b0c516d66e91fb1dc60ad7b5d80dfdc7e5938180b0b6c5cde.RData
 all(a == b)
 #> [1] TRUE
 ```
@@ -187,4 +187,36 @@ a <- runCache(rnorm, 5, seed = 1985)
 b <- runCache(rnorm, 5, seed = 2000)
 all(a == b)
 #> [1] FALSE
+```
+
+RunCache was originaly intended to be used to calculate big correlation matrix
+
+``` r
+n.rows <- 1000
+n.cols <- 50000
+xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
+# making sure cache is saved
+.Last.value <- runCache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
+runCache.digest <- list(verissimo::digest.cache(xdata))
+my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
+microbenchmark::microbenchmark(
+  runCache.non.cached   = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  runCache.cached       = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE),
+  runCache.cached.speed = runCache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  actual.function       = sapply(2:n.cols, my.fun), 
+  actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
+  times = 10)
+#> Unit: milliseconds
+#>                   expr         min          lq      mean      median
+#>    runCache.non.cached 2570.769942 2602.592340 2716.7511 2681.942802
+#>        runCache.cached    5.553163    5.726968  350.4754    6.527764
+#>  runCache.cached.speed    3.330984    3.380100  292.0830    3.512332
+#>        actual.function 2560.946765 2649.458736 2870.3479 2783.998767
+#>          actual.4cores 1711.587100 1776.473144 1965.1910 1878.966448
+#>           uq      max neval cld
+#>  2708.917201 3263.973    10  bc
+#>     7.269069 3445.436    10 a  
+#>     3.673078 2888.231    10 a  
+#>  3128.778341 3440.452    10   c
+#>  2248.782348 2345.517    10  b
 ```

@@ -130,4 +130,22 @@ b <- runCache(rnorm, 5, seed = 2000)
 all(a == b)
 ```
 
+RunCache was originaly intended to be used to calculate big correlation matrix
+
+```{r}
+n.rows <- 1000
+n.cols <- 50000
+xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
+# making sure cache is saved
+.Last.value <- runCache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
+runCache.digest <- list(verissimo::digest.cache(xdata))
+my.fun <- function(ix,) {cor(xdata[,1], xdata[,ix])}
+microbenchmark::microbenchmark(
+  runCache.non.cached   = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  runCache.cached       = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE),
+  runCache.cached.speed = runCache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  actual.function       = sapply(2:n.cols, my.fun), 
+  actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
+  times = 1)
+```
 

@@ -20,6 +20,4 @@ Run function and save cache
 \examples{
 runCache(c, 1, 2, 3, 4)
 runCache(c, a=1, 2, c=3, 4) # should get result from cache
-cache = list(digest.cache(1))
-runCache(c, 1, 2, 3, 4, cache.digest = cache)
 }

@@ -36,3 +36,7 @@ A list with plot, p-value and kaplan-meier object
 \description{
 Mega function that draws multiple kaplan meyer survival curves (or just 1)
 }
+\examples{
+data('ovarian', package = 'survival')
+draw.kaplan(c(age = 1), ovarian$age, data.frame(time = ovarian$futime, status = fustat))
+}

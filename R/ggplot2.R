@@ -20,6 +20,8 @@
 #' @export
 #'
 #' @examples
+#' data('ovarian', package = 'survival')
+#' draw.kaplan(c(age = 1), ovarian$age, data.frame(time = ovarian$futime, status = ovarian$fustat))
 draw.kaplan <- function(chosen.btas, xdata, ydata,
                         probs = c(.5, .5), filename = 'SurvivalCurves', save.plot = F,
                         xlim = NULL, ylim = NULL, expand.yzero = F,
@@ -105,7 +107,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     width <- 6
     height <- 4
   } else {
-    p1 <- p1 + ggplot2::scale_colour_manual(values = c('indianred2','seagreen'))
+    p1 <- p1 + ggplot2::scale_colour_manual(values = c('seagreen', 'indianred2'))
     p1 <- p1 + ggplot2::labs(colour = paste0("p-value = ", format(p_value)))
     width <- 6
     height <- 4
