@@ -46,7 +46,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     pi.thres <- quantile(prognostic.index[,ix], probs = c(probs[1], probs[2]))
 
     if (sum(prognostic.index[,ix] <=  pi.thres[1]) == 0 ||
-        sum(prognostic.index[,ix] >  pi.thres[2])) {
+        sum(prognostic.index[,ix] >  pi.thres[2]) == 0) {
       pi.thres[1] <- median(unique(prognostic.index))
       flog.info('median %g', pi.thres[1])
       pi.thres[2] <- pi.thres[1]
