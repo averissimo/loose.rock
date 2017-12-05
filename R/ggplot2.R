@@ -68,7 +68,14 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   # factor the group
   prognostic.index.df$group <- factor(prognostic.index.df$group)
   # rename the factor to low / high risk
-  new.factor.str            <- as.vector(sapply(names(chosen.btas), function(e){paste0(c('Low risk - ', 'High risk - '),e)}))
+  new.factor.str            <- as.vector(sapply(seq_along(chosen.btas), function(ix) {
+    if (!is.null(names(chosen.ntas)) && length(names(chosen.btas)) >= ix) {
+      e <- names(chosen.btas)[ix]
+      paste0(c('Low risk - ', 'High risk - '), e)
+    } else {
+      c('Low risk', 'High risk')
+    }
+  }))
   prognostic.index.df$group <- factor(plyr:::mapvalues(prognostic.index.df$group, from = 1:(2*length(chosen.btas)), to = new.factor.str))
   #
   # Generate the Kaplan-Meier survival object
