@@ -47,8 +47,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
 
     if (sum(prognostic.index[,ix] <=  pi.thres[1]) == 0 ||
         sum(prognostic.index[,ix] >  pi.thres[2]) == 0) {
-      pi.thres[1] <- median(unique(prognostic.index))
-      flog.info('median %g', pi.thres[1])
+      pi.thres[1] <- median(unique(prognostic.index[,ix]))
       pi.thres[2] <- pi.thres[1]
     }
 
