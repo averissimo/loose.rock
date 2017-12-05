@@ -69,7 +69,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   prognostic.index.df$group <- factor(prognostic.index.df$group)
   # rename the factor to low / high risk
   new.factor.str            <- as.vector(sapply(seq_along(chosen.btas), function(ix) {
-    if (!is.null(names(chosen.ntas)) && length(names(chosen.btas)) >= ix) {
+    if (!is.null(names(chosen.btas)) && length(names(chosen.btas)) >= ix) {
       e <- names(chosen.btas)[ix]
       paste0(c('Low risk - ', 'High risk - '), e)
     } else {
