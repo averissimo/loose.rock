@@ -178,7 +178,7 @@ setMethod('run.cache',
 
             dir.create(base.dir, showWarnings = FALSE)
             my.digest   <- digest.cache(args)
-            filename    <- sprintf('%s-H_%s.RData', cache.prefix, my.digest)
+            filename    <- sprintf('cache-%s-H_%s.RData', cache.prefix, my.digest)
             parent.path <- strtrim(my.digest, width = 4)
             #
             dir.create(file.path(base.dir, parent.path), showWarnings = FALSE)
