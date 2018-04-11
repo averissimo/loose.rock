@@ -174,7 +174,7 @@ setMethod('run.cache',
               digest.cache(args[[ix]])
             })
 
-            args[['cache.fun']] <- digest.cache(fun)
+            args[['cache.fun']] <- digest.cache(attributes(fun)$srcref)
 
             dir.create(base.dir, showWarnings = FALSE)
             my.digest   <- digest.cache(args)
