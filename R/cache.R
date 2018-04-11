@@ -183,24 +183,37 @@ setMethod('run.cache',
             }
 
             dir.create(base.dir, showWarnings = FALSE)
+
             my.digest   <- digest.cache(args)
             filename    <- sprintf('cache-%s-H_%s.RData', cache.prefix, my.digest)
             parent.path <- strtrim(my.digest, width = 4)
             #
-            dir.create(file.path(base.dir, parent.path), showWarnings = FALSE)
-            path        <- file.path(base.dir, parent.path, filename)
-            #
-            if (file.exists(path) && !force.recalc) {
-              if (show.message) {
-                cat(sprintf('Loading from cache (not calculating): %s\n', path))
+            if (!dir.exists(base.dir)) {
+              warning(sprintf('Could not create cache base dir at %s.. trying to use current working directory', base.dir))
+              base.dir <- file.path(getwd(), 'run-cache')
+              dir.create(base.dir, showWarnings = FALSE)
+            }
+            parent.dir <- file.path(base.dir, parent.path)
+            dir.create(parent.dir, showWarnings = FALSE)
+
+            if (dir.exists(parent.dir)) {
+              path        <- file.path(base.dir, parent.path, filename)
+              #
+              if (file.exists(path) && !force.recalc) {
+                if (show.message) {
+                  cat(sprintf('Loading from cache (not calculating): %s\n', path))
+                }
+                load(path)
+              } else {
+                result <- fun(...)
+                if (show.message) {
+                  cat(sprintf('Saving in cache: %s\n', path))
+                }
+                save(result, file = path)
               }
-              load(path)
             } else {
+              warning(sprintf('Could not save cache, possibly cannot create directory: %s or %s', base.dir, file.path(base.dir, parent.path)))
               result <- fun(...)
-              if (show.message) {
-                cat(sprintf('Saving in cache: %s\n', path))
-              }
-              save(result, file = path)
             }
             return(result)
           })

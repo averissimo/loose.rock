@@ -174,17 +174,24 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
 Save in cache
 -------------
 
+Uses a cache to save and retrieve results. The cache is automatically created with the arguments and source code for function, so that if any of those changes, the cache is regenerated.
+
+Caution: Files are not deleted so the cache directory can become rather big.
+
 ``` r
-a <- runCache(rnorm, 5)
-b <- runCache(rnorm, 5)
-#> Loading from cache (not calculating): /tmp/RtmpbzmPPc/b5b1/generic_cache-H_b5b102fdea0b1a2b0c516d66e91fb1dc60ad7b5d80dfdc7e5938180b0b6c5cde.RData
+a <- run.cache(sum, 1, 2)
+#> Loading from cache (not calculating): /tmp/runCache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
+b <- run.cache(sum, 1, 2)
+#> Loading from cache (not calculating): /tmp/runCache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
 all(a == b)
 #> [1] TRUE
 ```
 
 ``` r
-a <- runCache(rnorm, 5, seed = 1985)
-b <- runCache(rnorm, 5, seed = 2000)
+a <- run.cache(rnorm, 5, seed = 1985)
+#> Saving in cache: /tmp/runCache/9636/cache-generic_cache-H_96360922babcb9eeb480fabc9811eab598abaf087c10f3ef49e9093607089531.RData
+b <- run.cache(rnorm, 5, seed = 2000)
+#> Saving in cache: /tmp/runCache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
 all(a == b)
 #> [1] FALSE
 ```
@@ -196,27 +203,28 @@ n.rows <- 1000
 n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
-.Last.value <- runCache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
+.Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
+#> Saving in cache: /tmp/runCache/1ca4/cache-generic_cache-H_1ca4cc293760a485015a91c0cfb2e633d366ca6e7317a11309c37dd05926ef0d.RData
 runCache.digest <- list(verissimo::digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
-  runCache.non.cached   = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
-  runCache.cached       = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  runCache.cached.speed = runCache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  runCache.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  runCache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
+  runCache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
   actual.function       = sapply(2:n.cols, my.fun), 
   actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
-  times = 10)
+  times = 5)
 #> Unit: milliseconds
 #>                   expr         min          lq      mean      median
-#>    runCache.non.cached 2570.769942 2602.592340 2716.7511 2681.942802
-#>        runCache.cached    5.553163    5.726968  350.4754    6.527764
-#>  runCache.cached.speed    3.330984    3.380100  292.0830    3.512332
-#>        actual.function 2560.946765 2649.458736 2870.3479 2783.998767
-#>          actual.4cores 1711.587100 1776.473144 1965.1910 1878.966448
-#>           uq      max neval cld
-#>  2708.917201 3263.973    10  bc
-#>     7.269069 3445.436    10 a  
-#>     3.673078 2888.231    10 a  
-#>  3128.778341 3440.452    10   c
-#>  2248.782348 2345.517    10  b
+#>    runCache.non.cached 3597.887922 3830.686961 4947.4225 3962.969784
+#>        runCache.cached   12.151663   14.631728  621.8065   15.051005
+#>  runCache.cached.speed    6.954156    7.332214  989.1665    9.592484
+#>        actual.function 3988.803092 4286.941875 5834.0053 4686.555011
+#>          actual.4cores 2599.503680 3317.719993 3297.8353 3438.453918
+#>          uq      max neval cld
+#>  6132.18401 7213.384     5   b
+#>    19.24390 3047.954     5  a 
+#>    10.44369 4911.510     5  a 
+#>  6914.68445 9293.042     5   b
+#>  3546.38849 3587.110     5  ab
 ```

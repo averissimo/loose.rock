@@ -118,15 +118,19 @@ draw.cov.matrix(xdata2, fun = cor, method = 'pearson') + ggplot2::ggtitle('X2 Pe
 
 ## Save in cache
 
+Uses a cache to save and retrieve results. The cache is automatically created with the arguments and source code for function, so that if any of those changes, the cache is regenerated.
+
+Caution: Files are not deleted so the cache directory can become rather big.
+
 ```{r}
-a <- runCache(rnorm, 5)
-b <- runCache(rnorm, 5)
+a <- run.cache(sum, 1, 2)
+b <- run.cache(sum, 1, 2)
 all(a == b)
 ```
 
 ```{r}
-a <- runCache(rnorm, 5, seed = 1985)
-b <- runCache(rnorm, 5, seed = 2000)
+a <- run.cache(rnorm, 5, seed = 1985)
+b <- run.cache(rnorm, 5, seed = 2000)
 all(a == b)
 ```
 
@@ -137,15 +141,15 @@ n.rows <- 1000
 n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
-.Last.value <- runCache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
+.Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
 runCache.digest <- list(verissimo::digest.cache(xdata))
-my.fun <- function(ix,) {cor(xdata[,1], xdata[,ix])}
+my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
-  runCache.non.cached   = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
-  runCache.cached       = runCache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  runCache.cached.speed = runCache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  runCache.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  runCache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
+  runCache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
   actual.function       = sapply(2:n.cols, my.fun), 
   actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
-  times = 1)
+  times = 5)
 ```
 
