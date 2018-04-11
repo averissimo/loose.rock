@@ -176,7 +176,7 @@ setMethod('run.cache',
             if (class(fun) == 'function') {
               args[['cache.fun']] <- digest.cache(toString(attributes(fun)$srcref))
             } else if (class(cov.parallel) == 'standardGeneric') {
-              aaa <- findMethods(cov.parallel)
+              aaa <- findMethods(fun)
               args[['cache.fun']] <- verissimo::digest.cache(sapply(names(aaa), function(ix) { verissimo::digest.cache(toString(attributes(aaa[[ix]])$srcref)) }))
             } else {
               args[['cache.fun']] <- verissimo::digest.cache(fun)
