@@ -18,8 +18,8 @@ digest.cache <- function(val) {
 #' @examples
 #' tempdir.cache()
 tempdir.cache <- function() {
-  base.dir <- tempdir()
-  return(file.path(dirname(base.dir), 'runCache'))
+  base.dir <- '.'
+  return(file.path(dirname(base.dir), 'run-cache'))
 }
 
 #' Run function and save cache
@@ -46,10 +46,10 @@ tempdir.cache <- function() {
 setGeneric("runCache", function(fun,
                                 ...,
                                 seed = NULL,
-                                base.dir = tempdir.cache(),
+                                base.dir = NULL,
                                 cache.prefix = 'generic_cache',
                                 cache.digest = list(),
-                                show.message = TRUE,
+                                show.message = NULL,
                                 force.recalc = FALSE,
                                 add.to.hash = NULL) {
   cat('Wrong arguments, first argument must be a path and second a function!\n')
@@ -62,14 +62,16 @@ setMethod('runCache',
           function(fun,
                    ...,
                    seed          = NULL,
-                   base.dir      = tempdir.cache(),
+                   base.dir      = NULL,
                    cache.prefix  = 'generic_cache',
                    cache.digest = list(),
-                   show.message  = TRUE,
+                   show.message  = NULL,
                    force.recalc  = FALSE,
                    add.to.hash   = NULL) {
 
   warning('DEPRECATED, use run.cache instead! if runCache is called with same arguments but different functions it will save to same cache.')
+  if (is.null(base.dir)) { base.dir <- verissimo.options('base.dir') }
+  if (is.null(show.message)) { show.message <- verissimo.options('show.message') }
   args <- list(...)
   if (!is.null(seed)) {
     args[['runCache.seed']] <- seed
@@ -136,10 +138,10 @@ setMethod('runCache',
 setGeneric("run.cache", function(fun,
                                 ...,
                                 seed = NULL,
-                                base.dir = tempdir.cache(),
+                                base.dir = NULL,
                                 cache.prefix = 'generic_cache',
                                 cache.digest = list(),
-                                show.message = TRUE,
+                                show.message = NULL,
                                 force.recalc = FALSE,
                                 add.to.hash = NULL) {
   cat('Wrong arguments, first argument must be a path and second a function!\n')
@@ -152,12 +154,18 @@ setMethod('run.cache',
           function(fun,
                    ...,
                    seed          = NULL,
-                   base.dir      = tempdir.cache(),
+                   base.dir      = NULL,
                    cache.prefix  = 'generic_cache',
                    cache.digest = list(),
-                   show.message  = TRUE,
+                   show.message  = NULL,
                    force.recalc  = FALSE,
                    add.to.hash   = NULL) {
+            #
+            # base.dir
+            if (is.null(base.dir)) { base.dir <- verissimo.options('base.dir') }
+            if (is.null(show.message)) { show.message <- verissimo.options('show.message') }
+            #
+            #
             args <- list(...)
             if (!is.null(seed)) {
               args[['runCache.seed']] <- seed
