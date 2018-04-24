@@ -13,7 +13,7 @@
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{futile.options}
 #' @keywords data
-verissimo.options <- OptionsManager('verissimo.options', default = list(base.dir = verissimo::tempdir.cache(), show.message = TRUE))
+verissimo.options <- OptionsManager('verissimo.options', default = list(base.dir = tempdir.cache(), show.message = TRUE))
 
 #' change base.dir for run.cache
 #'
