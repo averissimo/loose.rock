@@ -15,28 +15,30 @@
 #' @keywords data
 verissimo.options <- OptionsManager('verissimo.options', default = list(base.dir = verissimo::tempdir.cache(), show.message = TRUE))
 
-#' Title
+#' change base.dir for run.cache
 #'
-#' @param path
+#' @param path to base directory where cache is saved
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' base.dir('/tmp/cache')
 base.dir <- function(path = NULL) {
   if (!is.null(path))
     verissimo.options(update = list('base.dir', path))
   return(verissimo.options('base.dir'))
 }
 
-#' Title
+#' Show messages option in run.cache
 #'
-#' @param path
+#' @param show.message boolean indicating to show messages or not
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' show.message(FALSE)
 show.message <- function(show.message = NULL) {
   if (!is.null(show.message))
     verissimo.options(update = list('show.message', show.message))
