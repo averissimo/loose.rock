@@ -4,6 +4,10 @@ language: R
 sudo: false
 cache: packages
 
+r_packages:
+  - covr
+  - devtools
+
 r:
 - 3.2
 - oldrel
@@ -13,3 +17,11 @@ include:
   matrix:
     r: devel
 warnings_are_errors: false
+
+after_success:
+- Rscript -e 'library(covr);codecov()'
+
+env: _R_CHECK_CRAN_INCOMING_=FALSE
+
+r_github_packages:
+  - averissimo/loose.rock
