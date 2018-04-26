@@ -1,8 +1,5 @@
 ---
-output:
-  github_document:
-    toc: true
-    fig_width: 10
+output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -18,7 +15,7 @@ devtools::load_all(".")
 ```
 
 ```{r gen.markdown, eval=FALSE, include=FALSE}
-rmarkdown::render('./README.Rmd')
+rmarkdown::render('./README.Rmd', output_format = 'github_document')
 ```
 
 
@@ -158,14 +155,14 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-runCache.digest <- list(digest.cache(xdata))
+run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
-  run.cche.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  run.cche.non.cached    = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
   run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
   run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
-  actual.function       = sapply(2:n.cols, my.fun), 
-  actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
+  actual.function        = sapply(2:n.cols, my.fun), 
+  actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
 ```
 

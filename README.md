@@ -1,14 +1,4 @@
 
--   [loose.rock r-package](#loose.rock-r-package)
-    -   [Overview](#overview)
-        -   [Install](#install)
-    -   [Proper](#proper)
-    -   [my.colors & my.symbols & draw.empty.plot](#my.colors-my.symbols-draw.empty.plot)
-    -   [draw.kaplan](#draw.kaplan)
-    -   [Balanced test/train dataset](#balanced-testtrain-dataset)
-    -   [Generate synthetic matrix with covariance](#generate-synthetic-matrix-with-covariance)
-    -   [Save in cache](#save-in-cache)
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 loose.rock r-package
 ====================
@@ -226,27 +216,27 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/7d76/cache-generic_cache-H_7d763aaab4019fd26008026b738344ea1f834b027611fc510411525d58498594.RData
-runCache.digest <- list(digest.cache(xdata))
+#> Saving in cache: ./run-cache/763d/cache-generic_cache-H_763d003b716bdfa91aa72ef1b35862019897e6b1e7a5c2ed60fce666154d5c32.RData
+run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
-  run.cche.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  run.cche.non.cached    = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
   run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
   run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
-  actual.function       = sapply(2:n.cols, my.fun), 
-  actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
+  actual.function        = sapply(2:n.cols, my.fun), 
+  actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
 #> Unit: milliseconds
 #>                    expr         min          lq     mean      median
-#>     run.cche.non.cached 3039.076304 3261.699764 4325.513 3527.751512
-#>        run.cache.cached    6.436927    8.098586 1139.941   16.305456
-#>  run.cache.cached.speed    4.116731    4.171586 3081.259    4.617539
-#>         actual.function 3460.823433 3955.421129 4591.912 4178.609672
-#>           actual.4cores 1993.124260 2351.007917 3559.982 2483.319555
-#>           uq       max neval cld
-#>  4234.290212  7564.748     5   a
-#>    22.708837  5646.158     5   a
-#>     5.103185 15388.286     5   a
-#>  4417.799175  6946.908     5   a
-#>  5046.685826  5925.771     5   a
+#>     run.cche.non.cached 3479.107425 5033.680516 5931.793 5152.239432
+#>        run.cache.cached    6.291094    6.390652 1679.253    7.851928
+#>  run.cache.cached.speed    4.471084    4.631398 1102.960    7.669050
+#>         actual.function 4116.964294 4900.120065 6106.182 5278.523669
+#>           actual.4cores 2094.669345 3318.184469 5041.284 3471.468207
+#>          uq       max neval cld
+#>  6075.49116  9918.447     5   a
+#>    14.51364  8361.217     5   a
+#>    20.27551  5477.755     5   a
+#>  7052.93836  9182.363     5   a
+#>  5568.22566 10753.871     5   a
 ```
