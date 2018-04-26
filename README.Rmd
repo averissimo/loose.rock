@@ -23,6 +23,9 @@ rmarkdown::render('./README.Rmd', output_format = 'github_document')
 
 > Set of useful function that I reuse a lot
 
+[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock)
+[![Coverage status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
+
 ## Overview
 
 With personal functions I like to reuse everytime!

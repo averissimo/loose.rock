@@ -5,6 +5,8 @@ loose.rock r-package
 
 > Set of useful function that I reuse a lot
 
+[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Coverage status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
+
 Overview
 --------
 
@@ -216,7 +218,7 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/763d/cache-generic_cache-H_763d003b716bdfa91aa72ef1b35862019897e6b1e7a5c2ed60fce666154d5c32.RData
+#> Saving in cache: ./run-cache/3f20/cache-generic_cache-H_3f207dc73c53d47c0c688a85a6dc0280eebcea9a20e81f1c04d4928fc9c4ce99.RData
 run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
@@ -227,16 +229,16 @@ microbenchmark::microbenchmark(
   actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
 #> Unit: milliseconds
-#>                    expr         min          lq     mean      median
-#>     run.cche.non.cached 3479.107425 5033.680516 5931.793 5152.239432
-#>        run.cache.cached    6.291094    6.390652 1679.253    7.851928
-#>  run.cache.cached.speed    4.471084    4.631398 1102.960    7.669050
-#>         actual.function 4116.964294 4900.120065 6106.182 5278.523669
-#>           actual.4cores 2094.669345 3318.184469 5041.284 3471.468207
-#>          uq       max neval cld
-#>  6075.49116  9918.447     5   a
-#>    14.51364  8361.217     5   a
-#>    20.27551  5477.755     5   a
-#>  7052.93836  9182.363     5   a
-#>  5568.22566 10753.871     5   a
+#>                    expr         min          lq      mean       median
+#>     run.cche.non.cached 3959.987150 6135.966964 9918.5143 10559.224587
+#>        run.cache.cached    6.402426    6.570234 1036.1713     6.618979
+#>  run.cache.cached.speed    4.672045    5.154532  971.9428    12.603810
+#>         actual.function 3129.551983 4214.885400 5305.9562  4373.048324
+#>           actual.4cores 2925.982155 3018.165776 5269.6949  6543.040907
+#>            uq       max neval cld
+#>  13551.949580 15385.443     5   b
+#>      9.621187  5151.644     5  a 
+#>     14.086849  4823.197     5  a 
+#>   4722.546613 10089.749     5  ab
+#>   6755.803357  7105.482     5  ab
 ```
