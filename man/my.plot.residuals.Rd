@@ -9,7 +9,22 @@ my.plot.residuals(my.residuals, prefix, my.ylim = NULL, my.xlim = NULL,
   "residuals"))
 }
 \arguments{
-\item{title}{}
+\item{my.residuals}{TODO}
+
+\item{prefix}{TODO}
+
+\item{my.ylim}{TODO}
+
+\item{my.xlim}{TODO}
+
+\item{filename}{TODO}
+
+\item{title}{TODO}
+
+\item{base.directory}{TODO}
+}
+\value{
+a plot with residuals
 }
 \description{
 Plot multiple residuals

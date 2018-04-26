@@ -12,6 +12,7 @@
 #' @param ylim Optional argument to limit the y-axis view
 #' @param base.directory Initial directory where to store files
 #' @param legend.outside If TRUE legend will be outside plot, otherwise inside
+#' @param expand.yzero expand to y = 0
 #'
 #' @return
 #'
@@ -75,12 +76,12 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
       c('Low risk', 'High risk')
     }
   }))
-  prognostic.index.df$group <- factor(plyr:::mapvalues(prognostic.index.df$group, from = 1:(2*length(chosen.btas)), to = new.factor.str))
+  prognostic.index.df$group <- factor(plyr::mapvalues(prognostic.index.df$group, from = 1:(2*length(chosen.btas)), to = new.factor.str))
   #
   # Generate the Kaplan-Meier survival object
-  km        <- survival::survfit(Surv(time, status) ~ group,  data = prognostic.index.df)
+  km        <- survival::survfit(survival::Surv(time, status) ~ group,  data = prognostic.index.df)
   # Calculate the logrank test p-value
-  surv.prob <- survival::survdiff(Surv(time, status) ~ group,  data = prognostic.index.df)
+  surv.prob <- survival::survdiff(survival::Surv(time, status) ~ group,  data = prognostic.index.df)
   p_value   <- 1 - stats::pchisq(surv.prob$chisq, df = 1)
   #
   # Plot survival curve
@@ -152,18 +153,16 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
 
 #' Save ggplots to file in multiple formats
 #'
-#' @param filename
-#' @param my.plot
-#' @param base.directory
-#' @param out.format
-#' @param width
-#' @param height
-#' @param separate.directory
+#' @param filename name of file to save
+#' @param my.plot plot to save
+#' @param base.directory base folder to save plot
+#' @param out.format format
+#' @param width width of image
+#' @param height height of image
+#' @param separate.directory separate formats by directory
 #'
-#' @return
 #' @export
 #'
-#' @examples
 my.save.ggplot <- function(filename, my.plot = last_plot(), base.directory, out.format = c('pdf', 'png'),
                            width = 6, height = 4, separate.directory = T) {
   # duplicate the device and save

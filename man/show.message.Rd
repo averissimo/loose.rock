@@ -9,6 +9,9 @@ show.message(show.message = NULL)
 \arguments{
 \item{show.message}{boolean indicating to show messages or not}
 }
+\value{
+the show.message option
+}
 \description{
 Show messages option in run.cache
 }

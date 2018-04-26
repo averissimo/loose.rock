@@ -7,8 +7,15 @@
 my.colors(ix = NULL)
 }
 \arguments{
-\item{ix}{}
+\item{ix}{index for a color}
+}
+\value{
+a color
 }
 \description{
 Custom pallete of colors
+}
+\examples{
+my.colors()
+my.colors(5)
 }

@@ -15,7 +15,8 @@
 #' set1 <- rbinom(20, prob = 3/20, size = 1) == 1
 #' balanced.train.and.test(set1, train.perc = .9)
 #' ####
-#' set1 <- c(T,T,T,T,T,T,T,T,F,T,T,T,T,T,T,T,T,T,F,T)
+#' set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,
+#' TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
 #' set2 <- !set1
 #' balanced.train.and.test(set1, set2, train.perc = .9)
 balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
@@ -56,7 +57,7 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
         test.set <- c(test.set, list(which(test.temp.set)))
       }
     } else {
-      error('Arguments must be either a logical or numeric vector, see help for more information.')
+      stop('Arguments must be either a logical or numeric vector, see help for more information.')
     }
   }
   if (join.all) {

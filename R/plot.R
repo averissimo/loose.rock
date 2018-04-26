@@ -2,21 +2,22 @@
 #'
 #' Very useful when trying to create new combination of plots
 #'
-#' @param xlim
-#' @param ylim
-#' @param xaxs
-#' @param yaxs
-#' @param border.color
-#' @param small.grid
-#' @param title
-#' @param xlab
-#' @param ylab
-#' @param sub
+#' @param xlim xlim range
+#' @param ylim ylim range
+#' @param xaxs TODO
+#' @param yaxs TODO
+#' @param border.color TODO
+#' @param small.grid TODO
+#' @param title title of plot
+#' @param xlab label of x axis
+#' @param ylab label of y axis
+#' @param sub subtitle
 #'
-#' @return
+#' @return a new empty plot
 #' @export
 #'
-#' @examples draw.empty.plot(c(0,0.5), c(0,10))
+#' @examples
+#' draw.empty.plot(c(0,0.5), c(0,10))
 draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = 'gray25', small.grid = T,
                             title = '',xlab = '', ylab = '', sub = '') {
   plot.new()
@@ -48,17 +49,14 @@ draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = '
 
 #' Function to save plots to multiple formats
 #'
-#' @param filename
-#' @param base.directory
-#' @param out.format
-#' @param width
-#' @param height
-#' @param separate.directory
+#' @param filename base name for image file with plot
+#' @param base.directory base folder to save image
+#' @param out.format output format
+#' @param width width of image
+#' @param height height of image
+#' @param separate.directory separate formats between directories
 #'
-#' @return
 #' @export
-#'
-#' @examples
 my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'), width = 10, height = 7, separate.directory = T) {
   # duplicate the device and save
   for (out.device in out.format) {
@@ -92,17 +90,16 @@ my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'),
 
 #' Plot multiple residuals
 #'
-#' @param my.residuals
-#' @param prefix
-#' @param my.ylim
-#' @param my.xlim
-#' @param filename
-#' @param title
+#' @param my.residuals TODO
+#' @param prefix TODO
+#' @param my.ylim TODO
+#' @param my.xlim TODO
+#' @param filename TODO
+#' @param title TODO
+#' @param base.directory TODO
 #'
-#' @return
+#' @return a plot with residuals
 #' @export
-#'
-#' @examples
 my.plot.residuals <- function(my.residuals, prefix,
                               my.ylim  = NULL, my.xlim = NULL,
                               filename = NULL, title   = '',

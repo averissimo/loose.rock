@@ -26,6 +26,8 @@ draw.kaplan(chosen.btas, xdata, ydata, probs = c(0.5, 0.5),
 
 \item{ylim}{Optional argument to limit the y-axis view}
 
+\item{expand.yzero}{expand to y = 0}
+
 \item{base.directory}{Initial directory where to store files}
 
 \item{legend.outside}{If TRUE legend will be outside plot, otherwise inside}

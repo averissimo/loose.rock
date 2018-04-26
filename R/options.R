@@ -7,19 +7,19 @@
 #'
 #' @name loose.rock.options
 #' @usage loose.rock.options(..., simplify = FALSE, update = list())
+#'
+#' @param update pair list of update to options
 #' @param ... TODO
 #' @param simplify TODO
-#' @param update TODO
-#' @author André Veríssimo
+#'
 #' @seealso \code{futile.options}
-#' @keywords data
-loose.rock.options <- OptionsManager('loose.rock', default = list(base.dir = tempdir.cache(), show.message = TRUE))
+loose.rock.options <- futile.options::OptionsManager('loose.rock', default = list(base.dir = tempdir.cache(), show.message = TRUE))
 
 #' change base.dir for run.cache
 #'
 #' @param path to base directory where cache is saved
 #'
-#' @return
+#' @return the new path
 #' @export
 #'
 #' @examples
@@ -34,7 +34,7 @@ base.dir <- function(path = NULL) {
 #'
 #' @param show.message boolean indicating to show messages or not
 #'
-#' @return
+#' @return the show.message option
 #' @export
 #'
 #' @examples

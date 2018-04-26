@@ -1,11 +1,13 @@
 #' Custom pallete of colors
 #'
-#' @param ix
+#' @param ix index for a color
 #'
-#' @return
+#' @return a color
 #' @export
 #'
 #' @examples
+#' my.colors()
+#' my.colors(5)
 my.colors <- function(ix = NULL){
   ret.colors <- c('navyblue',  'forestgreen',  'tomato4',    'tan1',
                   'turquoise', 'springgreen1', 'brown',      'violetred1',
@@ -25,12 +27,14 @@ my.colors <- function(ix = NULL){
 
 #' Custom pallete of symbols in plots
 #'
-#' @param ix
+#' @param ix index for symbol
 #'
-#' @return
+#' @return a symbol
 #' @export
 #'
 #' @examples
+#' my.symbols()
+#' my.symbols(2)
 my.symbols <- function(ix = NULL) {
   ret.symbols <- c(0,4,1,8,5,
                    3,6,7,2,

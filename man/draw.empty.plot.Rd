@@ -9,7 +9,28 @@ draw.empty.plot(xlim, ylim, xaxs = "i", yaxs = "i",
   ylab = "", sub = "")
 }
 \arguments{
-\item{sub}{}
+\item{xlim}{xlim range}
+
+\item{ylim}{ylim range}
+
+\item{xaxs}{TODO}
+
+\item{yaxs}{TODO}
+
+\item{border.color}{TODO}
+
+\item{small.grid}{TODO}
+
+\item{title}{title of plot}
+
+\item{xlab}{label of x axis}
+
+\item{ylab}{label of y axis}
+
+\item{sub}{subtitle}
+}
+\value{
+a new empty plot
 }
 \description{
 Very useful when trying to create new combination of plots

@@ -7,8 +7,15 @@
 my.symbols(ix = NULL)
 }
 \arguments{
-\item{ix}{}
+\item{ix}{index for symbol}
+}
+\value{
+a symbol
 }
 \description{
 Custom pallete of symbols in plots
+}
+\examples{
+my.symbols()
+my.symbols(2)
 }

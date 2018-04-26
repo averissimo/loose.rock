@@ -12,6 +12,3 @@ a path to a temporary directory used by runCache
 \description{
 Temporary directory for runCache
 }
-\examples{
-tempdir.cache()
-}

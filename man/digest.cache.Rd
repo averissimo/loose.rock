@@ -9,6 +9,9 @@ digest.cache(val)
 \arguments{
 \item{val}{object to calculate hash over}
 }
+\value{
+a hash of the sha256
+}
 \description{
 Default digest method
 }

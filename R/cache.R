@@ -2,7 +2,7 @@
 #'
 #' @param val object to calculate hash over
 #'
-#' @return
+#' @return a hash of the sha256
 #' @export
 #'
 #' @examples
@@ -14,9 +14,6 @@ digest.cache <- function(val) {
 #' Temporary directory for runCache
 #'
 #' @return a path to a temporary directory used by runCache
-#'
-#' @examples
-#' tempdir.cache()
 tempdir.cache <- function() {
   base.dir <- '.'
   return(file.path(dirname(base.dir), 'run-cache'))

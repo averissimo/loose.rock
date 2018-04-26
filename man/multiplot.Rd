@@ -25,6 +25,7 @@ Not mine, taken from http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_pag
 }
 \examples{
 # First plot
+library(ggplot2)
 p1 <- ggplot(ChickWeight, aes(x=Time, y=weight, colour=Diet, group=Chick)) +
   geom_line() +
   ggtitle("Growth curve for individual chicks")

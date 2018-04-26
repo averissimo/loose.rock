@@ -9,7 +9,19 @@ my.save.ggplot(filename, my.plot = last_plot(), base.directory,
   separate.directory = T)
 }
 \arguments{
-\item{separate.directory}{}
+\item{filename}{name of file to save}
+
+\item{my.plot}{plot to save}
+
+\item{base.directory}{base folder to save plot}
+
+\item{out.format}{format}
+
+\item{width}{width of image}
+
+\item{height}{height of image}
+
+\item{separate.directory}{separate formats by directory}
 }
 \description{
 Save ggplots to file in multiple formats

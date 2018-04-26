@@ -9,6 +9,9 @@ base.dir(path = NULL)
 \arguments{
 \item{path}{to base directory where cache is saved}
 }
+\value{
+the new path
+}
 \description{
 change base.dir for run.cache
 }

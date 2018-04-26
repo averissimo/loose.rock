@@ -79,24 +79,24 @@ test_that('Creates nice cv folds', {
 
   result <- balanced.cv.folds(1:10, 1:3, nfolds = 2)
   #
-  result.c <- count(result$output[[1]])
-  expect_equal(nrow(result.c), 2)
-  expect_equal(result.c$freq, c(5,5))
+  result.c <- table(result$output[[1]])
+  expect_equal(length(result.c), 2)
+  expect_equal(as.vector(result.c), c(5,5))
   #
-  result.c <- count(result$output[[2]])
-  expect_equal(nrow(result.c), 2)
-  expect_equal(sort(result.c$freq), c(1,2))
+  result.c <- table(result$output[[2]])
+  expect_equal(length(result.c), 2)
+  expect_equal(as.vector(result.c), c(2,1))
   #
   #
   result <- balanced.cv.folds(1:10, 1:3, nfolds = 3)
   #
-  result.c <- count(result$output[[1]])
-  expect_equal(nrow(result.c), 3)
-  expect_equal(sort(result.c$freq), c(3,3,4))
+  result.c <- table(result$output[[1]])
+  expect_equal(length(result.c), 3)
+  expect_equal(as.vector(result.c), c(4,3,3))
   #
-  result.c <- count(result$output[[2]])
-  expect_equal(nrow(result.c), 3)
-  expect_equal(sort(result.c$freq), c(1,1,1))
+  result.c <- table(result$output[[2]])
+  expect_equal(length(result.c), 3)
+  expect_equal(as.vector(result.c), c(1,1,1))
   #
   expect_warning(balanced.cv.folds(1:10, 1:3, nfolds = 10), 'Number of elements in vector [(][0-9]+[)] is less than \'nfolds\' [(][0-9]+[)]')
 })

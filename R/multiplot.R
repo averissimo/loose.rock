@@ -16,6 +16,7 @@
 #'
 #' @examples
 #' # First plot
+#' library(ggplot2)
 #' p1 <- ggplot(ChickWeight, aes(x=Time, y=weight, colour=Diet, group=Chick)) +
 #'   geom_line() +
 #'   ggtitle("Growth curve for individual chicks")
@@ -26,8 +27,6 @@
 #'   ggtitle("Fitted growth curve per diet")
 #' multiplot(p1, p2, ncol = 2)
 multiplot <- function(..., plotlist=NULL, ncol = 1, layout=NULL) {
-  library(grid)
-
   # Make a list from the ... arguments and plotlist
   plots <- c(list(...), plotlist)
 
@@ -47,15 +46,15 @@ multiplot <- function(..., plotlist=NULL, ncol = 1, layout=NULL) {
 
   } else {
     # Set up the page
-    grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    grid::grid.newpage()
+    grid::pushViewport(grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))))
 
     # Make each plot, in the correct location
     for (i in 1:numPlots) {
       # Get the i,j matrix positions of the regions that contain this subplot
       matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
 
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+      print(plots[[i]], vp = grid::viewport(layout.pos.row = matchidx$row,
                                       layout.pos.col = matchidx$col))
     }
   }

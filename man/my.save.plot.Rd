@@ -8,7 +8,17 @@ my.save.plot(filename, base.directory, out.format = c("pdf", "png"),
   width = 10, height = 7, separate.directory = T)
 }
 \arguments{
-\item{separate.directory}{}
+\item{filename}{base name for image file with plot}
+
+\item{base.directory}{base folder to save image}
+
+\item{out.format}{output format}
+
+\item{width}{width of image}
+
+\item{height}{height of image}
+
+\item{separate.directory}{separate formats between directories}
 }
 \description{
 Function to save plots to multiple formats

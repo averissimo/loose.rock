@@ -4,10 +4,14 @@
 \alias{draw.cov.matrix}
 \title{Plot covariance heatmap from matrix}
 \usage{
-draw.cov.matrix(my.matrix, fun = cov, ...)
+draw.cov.matrix(my.matrix, fun = stats::cov, ...)
 }
 \arguments{
 \item{my.matrix}{matrix to calculate the covariance}
+
+\item{fun}{function to use}
+
+\item{...}{arguments to pass to fun function}
 }
 \value{
 a ggplot2
