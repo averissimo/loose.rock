@@ -1,24 +1,32 @@
 ---
-output: github_document
+output:
+  github_document:
+    toc: true
+    fig_width: 10
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r setup, echo = FALSE, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "figures/README-"
 )
-suppressMessages(devtools::load_all("."))
+#
+devtools::load_all(".")
 ```
 
-```{r, eval=FALSE, include=FALSE}
+```{r gen.markdown, eval=FALSE, include=FALSE}
 rmarkdown::render('./README.Rmd')
 ```
 
 
 # loose.rock r-package
+
+> Set of useful function that I reuse a lot
+
+## Overview
 
 With personal functions I like to reuse everytime!
 
@@ -28,10 +36,11 @@ With personal functions I like to reuse everytime!
 - my.symbols() : Same with symbols to plots
 - draw.empty.plot() : Draws an empty plot with grid to add data points or lines afterwards
 - balanced_data: get balanced train/test sets and cv folds.
-- generate random matrix with pre-determined covariance
+- gen.synth.xdata(): generate random matrix with pre-determined covariance
+- run.cache(): keep cache or results of a function
 - ... check out rest of R folder
 
-## Install
+### Install
 
 ```{r install, eval=FALSE}
 devtools::install_github('averissimo/loose.rock)
@@ -129,21 +138,21 @@ Uses a cache to save and retrieve results. The cache is automatically created wi
 
 Caution: Files are not deleted so the cache directory can become rather big.
 
-```{r}
+```{r runcache1}
 a <- run.cache(sum, 1, 2)
 b <- run.cache(sum, 1, 2)
 all(a == b)
 ```
 
-```{r}
+```{r runcache2}
 a <- run.cache(rnorm, 5, seed = 1985)
 b <- run.cache(rnorm, 5, seed = 2000)
 all(a == b)
 ```
 
-RunCache was originaly intended to be used to calculate big correlation matrix
+run-cache was originaly intended to be used to calculate big correlation matrix
 
-```{r}
+```{r runcache-benchmark}
 n.rows <- 1000
 n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
@@ -152,9 +161,9 @@ xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 runCache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
-  runCache.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
-  runCache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  runCache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  run.cche.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
+  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
   actual.function       = sapply(2:n.cols, my.fun), 
   actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)

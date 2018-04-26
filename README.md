@@ -1,7 +1,22 @@
 
+-   [loose.rock r-package](#loose.rock-r-package)
+    -   [Overview](#overview)
+        -   [Install](#install)
+    -   [Proper](#proper)
+    -   [my.colors & my.symbols & draw.empty.plot](#my.colors-my.symbols-draw.empty.plot)
+    -   [draw.kaplan](#draw.kaplan)
+    -   [Balanced test/train dataset](#balanced-testtrain-dataset)
+    -   [Generate synthetic matrix with covariance](#generate-synthetic-matrix-with-covariance)
+    -   [Save in cache](#save-in-cache)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-loose.rock rpackage
-===================
+loose.rock r-package
+====================
+
+> Set of useful function that I reuse a lot
+
+Overview
+--------
 
 With personal functions I like to reuse everytime!
 
@@ -11,16 +26,15 @@ With personal functions I like to reuse everytime!
 -   my.symbols() : Same with symbols to plots
 -   draw.empty.plot() : Draws an empty plot with grid to add data points or lines afterwards
 -   balanced\_data: get balanced train/test sets and cv folds.
--   generate random matrix with pre-determined covariance
+-   gen.synth.xdata(): generate random matrix with pre-determined covariance
+-   run.cache(): keep cache or results of a function
 -   ... check out rest of R folder
 
-Install
--------
+### Install
 
 ``` r
-devtools::install_github('averissimo/loose.rock')
+devtools::install_github('averissimo/loose.rock)
 ```
-
 
 Proper
 ------
@@ -48,7 +62,7 @@ for (ix in 1:22) {
 }
 ```
 
-![](README-mycolors-1.png)
+![](figures/README-mycolors-1.png)
 
 draw.kaplan
 -----------
@@ -66,14 +80,14 @@ psex <- draw.kaplan(list(Sex= c(0,1,0,0)), xdata = xdata, ydata = ydata)$plot
 grid.arrange(page, psex, ncol = 2)
 ```
 
-![](README-draw.kaplan-1.png)
+![](figures/README-draw.kaplan-1.png)
 
 ``` r
 #
 draw.kaplan(list(Age= c(1,0,0,0), Sex = c(0,1,0,0), yr = c(0,0,1,0), kappa = c(0,0,0,1)), xdata = xdata, ydata = ydata)$plot
 ```
 
-![](README-draw.kaplan-2.png)
+![](figures/README-draw.kaplan-2.png)
 
 Balanced test/train dataset
 ---------------------------
@@ -154,7 +168,7 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
     #> 4 0.0080 0.040 0.20 1.000 0.2000
     #> 5 0.0016 0.008 0.04 0.200 1.0000
 
-![](README-show.gen.synth-1.png)
+![](figures/README-show.gen.synth-1.png)
 
     #> Using .75^|i-j| to generate co-variance matrix (plotting correlation)
     #> X generated
@@ -177,7 +191,7 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
     #> 4 0.4218750 0.562500 0.7500 1.000000 0.7500000
     #> 5 0.3164063 0.421875 0.5625 0.750000 1.0000000
 
-![](README-show.gen.synth-2.png)
+![](figures/README-show.gen.synth-2.png)
 
 Save in cache
 -------------
@@ -188,23 +202,23 @@ Caution: Files are not deleted so the cache directory can become rather big.
 
 ``` r
 a <- run.cache(sum, 1, 2)
-#> Loading from cache (not calculating): /tmp/runCache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
+#> Loading from cache (not calculating): ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
 b <- run.cache(sum, 1, 2)
-#> Loading from cache (not calculating): /tmp/runCache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
+#> Loading from cache (not calculating): ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
 all(a == b)
 #> [1] TRUE
 ```
 
 ``` r
 a <- run.cache(rnorm, 5, seed = 1985)
-#> Saving in cache: /tmp/runCache/9636/cache-generic_cache-H_96360922babcb9eeb480fabc9811eab598abaf087c10f3ef49e9093607089531.RData
+#> Loading from cache (not calculating): ./run-cache/9636/cache-generic_cache-H_96360922babcb9eeb480fabc9811eab598abaf087c10f3ef49e9093607089531.RData
 b <- run.cache(rnorm, 5, seed = 2000)
-#> Saving in cache: /tmp/runCache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
+#> Loading from cache (not calculating): ./run-cache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
 all(a == b)
 #> [1] FALSE
 ```
 
-RunCache was originaly intended to be used to calculate big correlation matrix
+run-cache was originaly intended to be used to calculate big correlation matrix
 
 ``` r
 n.rows <- 1000
@@ -212,27 +226,27 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: /tmp/runCache/1ca4/cache-generic_cache-H_1ca4cc293760a485015a91c0cfb2e633d366ca6e7317a11309c37dd05926ef0d.RData
-runCache.digest <- list(verissimo::digest.cache(xdata))
+#> Saving in cache: ./run-cache/7d76/cache-generic_cache-H_7d763aaab4019fd26008026b738344ea1f834b027611fc510411525d58498594.RData
+runCache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
-  runCache.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
-  runCache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  runCache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  run.cche.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
+  run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
+  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
   actual.function       = sapply(2:n.cols, my.fun), 
   actual.4cores         = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
 #> Unit: milliseconds
-#>                   expr         min          lq      mean      median
-#>    runCache.non.cached 3597.887922 3830.686961 4947.4225 3962.969784
-#>        runCache.cached   12.151663   14.631728  621.8065   15.051005
-#>  runCache.cached.speed    6.954156    7.332214  989.1665    9.592484
-#>        actual.function 3988.803092 4286.941875 5834.0053 4686.555011
-#>          actual.4cores 2599.503680 3317.719993 3297.8353 3438.453918
-#>          uq      max neval cld
-#>  6132.18401 7213.384     5   b
-#>    19.24390 3047.954     5  a 
-#>    10.44369 4911.510     5  a 
-#>  6914.68445 9293.042     5   b
-#>  3546.38849 3587.110     5  ab
+#>                    expr         min          lq     mean      median
+#>     run.cche.non.cached 3039.076304 3261.699764 4325.513 3527.751512
+#>        run.cache.cached    6.436927    8.098586 1139.941   16.305456
+#>  run.cache.cached.speed    4.116731    4.171586 3081.259    4.617539
+#>         actual.function 3460.823433 3955.421129 4591.912 4178.609672
+#>           actual.4cores 1993.124260 2351.007917 3559.982 2483.319555
+#>           uq       max neval cld
+#>  4234.290212  7564.748     5   a
+#>    22.708837  5646.158     5   a
+#>     5.103185 15388.286     5   a
+#>  4417.799175  6946.908     5   a
+#>  5046.685826  5925.771     5   a
 ```
