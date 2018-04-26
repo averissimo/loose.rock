@@ -2,16 +2,19 @@ Package: loose.rock
 Title: A lot of generic functions that can be reused
 Version: 0.2.0
 Authors@R: person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre"))
-Description: A lot of generic functions that can be reused
+Description: Collection of generic functions that can be used in data science.
+             This has been developed during the PhD and is mostly because I'm 
+             lazy and don't want to repeat myself.
 Depends:
     R (>= 3.2.3)
-License: GNU GPL v3, see LICENSE for more information
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Imports: plyr,
     ggplot2,
     testthat,
+    methods,
     survival,
     stats,
     graphics,

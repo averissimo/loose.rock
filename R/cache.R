@@ -21,6 +21,8 @@ tempdir.cache <- function() {
 
 #' Run function and save cache
 #'
+#' DEPRECATED!!! use run.cache instead
+#'
 #' @param base.dir directory where data is stored
 #' @param fun function call name
 #' @param ... parameters for function call
@@ -33,6 +35,8 @@ tempdir.cache <- function() {
 #'
 #' @return the result of fun(...)
 #' @export
+#'
+#' @seealso run.cache
 #'
 #' @examples
 #' runCache(c, 1, 2, 3, 4)
@@ -54,6 +58,20 @@ setGeneric("runCache", function(fun,
   cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5, cache.prefix = \'someFileName\', force.recalc = TRUE)\n')
 })
 
+#' Run function and save cache
+#'
+#' DEPRECATED!!! use run.cache instead
+#' @seealso run.cache
+#'
+#' @param base.dir directory where data is stored
+#' @param fun function call name
+#' @param ... parameters for function call
+#' @param seed when function call is random, this allows to set seed beforehand
+#' @param cache.prefix prefix for file name to be generated from parameters (...)
+#' @param cache.digest cache of the digest for one or more of the parameters
+#' @param show.message show message that data is being retrieved from cache
+#' @param force.recalc force the recalculation of the values
+#' @param add.to.hash something to add to the filename generation
 setMethod('runCache',
           signature('function'),
           function(fun,
@@ -146,6 +164,19 @@ setGeneric("run.cache", function(fun,
   cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5, cache.prefix = \'someFileName\', force.recalc = TRUE)\n')
 })
 
+#' Run function and save cache
+#'
+#' This method saves the function that's being called
+#'
+#' @param base.dir directory where data is stored
+#' @param fun function call name
+#' @param ... parameters for function call
+#' @param seed when function call is random, this allows to set seed beforehand
+#' @param cache.prefix prefix for file name to be generated from parameters (...)
+#' @param cache.digest cache of the digest for one or more of the parameters
+#' @param show.message show message that data is being retrieved from cache
+#' @param force.recalc force the recalculation of the values
+#' @param add.to.hash something to add to the filename generation
 setMethod('run.cache',
           signature('function'),
           function(fun,
@@ -181,7 +212,7 @@ setMethod('run.cache',
             if (class(fun) == 'function') {
               args[['cache.fun']] <- digest.cache(toString(attributes(fun)$srcref))
             } else if (class(fun) == 'standardGeneric') {
-              aaa <- findMethods(fun)
+              aaa <- methods::findMethods(fun)
               args[['cache.fun']] <- digest.cache(sapply(names(aaa), function(ix) { digest.cache(toString(attributes(aaa[[ix]])$srcref)) }))
             } else {
               args[['cache.fun']] <- digest.cache(fun)

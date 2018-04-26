@@ -4,7 +4,7 @@
 \alias{my.save.ggplot}
 \title{Save ggplots to file in multiple formats}
 \usage{
-my.save.ggplot(filename, my.plot = last_plot(), base.directory,
+my.save.ggplot(filename, my.plot = ggplot2::last_plot(), base.directory,
   out.format = c("pdf", "png"), width = 6, height = 4,
   separate.directory = T)
 }

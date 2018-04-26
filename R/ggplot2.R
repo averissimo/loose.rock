@@ -44,11 +44,11 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     #
     #
     temp.group <- array(-1, dim(prognostic.index)[1])
-    pi.thres <- quantile(prognostic.index[,ix], probs = c(probs[1], probs[2]))
+    pi.thres <- stats::quantile(prognostic.index[,ix], probs = c(probs[1], probs[2]))
 
     if (sum(prognostic.index[,ix] <=  pi.thres[1]) == 0 ||
         sum(prognostic.index[,ix] >  pi.thres[2]) == 0) {
-      pi.thres[1] <- median(unique(prognostic.index[,ix]))
+      pi.thres[1] <- stats::median(unique(prognostic.index[,ix]))
       pi.thres[2] <- pi.thres[1]
     }
 
@@ -95,7 +95,8 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
     my.alpha <- 1
   }
   # plot using ggfortify library's autoplot.survfit
-  p1 <- ggfortify:::autoplot.survfit(km, conf.int = FALSE,
+  requireNamespace('ggfortify')
+  p1 <- ggplot2::autoplot(km, conf.int = FALSE,
                                      xlab = 'Time', ylab = 'Cumulative Survival',
                                      surv.size = 1, censor.alpha = .8, surv.alpha = my.alpha)
   # generate title name
@@ -121,7 +122,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   #  otherwise, red and green!
   if (length(chosen.btas) > 1) {
     p1 <- p1 + ggplot2::scale_colour_manual(values = c(my.colors()[c(1,2,4,3,10,6,12,9,5,7,8,11,13,14,15,16,17)]))
-    p1 <- p1 + ggplot2::theme(legend.title = element_blank())
+    p1 <- p1 + ggplot2::theme(legend.title = ggplot2::element_blank())
     width <- 6
     height <- 4
   } else {
@@ -163,7 +164,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
 #'
 #' @export
 #'
-my.save.ggplot <- function(filename, my.plot = last_plot(), base.directory, out.format = c('pdf', 'png'),
+my.save.ggplot <- function(filename, my.plot = ggplot2::last_plot(), base.directory, out.format = c('pdf', 'png'),
                            width = 6, height = 4, separate.directory = T) {
   # duplicate the device and save
   for (out.device in out.format) {

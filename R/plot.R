@@ -20,12 +20,12 @@
 #' draw.empty.plot(c(0,0.5), c(0,10))
 draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = 'gray25', small.grid = T,
                             title = '',xlab = '', ylab = '', sub = '') {
-  plot.new()
-  plot.window(xlim, ylim, yaxs = yaxs, xaxs = xaxs)
-  title(main = title, xlab = xlab, ylab = ylab, sub = '')
+  graphics::plot.new()
+  graphics::plot.window(xlim, ylim, yaxs = yaxs, xaxs = xaxs)
+  graphics::title(main = title, xlab = xlab, ylab = ylab, sub = '')
   #
   small.grid.len <- function(side) {
-    len <- length(axTicks(side))
+    len <- length(graphics::axTicks(side))
     if (len %% 2 == 0) {
       len <- len * 2 - 2
     } else {
@@ -35,16 +35,16 @@ draw.empty.plot <- function(xlim, ylim, xaxs = 'i', yaxs = 'i', border.color = '
   }
   #
   if (small.grid) {
-    grid(lty = 3,
+    graphics::grid(lty = 3,
          nx = small.grid.len(1),
          ny = small.grid.len(2))
   } else {
-    grid()
+    graphics::grid()
   }
   #
-  box(col = border.color, lwd = 1)
-  axis(1, col = border.color, lwd = 1)
-  axis(2, col = border.color, lwd = 1)
+  graphics::box(col = border.color, lwd = 1)
+  graphics::axis(1, col = border.color, lwd = 1)
+  graphics::axis(2, col = border.color, lwd = 1)
 }
 
 #' Function to save plots to multiple formats
@@ -80,8 +80,8 @@ my.save.plot <- function(filename, base.directory, out.format = c('pdf', 'png'),
         my.width  <- my.width * 100
         my.height <- my.height * 100
       }
-      dev.copy(fun.call, file.path(output.directory, paste0(filename, '.', out.device)), width = my.width, height = my.height)
-      dev.off()
+      grDevices::dev.copy(fun.call, file.path(output.directory, paste0(filename, '.', out.device)), width = my.width, height = my.height)
+      grDevices::dev.off()
     }, error = function(e){
       print(paste0('Error in ', out.device, ': ', e))
     })
@@ -113,8 +113,11 @@ my.plot.residuals <- function(my.residuals, prefix,
   original_prefix <- prefix
   prefix <- paste0(prefix)
   my.coords <- list()
+  #
+  calc_rmse <- function(vec) { return(sqrt(mean(vec * vec))) }
+
   for (ix in 1:len) {
-    my.coords[[ix]] <- density(my.residuals[[ix]])
+    my.coords[[ix]] <- stats::density(my.residuals[[ix]])
     rmse <- c(rmse, calc_rmse(my.residuals[[ix]]))
   }
   #
@@ -123,20 +126,20 @@ my.plot.residuals <- function(my.residuals, prefix,
         ylab = 'Density')
   #
   cols <- c('tomato3', 'steelblue2', 'forestgreen', 'orange')
-  cols_shade <- col2rgb(cols, alpha = T) / 255
+  cols_shade <- grDevices::col2rgb(cols, alpha = T) / 255
   cols_shade['alpha',] <- .15
   #
   for (ix in 1:len) {
-    polygon(c(rev(my.coords[[ix]]$x),my.coords[[ix]]$x),c(array(0, length(my.coords[[ix]]$y)), my.coords[[ix]]$y),
-            col = rgb(cols_shade[1,ix],cols_shade[2,ix],cols_shade[3,ix],cols_shade[4,ix]), border = NA)
-    lines(my.coords[[ix]]$x, my.coords[[ix]]$y, lwd = 3, lty = 2, col = cols[ix])
+    graphics::polygon(c(rev(my.coords[[ix]]$x),my.coords[[ix]]$x),c(array(0, length(my.coords[[ix]]$y)), my.coords[[ix]]$y),
+            col = grDevices::rgb(cols_shade[1,ix],cols_shade[2,ix],cols_shade[3,ix],cols_shade[4,ix]), border = NA)
+    graphics::lines(my.coords[[ix]]$x, my.coords[[ix]]$y, lwd = 3, lty = 2, col = cols[ix])
   }
 
-  abline(v = 0, col = "gray44", lty = 3)
+  graphics::abline(v = 0, col = "gray44", lty = 3)
 
   leg.str <- paste0(prefix, ' rmse = ', format(rmse, digits = 8))
   #leg.wid <- strwidth(leg.str) / 1
-  legend('topright', leg.str, lty = array(2,len), lwd = array(3, len), col = cols[1:len]
+  graphics::legend('topright', leg.str, lty = array(2,len), lwd = array(3, len), col = cols[1:len]
   )
   #      ,text.width = leg.wid)
 

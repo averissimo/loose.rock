@@ -101,7 +101,7 @@ balanced.cv.folds <- function(..., nfolds = 10) {
       for(ix in seq(output.list)) {
         my.tmp <- c(my.tmp, output.list[[ix]])
       }
-      my.count <- hist(my.tmp, plot = FALSE, breaks = 0:nfolds)$counts
+      my.count <- graphics::hist(my.tmp, plot = FALSE, breaks = 0:nfolds)$counts
       my.sample <- rep(seq(nfolds)[sort(my.count, index.return = TRUE)$ix], length = length(my.set))
     }
     #
