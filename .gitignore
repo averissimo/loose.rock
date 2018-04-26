@@ -1,3 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
+tests/testthat/run-cache-changed1/
+tests/testthat/run-cache-changed2/
+tests/testthat/run-cache/

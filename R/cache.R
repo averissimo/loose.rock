@@ -70,8 +70,8 @@ setMethod('runCache',
                    add.to.hash   = NULL) {
 
   warning('DEPRECATED, use run.cache instead! if runCache is called with same arguments but different functions it will save to same cache.')
-  if (is.null(base.dir)) { base.dir <- verissimo.options('base.dir') }
-  if (is.null(show.message)) { show.message <- verissimo.options('show.message') }
+  if (is.null(base.dir)) { base.dir <- loose.rock.options('base.dir') }
+  if (is.null(show.message)) { show.message <- loose.rock.options('show.message') }
   args <- list(...)
   if (!is.null(seed)) {
     args[['runCache.seed']] <- seed
@@ -162,8 +162,8 @@ setMethod('run.cache',
                    add.to.hash   = NULL) {
             #
             # base.dir
-            if (is.null(base.dir)) { base.dir <- verissimo.options('base.dir') }
-            if (is.null(show.message)) { show.message <- verissimo.options('show.message') }
+            if (is.null(base.dir)) { base.dir <- loose.rock.options('base.dir') }
+            if (is.null(show.message)) { show.message <- loose.rock.options('show.message') }
             #
             #
             args <- list(...)
@@ -185,9 +185,9 @@ setMethod('run.cache',
               args[['cache.fun']] <- digest.cache(toString(attributes(fun)$srcref))
             } else if (class(fun) == 'standardGeneric') {
               aaa <- findMethods(fun)
-              args[['cache.fun']] <- verissimo::digest.cache(sapply(names(aaa), function(ix) { verissimo::digest.cache(toString(attributes(aaa[[ix]])$srcref)) }))
+              args[['cache.fun']] <- digest.cache(sapply(names(aaa), function(ix) { digest.cache(toString(attributes(aaa[[ix]])$srcref)) }))
             } else {
-              args[['cache.fun']] <- verissimo::digest.cache(fun)
+              args[['cache.fun']] <- digest.cache(fun)
             }
 
             dir.create(base.dir, showWarnings = FALSE)

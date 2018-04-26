@@ -1,4 +1,4 @@
 library(testthat)
-library(verissimo)
+library(loose.rock)
 
-test_check("verissimo")
+test_check("loose.rock")

@@ -18,7 +18,7 @@ rmarkdown::render('./README.Rmd')
 ```
 
 
-# Verissimo r-package
+# loose.rock r-package
 
 With personal functions I like to reuse everytime!
 
@@ -30,6 +30,13 @@ With personal functions I like to reuse everytime!
 - balanced_data: get balanced train/test sets and cv folds.
 - generate random matrix with pre-determined covariance
 - ... check out rest of R folder
+
+## Install
+
+```{r install, eval=FALSE}
+devtools::install_github('averissimo/loose.rock)
+```
+
 
 ## Proper
 
@@ -142,7 +149,7 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-runCache.digest <- list(verissimo::digest.cache(xdata))
+runCache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
   runCache.non.cached   = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),

@@ -1,4 +1,4 @@
-Package: verissimo
+Package: loose.rock
 Title: A lot of generic functions that can be reused
 Version: 0.2.0
 Authors@R: person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre"))
@@ -30,4 +30,5 @@ Imports: plyr,
     ggfortify,
     MASS,
     reshape2,
-    digest
+    digest,
+    futile.options

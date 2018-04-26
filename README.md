@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-Verissimo r-package
+loose.rock rpackage
 ===================
 
 With personal functions I like to reuse everytime!
@@ -13,6 +13,14 @@ With personal functions I like to reuse everytime!
 -   balanced\_data: get balanced train/test sets and cv folds.
 -   generate random matrix with pre-determined covariance
 -   ... check out rest of R folder
+
+Install
+-------
+
+``` r
+devtools::install_github('averissimo/loose.rock')
+```
+
 
 Proper
 ------
