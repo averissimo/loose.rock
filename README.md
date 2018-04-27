@@ -226,6 +226,7 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
+#> Saving in cache: ./run-cache/183a/cache-generic_cache-H_183a2a50eb03abf6a30f3a34683e68823d12e385616f013ef75d982a9c4d6f71.RData
 run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
@@ -235,4 +236,17 @@ microbenchmark::microbenchmark(
   actual.function        = sapply(2:n.cols, my.fun), 
   actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
+#> Unit: milliseconds
+#>                    expr          min          lq      mean      median
+#>     run.cche.non.cached 10520.265068 10624.55354 11090.159 10862.58916
+#>        run.cache.cached    18.927803    20.65042  2241.177    29.53301
+#>  run.cache.cached.speed     9.447775    11.08894  2294.961    13.83620
+#>         actual.function  8726.167836 10492.24235 10391.206 10699.73178
+#>           actual.4cores  5398.648418  5546.04768  5723.367  5547.82719
+#>           uq       max neval cld
+#>  11710.20492 11733.182     5   b
+#>     32.15703 11104.619     5  a 
+#>     21.01423 11419.417     5  a 
+#>  10736.40119 11301.485     5   b
+#>   5854.59639  6269.716     5  ab
 ```

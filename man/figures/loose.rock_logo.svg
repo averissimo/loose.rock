@@ -17,8 +17,8 @@
    sodipodi:docname="loose.rock_logo.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    inkscape:export-filename="loose.rock_logo.png"
-   inkscape:export-xdpi="25.83"
-   inkscape:export-ydpi="25.83">
+   inkscape:export-xdpi="24.98"
+   inkscape:export-ydpi="24.98">
   <defs
      id="defs2">
     <inkscape:path-effect
@@ -44,7 +44,7 @@
      inkscape:cx="456.07809"
      inkscape:cy="225.05165"
      inkscape:document-units="mm"
-     inkscape:current-layer="g881"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1053"
@@ -94,7 +94,7 @@
          style="color:#bebebe;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#3b4e51;stroke-width:3.73873782;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:44.22047806;stroke-opacity:1;marker:none;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
          sodipodi:type="star" />
       <g
-         transform="matrix(0.30056449,0,0,0.30056449,-179.24317,-60.595281)"
+         transform="matrix(0.30056449,0,0,0.30056449,-179.23334,-60.595281)"
          style="stroke:#3b4e51;stroke-width:4.14635134;stroke-opacity:1"
          id="g850">
         <path
@@ -139,16 +139,61 @@
            transform="scale(0.26458333)" />
       </g>
     </g>
+    <g
+       aria-label="loose.rock"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;line-height:11.1204977px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="text825">
+      <path
+         d="m -216.31343,100.26922 h -3.04665 V 87.0799 h 3.04665 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path847" />
+      <path
+         d="m -208.47697,98.109564 -2.15965,2.159656 h -2.52217 l -2.15965,-2.159656 v -6.255285 l 2.14422,-2.144229 h 2.5376 l 2.15965,2.159655 z m -2.78441,-0.485922 v -5.275728 h -1.28036 v 5.275728 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path849" />
+      <path
+         d="m -200.79477,98.109564 -2.15965,2.159656 h -2.52217 l -2.15965,-2.159656 v -6.255285 l 2.14422,-2.144229 h 2.5376 l 2.15965,2.159655 z m -2.78441,-0.485922 v -5.275728 h -1.28036 v 5.275728 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path851" />
+      <path
+         d="m -192.8349,98.117277 -2.15194,2.151943 h -2.82297 l -2.14423,-2.14423 v -0.501348 h 4.20361 V 96.30471 h -2.03625 l -2.16736,-2.167368 v -2.259924 l 2.17508,-2.167368 h 2.7767 l 2.16736,2.159655 v 0.478209 h -4.1959 v 1.318932 h 2.02082 l 2.17508,2.167368 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path853" />
+      <path
+         d="m -185.01386,98.101851 -2.15966,2.167369 h -2.64557 l -2.17508,-2.167369 v -6.239859 l 2.15965,-2.151942 h 2.68414 l 2.14423,2.144229 0.008,4.450431 h -4.0802 v 1.318932 h 4.06478 z m -2.78441,-4.435005 v -1.318932 h -1.28037 v 1.318932 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path855" />
+      <path
+         d="m -181.65097,100.26922 h -2.50674 v -2.653291 h 2.50674 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path857" />
+      <path
+         d="m -176.12842,92.347914 h -0.62476 l -0.89472,0.894714 v 7.026592 h -3.08522 v -8.407228 l 2.15966,-2.151942 h 2.44504 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path859" />
+      <path
+         d="m -168.67762,98.109564 -2.15965,2.159656 h -2.52217 l -2.15965,-2.159656 v -6.255285 l 2.14423,-2.144229 h 2.53759 l 2.15965,2.159655 z m -2.78441,-0.485922 v -5.275728 h -1.28036 v 5.275728 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path861" />
+      <path
+         d="m -160.66376,97.623642 v 0.493635 l -2.14423,2.151943 h -2.86154 l -2.16737,-2.167369 v -6.21672 l 2.16737,-2.167368 h 2.84612 l 2.15965,2.167368 v 1.781715 h -2.92324 v -1.318932 h -1.32665 v 5.275728 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path863" />
+      <path
+         d="m -153.00469,100.26922 h -2.7767 l -1.07212,-3.88738 v 3.88738 h -2.96181 V 87.0799 h 2.96181 v 6.463537 l 1.09526,-3.833387 h 2.73813 l -1.46548,5.20631 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         id="path865" />
+    </g>
     <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633071px;line-height:11.1204977px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       id="text845"
+       y="157.14417"
        x="-219.97713"
-       y="100.26922"
-       id="text825"><tspan
-         sodipodi:role="line"
-         id="tspan823"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;line-height:11.1204977px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.79633045px;font-family:NYC;-inkscape-font-specification:'NYC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#3b4e51;fill-opacity:1;stroke-width:0.26458332px"
+         y="157.14417"
          x="-219.97713"
-         y="100.26922"
-         style="stroke-width:0.26458332px;-inkscape-font-specification:'NYC, Normal';font-family:NYC;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:15.79633071px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;fill:#3b4e51;fill-opacity:1;">loose.rock</tspan></text>
+         id="tspan843"
+         sodipodi:role="line">loose.rock</tspan></text>
   </g>
 </svg>
