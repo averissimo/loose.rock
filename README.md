@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-loose.rock r-package
-====================
+loose.rock r-package <img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
+============================================================================================
 
 > Set of useful function that I reuse a lot
 
@@ -62,7 +62,7 @@ for (ix in 1:22) {
 }
 ```
 
-![](figures/README-mycolors-1.png)
+![](man/figures/README-mycolors-1.png)
 
 draw.kaplan
 -----------
@@ -80,14 +80,14 @@ psex <- draw.kaplan(list(Sex= c(0,1,0,0)), xdata = xdata, ydata = ydata)$plot
 grid.arrange(page, psex, ncol = 2)
 ```
 
-![](figures/README-draw.kaplan-1.png)
+![](man/figures/README-draw.kaplan-1.png)
 
 ``` r
 #
 draw.kaplan(list(Age= c(1,0,0,0), Sex = c(0,1,0,0), yr = c(0,0,1,0), kappa = c(0,0,0,1)), xdata = xdata, ydata = ydata)$plot
 ```
 
-![](figures/README-draw.kaplan-2.png)
+![](man/figures/README-draw.kaplan-2.png)
 
 Balanced test/train dataset
 ---------------------------
@@ -168,7 +168,7 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
     #> 4 0.0080 0.040 0.20 1.000 0.2000
     #> 5 0.0016 0.008 0.04 0.200 1.0000
 
-![](figures/README-show.gen.synth-1.png)
+![](man/figures/README-show.gen.synth-1.png)
 
     #> Using .75^|i-j| to generate co-variance matrix (plotting correlation)
     #> X generated
@@ -191,7 +191,7 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
     #> 4 0.4218750 0.562500 0.7500 1.000000 0.7500000
     #> 5 0.3164063 0.421875 0.5625 0.750000 1.0000000
 
-![](figures/README-show.gen.synth-2.png)
+![](man/figures/README-show.gen.synth-2.png)
 
 Save in cache
 -------------
@@ -226,7 +226,6 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/3b74/cache-generic_cache-H_3b7474429779d2a0d961de2a08d363e8e50120d6d6ab02d7e9b51b080c19a01e.RData
 run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
@@ -236,17 +235,4 @@ microbenchmark::microbenchmark(
   actual.function        = sapply(2:n.cols, my.fun), 
   actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
-#> Unit: milliseconds
-#>                    expr         min          lq      mean      median
-#>     run.cche.non.cached 3441.606580 3688.249383 4464.5599 4649.410614
-#>        run.cache.cached    6.323675    6.531234  758.5741    7.775175
-#>  run.cache.cached.speed    3.916326    4.072770  951.0567    4.472927
-#>         actual.function 2667.430289 2690.215310 3449.3552 3118.303845
-#>           actual.4cores 2646.173705 3163.990818 3325.8315 3423.333668
-#>           uq      max neval cld
-#>  5120.739945 5422.793     5   c
-#>     7.790071 3764.450     5 a  
-#>    11.199276 4731.622     5 ab 
-#>  4200.139481 4570.687     5  bc
-#>  3611.752626 3783.906     5  bc
 ```

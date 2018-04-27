@@ -8,7 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "figures/README-"
+  fig.path = "man/figures/README-"
 )
 #
 devtools::load_all(".")
@@ -19,7 +19,7 @@ rmarkdown::render('./README.Rmd', output_format = 'github_document')
 ```
 
 
-# loose.rock r-package
+# loose.rock r-package <img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
 
 > Set of useful function that I reuse a lot
 
@@ -160,7 +160,7 @@ all(a == b)
 
 run-cache was originaly intended to be used to calculate big correlation matrix
 
-```{r runcache-benchmark}
+```{r runcache-benchmark, eval=FALSE}
 n.rows <- 1000
 n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
