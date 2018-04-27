@@ -7,7 +7,7 @@ coding.genes <- function ()
 {
   ensembl <- biomaRt::useMart("ensembl")
   dataset <- biomaRt::useDataset("hsapiens_gene_ensembl", mart = ensembl)
-  protein.conding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name","description", 'ccds'),
+  protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name","description", 'ccds'),
                                     filters    = 'biotype',
                                     values     = c('protein_coding'),
                                     mart       = dataset)
@@ -22,13 +22,17 @@ coding.genes <- function ()
     ccds.genes <- ccds.genes[ccds.genes == '' || is.na(ccds.genes)]
   }
   #
-  ensembl.genes    <- sort(unique(protein.conding$external_gene_name))
-  ccds.extra.genes <- sort(ccds.genes[(!ccds.genes %in% ensembl.genes)])
+  biomart.genes    <- sort(unique(protein.coding$external_gene_name))
+  ccds.extra.genes <- sort(ccds.genes[(!ccds.genes %in% biomart.genes)])
 
   coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name","description", 'ccds'),
                            filters    = 'external_gene_name',
-                           values     = c(ensembl.genes, ccds.extra.genes),
+                           values     = c(biomart.genes, ccds.extra.genes),
                            mart       = dataset)
 
+  futile.logger::flog.info('Coding genes from biomaRt: %d', nrow(protein.coding))
+  futile.logger::flog.info('   Coding genes from CCDS: %d', nrow(ccds))
+  futile.logger::flog.info('        Unique in biomaRt: %d', sum(!ccds.genes %in% biomart.genes))
+  futile.logger::flog.info('           Unique in CCDS: %d', sum(!biomart.genes %in% ccds.genes))
   return(coding)
 }

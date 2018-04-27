@@ -20,11 +20,19 @@ With personal functions I like to reuse everytime!
 -   balanced\_data: get balanced train/test sets and cv folds.
 -   gen.synth.xdata(): generate random matrix with pre-determined covariance
 -   run.cache(): keep cache or results of a function
+-   protein.coding(): downloads protein coding genes from external databases
 -   ... check out rest of R folder
 
 ### Install
 
 ``` r
+# install bioconductor
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+biocLite('biomaRt')
+
+# install the package
 devtools::install_github('averissimo/loose.rock)
 ```
 
@@ -218,27 +226,27 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/3f20/cache-generic_cache-H_3f207dc73c53d47c0c688a85a6dc0280eebcea9a20e81f1c04d4928fc9c4ce99.RData
+#> Saving in cache: ./run-cache/3b74/cache-generic_cache-H_3b7474429779d2a0d961de2a08d363e8e50120d6d6ab02d7e9b51b080c19a01e.RData
 run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
   run.cche.non.cached    = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
   run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = run.cache.digest, show.message = FALSE),
   actual.function        = sapply(2:n.cols, my.fun), 
   actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
 #> Unit: milliseconds
-#>                    expr         min          lq      mean       median
-#>     run.cche.non.cached 3959.987150 6135.966964 9918.5143 10559.224587
-#>        run.cache.cached    6.402426    6.570234 1036.1713     6.618979
-#>  run.cache.cached.speed    4.672045    5.154532  971.9428    12.603810
-#>         actual.function 3129.551983 4214.885400 5305.9562  4373.048324
-#>           actual.4cores 2925.982155 3018.165776 5269.6949  6543.040907
-#>            uq       max neval cld
-#>  13551.949580 15385.443     5   b
-#>      9.621187  5151.644     5  a 
-#>     14.086849  4823.197     5  a 
-#>   4722.546613 10089.749     5  ab
-#>   6755.803357  7105.482     5  ab
+#>                    expr         min          lq      mean      median
+#>     run.cche.non.cached 3441.606580 3688.249383 4464.5599 4649.410614
+#>        run.cache.cached    6.323675    6.531234  758.5741    7.775175
+#>  run.cache.cached.speed    3.916326    4.072770  951.0567    4.472927
+#>         actual.function 2667.430289 2690.215310 3449.3552 3118.303845
+#>           actual.4cores 2646.173705 3163.990818 3325.8315 3423.333668
+#>           uq      max neval cld
+#>  5120.739945 5422.793     5   c
+#>     7.790071 3764.450     5 a  
+#>    11.199276 4731.622     5 ab 
+#>  4200.139481 4570.687     5  bc
+#>  3611.752626 3783.906     5  bc
 ```

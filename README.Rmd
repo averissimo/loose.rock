@@ -38,11 +38,19 @@ With personal functions I like to reuse everytime!
 - balanced_data: get balanced train/test sets and cv folds.
 - gen.synth.xdata(): generate random matrix with pre-determined covariance
 - run.cache(): keep cache or results of a function
+- protein.coding(): downloads protein coding genes from external databases
 - ... check out rest of R folder
 
 ### Install
 
 ```{r install, eval=FALSE}
+# install bioconductor
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+biocLite('biomaRt')
+
+# install the package
 devtools::install_github('averissimo/loose.rock)
 ```
 
@@ -163,7 +171,7 @@ my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
   run.cche.non.cached    = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
   run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = runCache.digest, show.message = FALSE),
+  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = run.cache.digest, show.message = FALSE),
   actual.function        = sapply(2:n.cols, my.fun), 
   actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
