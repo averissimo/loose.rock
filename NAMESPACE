@@ -3,6 +3,7 @@
 export(balanced.cv.folds)
 export(balanced.train.and.test)
 export(base.dir)
+export(coding.genes)
 export(digest.cache)
 export(draw.cov.matrix)
 export(draw.empty.plot)
