@@ -7,22 +7,11 @@ loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" 
 
 [![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Coverage status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
 
-Overview
---------
-
-With personal functions I like to reuse everytime!
-
--   proper() : Capitalize string using regexpression
--   draw.kaplan() : Draw kaplan curves based on Prognostic Index of Risk (calculated by coxph or something else)
--   my.colors() : My own pallete
--   my.symbols() : Same with symbols to plots
--   balanced\_data: get balanced train/test sets and cv folds.
--   gen.synth.xdata(): generate random matrix with pre-determined covariance
--   run.cache(): keep cache or results of a function
--   protein.coding(): downloads protein coding genes from external databases
--   ... check out rest of R folder
-
 ### Install
+
+The only pre-requirement is to install `biomaRt` bioconductor package as it cannot be installed automatically via CRAN.
+
+All other dependencies should be installed when running the install command.
 
 ``` r
 # install bioconductor
@@ -35,33 +24,19 @@ biocLite('biomaRt')
 devtools::install_github('averissimo/loose.rock)
 ```
 
-Proper
-------
+### Overview
 
-One of such is a proper function that capitalizes a string.
+With personal functions I like to reuse everytime!
 
-``` r
-x <- "OnE oF sUcH iS a proPer function that capitalizes a string."
-proper(x)
-#> [1] "One Of Such Is A Proper Function That Capitalizes A String."
-```
-
-Custom colors and symbols
--------------------------
-
-`my.colors()` and `my.symbols()` can be used to improve plot readability.
-
-``` r
-xdata <- -10:10
-plot(xdata, 1/10 * xdata * xdata + 1, type="l", pch = my.symbols(1), col = my.colors(1), cex = .9,
-     xlab = '', ylab = '', ylim = c(0, 20))
-grid(NULL, NULL, lwd = 2) # grid only in y-direction
-for (ix in 2:22) {
-  points(xdata, 1/10 * xdata * xdata + ix, pch = my.symbols(ix), col = my.colors(ix), cex = .9)
-}
-```
-
-![](man/figures/README-mycolors-1.png)
+-   `draw.kaplan()` : Draw kaplan curves based on Prognostic Index of Risk (calculated by coxph or something else)
+-   `coding.genes()`: downloads protein coding genes from external databases
+-   `gen.synth.xdata()`: generate random matrix with pre-determined covariance
+-   `balanced.cv.folds()` and `balanced.train.and.test()`: get balanced train/test sets and cv folds.
+-   `run.cache()`: keep cache or results of a function
+-   `proper()` : Capitalize string using regexpression
+-   `my.colors()` : My own pallete
+-   `my.symbols()` : Same with symbols to plots
+-   ... check out rest of R folder
 
 draw.kaplan
 -----------
@@ -87,6 +62,56 @@ draw.kaplan(list(Age= c(1,0,0,0), Sex = c(0,1,0,0), yr = c(0,0,1,0), kappa = c(0
 ```
 
 ![](man/figures/README-draw.kaplan-2.png)
+
+Get a current list of protein coding genes
+------------------------------------------
+
+``` r
+genes <- coding.genes()
+#> Coding genes from biomaRt: 22643 
+#>    Coding genes from CCDS: 34245 
+#>         Unique in biomaRt: 603 
+#>            Unique in CCDS: 1205 
+#> -------------------------------
+#>                     genes: 23144
+genes %>%
+  arrange(external_gene_name) %>%
+  head(n = 30) %>%
+  knitr::kable()
+```
+
+| ensembl\_gene\_id | external\_gene\_name |
+|:------------------|:---------------------|
+| ENSG00000121410   | A1BG                 |
+| ENSG00000148584   | A1CF                 |
+| ENSG00000175899   | A2M                  |
+| ENSG00000166535   | A2ML1                |
+| ENSG00000184389   | A3GALT2              |
+| ENSG00000128274   | A4GALT               |
+| ENSG00000118017   | A4GNT                |
+| ENSG00000094914   | AAAS                 |
+| ENSG00000081760   | AACS                 |
+| ENSG00000114771   | AADAC                |
+| ENSG00000197953   | AADACL2              |
+| ENSG00000261846   | AADACL2              |
+| ENSG00000188984   | AADACL3              |
+| ENSG00000204518   | AADACL4              |
+| ENSG00000109576   | AADAT                |
+| ENSG00000158122   | AAED1                |
+| ENSG00000103591   | AAGAB                |
+| ENSG00000115977   | AAK1                 |
+| ENSG00000087884   | AAMDC                |
+| ENSG00000127837   | AAMP                 |
+| ENSG00000129673   | AANAT                |
+| ENSG00000131043   | AAR2                 |
+| ENSG00000205002   | AARD                 |
+| ENSG00000090861   | AARS                 |
+| ENSG00000124608   | AARS2                |
+| ENSG00000266967   | AARSD1               |
+| ENSG00000157426   | AASDH                |
+| ENSG00000149313   | AASDHPPT             |
+| ENSG00000008311   | AASS                 |
+| ENSG00000215458   | AATBC                |
 
 Balanced test/train dataset
 ---------------------------
@@ -201,7 +226,7 @@ Caution: Files are not deleted so the cache directory can become rather big.
 
 ``` r
 a <- run.cache(sum, 1, 2)
-#> Saving in cache: ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
+#> Loading from cache (not calculating): ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
 b <- run.cache(sum, 1, 2)
 #> Loading from cache (not calculating): ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
 all(a == b)
@@ -210,9 +235,9 @@ all(a == b)
 
 ``` r
 a <- run.cache(rnorm, 5, seed = 1985)
-#> Saving in cache: ./run-cache/9636/cache-generic_cache-H_96360922babcb9eeb480fabc9811eab598abaf087c10f3ef49e9093607089531.RData
+#> Loading from cache (not calculating): ./run-cache/9636/cache-generic_cache-H_96360922babcb9eeb480fabc9811eab598abaf087c10f3ef49e9093607089531.RData
 b <- run.cache(rnorm, 5, seed = 2000)
-#> Saving in cache: ./run-cache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
+#> Loading from cache (not calculating): ./run-cache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
 all(a == b)
 #> [1] FALSE
 ```
@@ -225,7 +250,7 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/331b/cache-generic_cache-H_331ba92378bc8a0976eb241f477357374fde7020be5bd366cb11cb757304ef33.RData
+#> Saving in cache: ./run-cache/cb02/cache-generic_cache-H_cb024cf9bc8d7f9fe3449eebe6e19e4d7e1e192d96db53f2947e0d7dc45a7298.RData
 run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
@@ -236,16 +261,44 @@ microbenchmark::microbenchmark(
   actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
 #> Unit: milliseconds
-#>                    expr         min          lq      mean      median
-#>     run.cche.non.cached 3247.854899 3864.132870 3959.9423 4112.213145
-#>        run.cache.cached    6.812881    7.936079  842.2325    8.928230
-#>  run.cache.cached.speed    4.552571    5.487886  827.4067    5.529389
-#>         actual.function 2654.893582 2727.359592 3190.0789 2878.861414
-#>           actual.4cores 2061.330326 2288.624935 2663.5444 2924.335660
-#>           uq      max neval cld
-#>  4187.589619 4387.921     5   b
-#>    10.451796 4177.034     5  a 
-#>     5.820718 4115.643     5  a 
-#>  3478.103224 4211.177     5   b
-#>  2952.486028 3090.945     5  ab
+#>                    expr         min          lq     mean      median
+#>     run.cche.non.cached 3992.690358 4807.912904 6858.171 5723.659815
+#>        run.cache.cached    7.377905   14.653382 1695.489   33.501477
+#>  run.cache.cached.speed    4.547437    4.932929 1282.990    9.750515
+#>         actual.function 2707.167269 3149.710286 3555.484 3444.362860
+#>           actual.4cores 2296.385403 5968.555472 5402.382 6143.925386
+#>          uq      max neval cld
+#>  9864.41188 9902.178     5   b
+#>    48.40172 8373.511     5  a 
+#>    10.50072 6385.218     5  a 
+#>  3980.43395 4495.746     5  ab
+#>  6261.03071 6342.014     5  ab
 ```
+
+Proper
+------
+
+One of such is a proper function that capitalizes a string.
+
+``` r
+x <- "OnE oF sUcH iS a proPer function that capitalizes a string."
+proper(x)
+#> [1] "One Of Such Is A Proper Function That Capitalizes A String."
+```
+
+Custom colors and symbols
+-------------------------
+
+`my.colors()` and `my.symbols()` can be used to improve plot readability.
+
+``` r
+xdata <- -10:10
+plot(xdata, 1/10 * xdata * xdata + 1, type="l", pch = my.symbols(1), col = my.colors(1), cex = .9,
+     xlab = '', ylab = '', ylim = c(0, 20))
+grid(NULL, NULL, lwd = 2) # grid only in y-direction
+for (ix in 2:22) {
+  points(xdata, 1/10 * xdata * xdata + ix, pch = my.symbols(ix), col = my.colors(ix), cex = .9)
+}
+```
+
+![](man/figures/README-mycolors-1.png)

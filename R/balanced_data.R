@@ -50,9 +50,14 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
       #
       train.set <- c(train.set, list(sort(which(temp.set))))
 
-      test.temp.set <- !temp.set
-      test.temp.set[-ixs] <- FALSE
-      test.set <- c(test.set, list(which(test.temp.set)))
+      if (train.perc == 1) {
+        test.set  <- train.set
+      } else {
+        test.temp.set <- !temp.set
+        test.temp.set[-ixs] <- FALSE
+        test.set <- c(test.set, list(which(test.temp.set)))
+      }
+
     } else {
       stop('Arguments must be either a logical or numeric vector, see help for more information.')
     }

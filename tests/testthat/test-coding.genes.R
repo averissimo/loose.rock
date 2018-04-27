@@ -6,5 +6,5 @@ test_that("coding genes retrieves some genes", {
 })
 
 test_that("coding genes retrieves some genes", {
-  expect_output(coding.genes)
+  expect_output(coding.genes())
 })
