@@ -17,3 +17,25 @@ test_that("Covariance matrix is not respected due to more variables than observa
     expect_failure(expect_equal(diagonal.of.ones, rep(1, n.vars)))
   }
 })
+
+test_that('Covariance parameter is respected', {
+  cov.param <- .2
+  xdata1 <- gen.synth.xdata(10, 5, cov.param)
+  xdata1.cov <- cov(xdata1)
+  expect_true(all(sapply(1:ncol(xdata1), function(ix) {
+    result <- TRUE
+    if (ix > 1) {
+      result <- result && (abs(xdata1.cov[ix,ix-1] - cov.param) < 1e-14)
+    }
+    if (ix < ncol(xdata1)) {
+      result <- result && (abs(xdata1.cov[ix+1,ix] - cov.param) < 1e-14)
+    }
+    return(result)
+  })))
+})
+
+test_that("Draw covariance", {
+  xdata1 <- gen.synth.xdata(10, 5, .2)
+  data.frame(cov(xdata1))
+  expect_silent(draw.cov.matrix(xdata1) + ggplot2::ggtitle('X1 Covariance Matrix'))
+})
