@@ -14,7 +14,7 @@
 #' @param legend.outside If TRUE legend will be outside plot, otherwise inside
 #' @param expand.yzero expand to y = 0
 #'
-#' @return
+#' @return object with logrank test and kaplan-meier survival plot
 #'
 #' A list with plot, p-value and kaplan-meier object
 #'
@@ -22,19 +22,123 @@
 #'
 #' @examples
 #' data('ovarian', package = 'survival')
-#' draw.kaplan(c(age = 1), ovarian$age, data.frame(time = ovarian$futime, status = ovarian$fustat))
+#' xdata <- ovarian[,c('age', 'resid.ds')]
+#' ydata <- data.frame(time = ovarian$futime, status = ovarian$fustat)
+#' draw.kaplan(c(age = 1, 0), xdata, ydata)
+#' draw.kaplan(c(age = 1, 0.5), xdata, ydata)
 #' draw.kaplan(c(age = 1), c(1,0,1,0,1,0), data.frame(time = runif(6), status = rbinom(6, 1, .5)))
-draw.kaplan <- function(chosen.btas, xdata, ydata,
-                        probs = c(.5, .5), filename = 'SurvivalCurves', save.plot = F,
-                        xlim = NULL, ylim = NULL, expand.yzero = F,
-                        base.directory = file.path('output', 'kaplan-meier'),
-                        legend.outside = T) {
+setGeneric('draw.kaplan', function(chosen.btas, xdata, ydata,
+                                   probs          = c(.5, .5),
+                                   filename       = 'SurvivalCurves',
+                                   save.plot      = FALSE,
+                                   xlim           = NULL,
+                                   ylim           = NULL,
+                                   expand.yzero   = FALSE,
+                                   base.directory = file.path('output', 'kaplan-meier'),
+                                   legend.outside = FALSE) {
+  stop('wrong arguments, see help for draw.kaplan')
+})
+
+
+#' draw.kaplan
+#'
+#' @inheritParams draw.kaplan
+#'
+#' @param chosen.btas numeric.
+#' @param xdata data.frame.
+#' @param ydata data.frame.
+#'
+#' @return object with logrank test and kaplan-meier survival plot
+#' @export
+#'
+setMethod('draw.kaplan', signature(chosen.btas = 'numeric', xdata = 'data.frame', ydata = 'data.frame'), function(chosen.btas, xdata, ydata, probs, filename, save.plot, xlim, ylim, expand.yzero, base.directory, legend.outside) { draw.kaplan(list(chosen.btas), as.matrix(xdata), ydata, probs = probs, filename = filename, save.plot = save.plot, base.directory = base.directory, xlim = xlim, ylim = ylim, expand.yzero = expand.yzero, legend.outside = legend.outside)})
+
+#' draw.kaplan
+#'
+#' @inheritParams draw.kaplan
+#'
+#' @param chosen.btas numeric.
+#' @param xdata matrix.
+#' @param ydata data.frame.
+#'
+#' @return object with logrank test and kaplan-meier survival plot
+#' @export
+#'
+setMethod('draw.kaplan', signature(chosen.btas = 'numeric', xdata = 'matrix',     ydata = 'data.frame'), function(chosen.btas, xdata, ydata, probs, filename, save.plot, xlim, ylim, expand.yzero, base.directory, legend.outside) {draw.kaplan(list(chosen.btas), xdata, ydata, probs = probs, filename = filename, save.plot = save.plot, base.directory = base.directory, xlim = xlim, ylim = ylim, expand.yzero = expand.yzero, legend.outside = legend.outside)})
+
+#' draw.kaplan
+#'
+#' @inheritParams draw.kaplan
+#'
+#' @param chosen.btas numeric.
+#' @param xdata numeric.
+#' @param ydata data.frame.
+#'
+#' @return object with logrank test and kaplan-meier survival plot
+#' @export
+#'
+setMethod('draw.kaplan', signature(chosen.btas = 'numeric', xdata = 'numeric',    ydata = 'data.frame'), function(chosen.btas, xdata, ydata, probs, filename, save.plot, xlim, ylim, expand.yzero, base.directory, legend.outside) {draw.kaplan(list(chosen.btas), as.matrix(xdata), ydata, probs = probs, filename = filename, save.plot = save.plot, base.directory = base.directory, xlim = xlim, ylim = ylim, expand.yzero = expand.yzero, legend.outside = legend.outside)})
+
+#' draw.kaplan
+#'
+#' @inheritParams draw.kaplan
+#'
+#' @param chosen.btas list.
+#' @param xdata data.frame.
+#' @param ydata data.frame.
+#'
+#' @return object with logrank test and kaplan-meier survival plot
+#' @export
+#'
+setMethod('draw.kaplan', signature(chosen.btas = 'list',    xdata = 'data.frame', ydata = 'data.frame'), function(chosen.btas, xdata, ydata, probs, filename, save.plot, xlim, ylim, expand.yzero, base.directory, legend.outside) {draw.kaplan(chosen.btas, as.matrix(xdata), ydata, probs = probs, filename = filename, save.plot = save.plot, base.directory = base.directory, xlim = xlim, ylim = ylim, expand.yzero = expand.yzero, legend.outside = legend.outside)})
+
+#' draw.kaplan
+#'
+#' @inheritParams draw.kaplan
+#'
+#' @param chosen.btas list.
+#' @param xdata numeric.
+#' @param ydata data.frame.
+#'
+#' @return object with logrank test and kaplan-meier survival plot
+#' @export
+#'
+setMethod('draw.kaplan', signature(chosen.btas = 'list',    xdata = 'numeric',    ydata = 'data.frame'), function(chosen.btas, xdata, ydata, probs, filename, save.plot, xlim, ylim, expand.yzero, base.directory, legend.outside) { draw.kaplan(chosen.btas, as.matrix(xdata), ydata, probs = probs, filename = filename, save.plot = save.plot, base.directory = base.directory, xlim = xlim, ylim = ylim, expand.yzero = expand.yzero, legend.outside = legend.outside)})
+
+#' draw.kaplan
+#'
+#' @inheritParams draw.kaplan
+#'
+#' @param chosen.btas list.
+#' @param xdata matrix.
+#' @param ydata data.frame.
+#'
+#' @return object with logrank test and kaplan-meier survival plot
+#' @export
+#'
+setMethod('draw.kaplan', signature(chosen.btas = 'list', xdata = 'matrix', ydata = 'data.frame'),
+  function(chosen.btas, xdata, ydata, probs, filename, save.plot, xlim, ylim, expand.yzero, base.directory, legend.outside) {
+
+  if (nrow(xdata) != nrow(ydata)) {
+    stop(sprintf('Rows in xdata (%d) and ydata (%d) must be the same', nrow(xdata), nrow(ydata)))
+  } else if (!all(ncol(xdata) == sapply(chosen.btas, length))) {
+    stop(sprintf('All or some of the chosen.btas (%s) have different number of variables from xdata (%d)', paste(sapply(chosen.btas, length), collapse = ', '), ncol(xdata)))
+  }
   #
   # creates a matrix from list of chosen.btas
   chosen.btas.mat <- sapply(chosen.btas, function(e){as.vector(e)})
   # calculate prognostic indexes for each patient and btas
-  prognostic.index <- as.matrix(xdata) %*% chosen.btas.mat
+  prognostic.index <- tryCatch(xdata %*% chosen.btas.mat, error = function(err) {
+    cat('      xdata is.matrix(.) =', is.matrix(xdata), '\n')
+    cat('chosen.btas is.matrix(.) =', is.matrix(chosen.btas.mat), '\n')
+    cat('      xdata (nrow)x(ncol) =', sprintf('%dx%d', nrow(xdata), ncol(xdata)), '\n')
+    cat('chosen.btas (nrow)x(ncol) =', sprintf('%dx%d', nrow(chosen.btas.mat), ncol(chosen.btas.mat)), '\n')
+    stop(err)
+  })
+
   colnames(prognostic.index) <- names(chosen.btas)
+  futile.logger::flog.debug('')
+  futile.logger::flog.debug('prognostic.index', prognostic.index, capture = T)
   prognostic.index.df <- data.frame(time = c(), status = c(), group = c())
   # populate a data.frame with all patients (multiple rows per patients if has multiple btas)
   # already calculate high/low risk groups
@@ -78,11 +182,24 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   }))
   prognostic.index.df$group <- factor(plyr::mapvalues(prognostic.index.df$group, from = 1:(2*length(chosen.btas)), to = new.factor.str))
   #
+  if (length(levels(prognostic.index.df$group)) == 1) {
+    stop('draw.kaplan(): There is only one group, cannot create kaplan-meir curve with low and high risk groups')
+  }
+  futile.logger::flog.debug('')
+  futile.logger::flog.debug('prognostic.index.df', prognostic.index.df, capture = T)
+  #
   # Generate the Kaplan-Meier survival object
   km        <- survival::survfit(survival::Surv(time, status) ~ group,  data = prognostic.index.df)
+  futile.logger::flog.debug('')
+  futile.logger::flog.debug('kaplan-meier object', km, capture = T)
   # Calculate the logrank test p-value
   surv.prob <- survival::survdiff(survival::Surv(time, status) ~ group,  data = prognostic.index.df)
+  futile.logger::flog.debug('')
+  futile.logger::flog.debug('surv.prob object', surv.prob, capture = T)
   p_value   <- 1 - stats::pchisq(surv.prob$chisq, df = 1)
+
+  futile.logger::flog.debug('')
+  futile.logger::flog.debug('pvalue: %g\n', p_value)
   #
   # Plot survival curve
   #
@@ -94,6 +211,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   } else {
     my.alpha <- 1
   }
+
   # plot using ggfortify library's autoplot.survfit
   requireNamespace('ggfortify')
   p1 <- ggplot2::autoplot(km, conf.int = FALSE,
@@ -138,8 +256,8 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   # save to file
   #
   if (save.plot) {
-    my.save.ggplot(paste0('km_', filename), my.plot = p1, base.directory = base.directory,
-                   width = width, height = height)
+    save.ggplot(paste0('km_', filename), my.plot = p1, base.directory = base.directory,
+                width = width, height = height)
   }
   # after saving, show title in R plot
   if (length(chosen.btas) == 1) {
@@ -149,7 +267,7 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
   }
   # return p-value, plot and km object
   return(list(pvalue = p_value, plot = p1, km = km))
-}
+})
 
 
 #' Save ggplots to file in multiple formats
@@ -164,8 +282,13 @@ draw.kaplan <- function(chosen.btas, xdata, ydata,
 #'
 #' @export
 #'
-my.save.ggplot <- function(filename, my.plot = ggplot2::last_plot(), base.directory, out.format = c('pdf', 'png'),
-                           width = 6, height = 4, separate.directory = T) {
+save.ggplot <- function(filename,
+                        base.directory,
+                        my.plot            = ggplot2::last_plot(),
+                        out.format         = c('pdf', 'png'),
+                        width              = 6,
+                        height             = 4,
+                        separate.directory = TRUE) {
   # duplicate the device and save
   for (out.device in out.format) {
     tryCatch({
@@ -173,15 +296,17 @@ my.save.ggplot <- function(filename, my.plot = ggplot2::last_plot(), base.direct
       if (separate.directory) {
         # output directory separates formats in own format
         output.directory <- file.path(base.directory, out.device)
-        if (!dir.exists(base.directory))
-          dir.create(base.directory)
 
         if (!dir.exists(file.path(output.directory)))
-          dir.create(output.directory)
+          dir.create(output.directory, recursive = TRUE)
       } else {
         # output directory is the same as given
         output.directory <- base.directory
+        #
+        if (!dir.exists(base.directory))
+          dir.create(base.directory)
       }
+
       my.width  <- width
       my.height <- height
       if (out.device == 'png' && (my.width < 100 || my.height < 100) ) {

@@ -4,3 +4,4 @@
 ^figures/README-.*\.png$
 ^\.travis
 run-cache
+output

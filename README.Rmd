@@ -19,9 +19,9 @@ rmarkdown::render('./README.Rmd', output_format = 'github_document')
 ```
 
 
-# loose.rock r-package <img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
+# loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
 
-> Set of useful function that I reuse a lot
+> Set of useful functions in R that I reuse a lot
 
 [![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock)
 [![Coverage status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
@@ -34,7 +34,6 @@ With personal functions I like to reuse everytime!
 - draw.kaplan() : Draw kaplan curves based on Prognostic Index of Risk (calculated by coxph or something else)
 - my.colors() : My own pallete
 - my.symbols() : Same with symbols to plots
-- draw.empty.plot() : Draws an empty plot with grid to add data points or lines afterwards
 - balanced_data: get balanced train/test sets and cv folds.
 - gen.synth.xdata(): generate random matrix with pre-determined covariance
 - run.cache(): keep cache or results of a function
@@ -64,16 +63,16 @@ x <- "OnE oF sUcH iS a proPer function that capitalizes a string."
 proper(x)
 ```
 
-## my.colors & my.symbols & draw.empty.plot
+## Custom colors and symbols
 
 `my.colors()` and `my.symbols()` can be used to improve plot readability.
 
-In this example, draw.empty.plot is also used to create an empty plot to show data points after.
-
 ```{r mycolors}
 xdata <- -10:10
-draw.empty.plot(xlim = c(min(xdata),max(xdata)), ylim = c(0,23))
-for (ix in 1:22) {
+plot(xdata, 1/10 * xdata * xdata + 1, type="l", pch = my.symbols(1), col = my.colors(1), cex = .9,
+     xlab = '', ylab = '', ylim = c(0, 20))
+grid(NULL, NULL, lwd = 2) # grid only in y-direction
+for (ix in 2:22) {
   points(xdata, 1/10 * xdata * xdata + ix, pch = my.symbols(ix), col = my.colors(ix), cex = .9)
 }
 ```

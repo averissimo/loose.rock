@@ -5,9 +5,9 @@
 \title{draw.kaplan}
 \usage{
 draw.kaplan(chosen.btas, xdata, ydata, probs = c(0.5, 0.5),
-  filename = "SurvivalCurves", save.plot = F, xlim = NULL, ylim = NULL,
-  expand.yzero = F, base.directory = file.path("output", "kaplan-meier"),
-  legend.outside = T)
+  filename = "SurvivalCurves", save.plot = FALSE, xlim = NULL,
+  ylim = NULL, expand.yzero = FALSE, base.directory = file.path("output",
+  "kaplan-meier"), legend.outside = FALSE)
 }
 \arguments{
 \item{chosen.btas}{list of testing coefficients to calculate prognostic indexes, for example ``list(Age = some_vector)``}
@@ -33,6 +33,8 @@ draw.kaplan(chosen.btas, xdata, ydata, probs = c(0.5, 0.5),
 \item{legend.outside}{If TRUE legend will be outside plot, otherwise inside}
 }
 \value{
+object with logrank test and kaplan-meier survival plot
+
 A list with plot, p-value and kaplan-meier object
 }
 \description{
@@ -40,6 +42,9 @@ Mega function that draws multiple kaplan meyer survival curves (or just 1)
 }
 \examples{
 data('ovarian', package = 'survival')
-draw.kaplan(c(age = 1), ovarian$age, data.frame(time = ovarian$futime, status = ovarian$fustat))
+xdata <- ovarian[,c('age', 'resid.ds')]
+ydata <- data.frame(time = ovarian$futime, status = ovarian$fustat)
+draw.kaplan(c(age = 1, 0), xdata, ydata)
+draw.kaplan(c(age = 1, 0.5), xdata, ydata)
 draw.kaplan(c(age = 1), c(1,0,1,0,1,0), data.frame(time = runif(6), status = rbinom(6, 1, .5)))
 }

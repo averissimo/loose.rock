@@ -1,9 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-loose.rock r-package <img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
-============================================================================================
+loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
+==================================================================================
 
-> Set of useful function that I reuse a lot
+> Set of useful functions in R that I reuse a lot
 
 [![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Coverage status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
 
@@ -16,7 +16,6 @@ With personal functions I like to reuse everytime!
 -   draw.kaplan() : Draw kaplan curves based on Prognostic Index of Risk (calculated by coxph or something else)
 -   my.colors() : My own pallete
 -   my.symbols() : Same with symbols to plots
--   draw.empty.plot() : Draws an empty plot with grid to add data points or lines afterwards
 -   balanced\_data: get balanced train/test sets and cv folds.
 -   gen.synth.xdata(): generate random matrix with pre-determined covariance
 -   run.cache(): keep cache or results of a function
@@ -47,17 +46,17 @@ proper(x)
 #> [1] "One Of Such Is A Proper Function That Capitalizes A String."
 ```
 
-my.colors & my.symbols & draw.empty.plot
-----------------------------------------
+Custom colors and symbols
+-------------------------
 
 `my.colors()` and `my.symbols()` can be used to improve plot readability.
 
-In this example, draw.empty.plot is also used to create an empty plot to show data points after.
-
 ``` r
 xdata <- -10:10
-draw.empty.plot(xlim = c(min(xdata),max(xdata)), ylim = c(0,23))
-for (ix in 1:22) {
+plot(xdata, 1/10 * xdata * xdata + 1, type="l", pch = my.symbols(1), col = my.colors(1), cex = .9,
+     xlab = '', ylab = '', ylim = c(0, 20))
+grid(NULL, NULL, lwd = 2) # grid only in y-direction
+for (ix in 2:22) {
   points(xdata, 1/10 * xdata * xdata + ix, pch = my.symbols(ix), col = my.colors(ix), cex = .9)
 }
 ```
@@ -202,7 +201,7 @@ Caution: Files are not deleted so the cache directory can become rather big.
 
 ``` r
 a <- run.cache(sum, 1, 2)
-#> Loading from cache (not calculating): ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
+#> Saving in cache: ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
 b <- run.cache(sum, 1, 2)
 #> Loading from cache (not calculating): ./run-cache/561a/cache-generic_cache-H_561a43a3af7b265aed512a7995a46f89c382f78fdba4170e569495892b0076ba.RData
 all(a == b)
@@ -211,9 +210,9 @@ all(a == b)
 
 ``` r
 a <- run.cache(rnorm, 5, seed = 1985)
-#> Loading from cache (not calculating): ./run-cache/9636/cache-generic_cache-H_96360922babcb9eeb480fabc9811eab598abaf087c10f3ef49e9093607089531.RData
+#> Saving in cache: ./run-cache/9636/cache-generic_cache-H_96360922babcb9eeb480fabc9811eab598abaf087c10f3ef49e9093607089531.RData
 b <- run.cache(rnorm, 5, seed = 2000)
-#> Loading from cache (not calculating): ./run-cache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
+#> Saving in cache: ./run-cache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
 all(a == b)
 #> [1] FALSE
 ```
@@ -226,7 +225,7 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/183a/cache-generic_cache-H_183a2a50eb03abf6a30f3a34683e68823d12e385616f013ef75d982a9c4d6f71.RData
+#> Saving in cache: ./run-cache/331b/cache-generic_cache-H_331ba92378bc8a0976eb241f477357374fde7020be5bd366cb11cb757304ef33.RData
 run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
@@ -237,16 +236,16 @@ microbenchmark::microbenchmark(
   actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
   times = 5)
 #> Unit: milliseconds
-#>                    expr          min          lq      mean      median
-#>     run.cche.non.cached 10520.265068 10624.55354 11090.159 10862.58916
-#>        run.cache.cached    18.927803    20.65042  2241.177    29.53301
-#>  run.cache.cached.speed     9.447775    11.08894  2294.961    13.83620
-#>         actual.function  8726.167836 10492.24235 10391.206 10699.73178
-#>           actual.4cores  5398.648418  5546.04768  5723.367  5547.82719
-#>           uq       max neval cld
-#>  11710.20492 11733.182     5   b
-#>     32.15703 11104.619     5  a 
-#>     21.01423 11419.417     5  a 
-#>  10736.40119 11301.485     5   b
-#>   5854.59639  6269.716     5  ab
+#>                    expr         min          lq      mean      median
+#>     run.cche.non.cached 3247.854899 3864.132870 3959.9423 4112.213145
+#>        run.cache.cached    6.812881    7.936079  842.2325    8.928230
+#>  run.cache.cached.speed    4.552571    5.487886  827.4067    5.529389
+#>         actual.function 2654.893582 2727.359592 3190.0789 2878.861414
+#>           actual.4cores 2061.330326 2288.624935 2663.5444 2924.335660
+#>           uq      max neval cld
+#>  4187.589619 4387.921     5   b
+#>    10.451796 4177.034     5  a 
+#>     5.820718 4115.643     5  a 
+#>  3478.103224 4211.177     5   b
+#>  2952.486028 3090.945     5  ab
 ```

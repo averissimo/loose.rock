@@ -11,18 +11,19 @@ License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Imports: plyr,
-    biomaRt,
+Imports: biomaRt,
+    digest,
+    futile.logger,
+    futile.options,
+    ggfortify,
     ggplot2,
-    testthat,
-    methods,
-    survival,
-    stats,
     graphics,
     grDevices,
-    ggfortify,
-    tidyr,
     MASS,
+    methods,
+    plyr,
     reshape2,
-    digest,
-    futile.options
+    stats,
+    survival,
+    testthat,
+    tidyr
