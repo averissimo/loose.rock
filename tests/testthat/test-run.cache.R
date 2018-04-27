@@ -4,6 +4,17 @@ cache0 <- file.path('.', 'run-cache')
 cache1 <- file.path('.','run-cache-changed1')
 cache2 <- file.path('.','run-cache-changed2')
 
+test_that('digest cache is consistent', {
+  word <- '1234567'
+  expect_equal(digest.cache(word), digest::digest(word, algo = 'sha256'))
+  # taken manually at 2018.04.27
+  expect_equal(digest.cache(word), '300a4687518d6e58377f814df9eb8a40f5befd3634de48c0fe893e47e127dbb3')
+})
+
+test_that('tempdir is correct', {
+  expect_equal(tempdir.cache(), file.path('.', 'run-cache'))
+})
+
 test_that("run.cache saves to local directory", {
   output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = T, show.message = TRUE))
   expect_true(grepl(file.path('.', 'run-cache'), output))

@@ -4,7 +4,10 @@
 \alias{coding.genes}
 \title{Retrive coding genes from known databases}
 \usage{
-coding.genes()
+coding.genes(verbose = TRUE)
+}
+\arguments{
+\item{verbose}{show messages with number of genes retrieved}
 }
 \value{
 a table with gene information

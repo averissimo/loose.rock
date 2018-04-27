@@ -1,9 +1,11 @@
 #' Retrive coding genes from known databases
 #'
+#' @param verbose show messages with number of genes retrieved
+#'
 #' @return a table with gene information
 #' @export
 #'
-coding.genes <- function ()
+coding.genes <- function (verbose = TRUE)
 {
   ensembl <- biomaRt::useMart("ensembl")
   dataset <- biomaRt::useDataset("hsapiens_gene_ensembl", mart = ensembl)
@@ -29,10 +31,14 @@ coding.genes <- function ()
                            filters    = 'external_gene_name',
                            values     = c(biomart.genes, ccds.extra.genes),
                            mart       = dataset)
+  if (verbose) {
+    cat('Coding genes from biomaRt:', nrow(protein.coding),'\n')
+    cat('   Coding genes from CCDS:', nrow(ccds), '\n')
+    cat('        Unique in biomaRt:', sum(!ccds.genes %in% biomart.genes), '\n')
+    cat('           Unique in CCDS:', sum(!biomart.genes %in% ccds.genes), '\n')
+    cat('-------------------------------\n')
+    cat('                    genes:', nrow(coding), '\n')
+  }
 
-  futile.logger::flog.info('Coding genes from biomaRt: %d', nrow(protein.coding))
-  futile.logger::flog.info('   Coding genes from CCDS: %d', nrow(ccds))
-  futile.logger::flog.info('        Unique in biomaRt: %d', sum(!ccds.genes %in% biomart.genes))
-  futile.logger::flog.info('           Unique in CCDS: %d', sum(!biomart.genes %in% ccds.genes))
   return(coding)
 }
