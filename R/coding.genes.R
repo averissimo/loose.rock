@@ -7,7 +7,7 @@ coding.genes <- function ()
 {
   ensembl <- biomaRt::useMart("ensembl")
   dataset <- biomaRt::useDataset("hsapiens_gene_ensembl", mart = ensembl)
-  protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name","description", 'ccds'),
+  protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
                                     filters    = 'biotype',
                                     values     = c('protein_coding'),
                                     mart       = dataset)
@@ -25,7 +25,7 @@ coding.genes <- function ()
   biomart.genes    <- sort(unique(protein.coding$external_gene_name))
   ccds.extra.genes <- sort(ccds.genes[(!ccds.genes %in% biomart.genes)])
 
-  coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name","description", 'ccds'),
+  coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
                            filters    = 'external_gene_name',
                            values     = c(biomart.genes, ccds.extra.genes),
                            mart       = dataset)
