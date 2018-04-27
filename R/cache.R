@@ -54,6 +54,7 @@ setGeneric("run.cache", function(fun,
   cat('Wrong arguments, first argument must be a path and second a function!\n')
   cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5)\n')
   cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5, cache.prefix = \'someFileName\', force.recalc = TRUE)\n')
+  stop('Arguments not supported.')
 })
 
 #' Run function and save cache
@@ -116,16 +117,24 @@ setMethod('run.cache',
             filename    <- sprintf('cache-%s-H_%s.RData', cache.prefix, my.digest)
             parent.path <- strtrim(my.digest, width = 4)
             #
+
             if (!dir.exists(base.dir)) {
-              warning(sprintf('Could not create cache base dir at %s.. trying to use current working directory', base.dir))
+              warning(sprintf('Could not create cache base folder at %s.. trying to use current working directory', base.dir))
               base.dir <- file.path(getwd(), 'run-cache')
               dir.create(base.dir, showWarnings = FALSE)
             }
             parent.dir <- file.path(base.dir, parent.path)
             dir.create(parent.dir, showWarnings = FALSE)
 
+            if (!dir.exists(parent.dir)) {
+              warning(sprintf('Could not create cache folder inside base.dir at %s.. trying to use current working directory', base.dir))
+              base.dir   <- file.path(getwd(), 'run-cache')
+              parent.dir <- file.path(base.dir, parent.path)
+              dir.create(parent.dir, showWarnings = FALSE, recursive = TRUE)
+            }
+
             if (dir.exists(parent.dir)) {
-              path        <- file.path(base.dir, parent.path, filename)
+              path <- file.path(base.dir, parent.path, filename)
               #
               if (file.exists(path) && !force.recalc) {
                 if (show.message) {

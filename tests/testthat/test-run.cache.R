@@ -15,6 +15,39 @@ test_that('tempdir is correct', {
   expect_equal(tempdir.cache(), file.path('.', 'run-cache'))
 })
 
+test_that("run.cache fails with arguments", {
+  expect_error(run.cache(1, 1, 2, 3, 4, 5, force.recalc = T, show.message = TRUE))
+})
+
+test_that("run.cache base.dir in folder that does not have access", {
+  expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = '/root'), 'Could not create cache folder inside base.dir')
+})
+
+test_that("run.cache base.dir in folder that does not have access", {
+  expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = '/daca'), 'Could not create cache base folder')
+})
+
+test_that("run.cache base.dir in folder that does not have access", {
+  expect_equal(run.cache(sum, 1, 2, 3, 4, 5, cache.digest = list(digest.cache(1)), show.message = FALSE), 15)
+})
+
+test_that("run.cache add to hash", {
+  expect_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = T, show.message = TRUE, add.to.hash = 'something'), 'Saving in cache')
+  expect_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = T, show.message = TRUE, add.to.hash = 'other'), 'Saving in cache')
+
+  one <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = F, show.message = TRUE, add.to.hash = 'something'))
+  two <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = F, show.message = TRUE, add.to.hash = 'other'))
+  expect_false(one == two)
+})
+
+test_that("run.cache with seed", {
+  expect_output(run.cache(rnorm, 1, seed = 10, force.recalc = T, show.message = TRUE), 'Saving in cache')
+  expect_output(run.cache(rnorm, 1, seed = 11, force.recalc = T, show.message = TRUE), 'Saving in cache')
+  expect_output(rnorm10 <- run.cache(rnorm, 1, seed = 10, force.recalc = F, show.message = TRUE), 'Loading from cache')
+  expect_output(rnorm11 <- run.cache(rnorm, 1, seed = 11, force.recalc = F, show.message = TRUE), 'Loading from cache')
+  expect_false(rnorm10 == rnorm11)
+})
+
 test_that("run.cache saves to local directory", {
   output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = T, show.message = TRUE))
   expect_true(grepl(file.path('.', 'run-cache'), output))
