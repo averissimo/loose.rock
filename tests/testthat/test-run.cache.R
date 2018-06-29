@@ -21,7 +21,8 @@ test_that("run.cache fails with arguments", {
 
 test_that("run.cache base.dir in folder that does not have access", {
   if (.Platform$OS.type == 'windows') {
-    expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = 'c:/Windows'), 'Could not create cache folder inside base.dir')
+    # CRAN automated tests allow to write in c:/Windows
+    # expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = 'c:/Windows'), 'Could not create cache folder inside base.dir')
   } else {
     expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = '/'), 'Could not create cache folder inside base.dir')
   }
@@ -29,7 +30,8 @@ test_that("run.cache base.dir in folder that does not have access", {
 
 test_that("run.cache base.dir in folder that does not have access", {
   if (.Platform$OS.type == 'windows') {
-    expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = file.path('c:', 'windows', 'caca')), 'Could not create cache base folder')
+    # CRAN automated tests allow to write in c:/Windows
+    # expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = file.path('c:', 'windows', 'caca')), 'Could not create cache base folder')
   } else {
     expect_warning(run.cache(sum, 1, 2, 3, 4, 5, show.message = FALSE, base.dir = '/daca'), 'Could not create cache base folder')
   }
