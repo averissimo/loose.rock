@@ -1,6 +1,6 @@
 Package: loose.rock
 Title: Set of Decoupled Generic Functions to use in Machine Learning
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
 Description: Collection of generic functions that can be used in data science.

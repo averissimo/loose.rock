@@ -14,8 +14,8 @@ bioc_packages:
 - biomaRt
 
 r:
-- 3.2
 - oldrel
+- devel
 - release
 
 include:
