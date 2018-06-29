@@ -1,6 +1,6 @@
 Package: loose.rock
 Title: A lot of generic functions that can be reused
-Version: 0.2.0
+Version: 1.0.0
 Authors@R: person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre"))
 Description: Collection of generic functions that can be used in data science.
              This has been developed during the PhD and is mostly because I'm 
