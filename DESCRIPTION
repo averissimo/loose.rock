@@ -9,7 +9,7 @@ Description: Collection of generic functions that can be used in data science.
              the EU Commission under SOUND project with contract number 633974.
 Depends:
     R (>= 3.2.3)
-License: GPL (>= 3)
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
