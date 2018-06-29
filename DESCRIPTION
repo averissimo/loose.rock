@@ -9,7 +9,7 @@ Description: Collection of generic functions that can be used in data science.
              The work has been supported by FCT under grant SFRH/BD/97415/2013 and
              the EU Commission under SOUND project with contract number 633974.
 Depends:
-    R (>= 3.3)
+    R (>= 3.2.3)
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
