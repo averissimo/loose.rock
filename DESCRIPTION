@@ -1,6 +1,6 @@
 Package: loose.rock
 Title: Set of Decoupled Generic Functions to Use in Machine Learning
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
 Description: Collection of generic functions that can be used in data science.
@@ -10,7 +10,7 @@ Description: Collection of generic functions that can be used in data science.
              the EU Commission under SOUND project with contract number 633974.
 Depends:
     R (>= 3.2.3)
-License: GPL (>= 3) + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
