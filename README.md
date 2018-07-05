@@ -21,7 +21,7 @@ biocLite()
 biocLite('biomaRt')
 
 # install the package
-devtools::install_github('averissimo/loose.rock)
+biocLite('averissimo/loose.rock', dependencies=TRUE)
 ```
 
 ### Overview
