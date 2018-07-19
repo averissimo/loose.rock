@@ -1,12 +1,13 @@
 Package: loose.rock
-Title: Set of Decoupled Generic Functions to Use in Machine Learning
+Title: Set of Decoupled Functions to Use in Machine Learning
 Version: 1.0.3
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
-Description: Collection of generic functions that can be used in data science.
-             This has been developed during the PhD and is mostly because I'm 
-             lazy and don't want to repeat myself.
-             The work has been supported by FCT under grant SFRH/BD/97415/2013 and
+Description: Collection of function to improve workflow in survival analysis and data science.
+             Among the many features, the generation of balanced datasets, retrieval of protein 
+             coding genes from two public databases (live) and generation of random matrix based
+             on covariance matrix.
+             The work has been mainly supported by two grants: FCT SFRH/BD/97415/2013 and
              the EU Commission under SOUND project with contract number 633974.
 Depends:
     R (>= 3.2.3)
@@ -30,3 +31,6 @@ Imports: biomaRt,
     survival,
     testthat,
     tidyr
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
