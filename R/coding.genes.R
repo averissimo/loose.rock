@@ -1,18 +1,23 @@
 #' Retrive coding genes from known databases
 #'
+#' It retrieves from NCBI and
+#'
 #' @param verbose show messages with number of genes retrieved
 #'
 #' @return a table with gene information
 #' @export
-#'
+#' @examples
+#' coding.genes()
 coding.genes <- function (verbose = TRUE)
 {
   ensembl <- biomaRt::useMart("ensembl")
   dataset <- biomaRt::useDataset("hsapiens_gene_ensembl", mart = ensembl)
   protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                                    filters    = 'biotype',
-                                    values     = c('protein_coding'),
-                                    mart       = dataset)
+                                   filters    = 'biotype',
+                                   values     = c('protein_coding'),
+                                   mart       = dataset,
+                                   verbose    = FALSE)
+
 
 
   ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),

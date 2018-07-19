@@ -3,9 +3,13 @@
 loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
 ==================================================================================
 
-> Set of useful functions in R that I reuse a lot
+> Set of Functions to Use Survival Analysis and in Data Science
 
 [![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Coverage status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
+
+Collection of function to improve workflow in survival analysis and data science. Among the many features, the generation of balanced datasets, retrieval of protein coding genes from two public databases (live) and generation of random matrix based on covariance matrix.
+
+The work has been mainly supported by two grants: FCT SFRH/BD/97415/2013 and the EU Commission under SOUND project with contract number 633974.
 
 ### Install
 
@@ -18,17 +22,16 @@ All other dependencies should be installed when running the install command.
 ## try http:// if https:// URLs are not supported
 source("https://bioconductor.org/biocLite.R")
 biocLite()
-biocLite('biomaRt')
 
 # install the package
-biocLite('averissimo/loose.rock', dependencies=TRUE)
+biocLite('averissimo/loose.rock', dependencies = TRUE)
+
+# use the package
+library(loose.rock)
 ```
 
 ### Overview
 
-With personal functions I like to reuse everytime!
-
--   `draw.kaplan()` : Draw kaplan curves based on Prognostic Index of Risk (calculated by coxph or something else)
 -   `coding.genes()`: downloads protein coding genes from external databases
 -   `gen.synth.xdata()`: generate random matrix with pre-determined covariance
 -   `balanced.cv.folds()` and `balanced.train.and.test()`: get balanced train/test sets and cv folds.
@@ -36,82 +39,45 @@ With personal functions I like to reuse everytime!
 -   `proper()` : Capitalize string using regexpression
 -   `my.colors()` : My own pallete
 -   `my.symbols()` : Same with symbols to plots
--   ... check out rest of R folder
-
-draw.kaplan
------------
-
-``` r
-suppressPackageStartupMessages(library(survival))
-suppressPackageStartupMessages(library(plyr))
-suppressPackageStartupMessages(library(ggfortify))
-suppressPackageStartupMessages(library(gridExtra))
-data(flchain)
-ydata <- data.frame( time = flchain$futime, status = flchain$death)
-xdata <- cbind(flchain$age, as.numeric(flchain$sex == 'M') * 2 + 1, flchain$sample.yr, flchain$kappa)
-page <- draw.kaplan(list(Age= c(1,0,0,0)), xdata = xdata, ydata = ydata)$plot
-psex <- draw.kaplan(list(Sex= c(0,1,0,0)), xdata = xdata, ydata = ydata)$plot
-grid.arrange(page, psex, ncol = 2)
-```
-
-![](man/figures/README-draw.kaplan-1.png)
-
-``` r
-#
-draw.kaplan(list(Age= c(1,0,0,0), Sex = c(0,1,0,0), yr = c(0,0,1,0), kappa = c(0,0,0,1)), xdata = xdata, ydata = ydata)$plot
-```
-
-![](man/figures/README-draw.kaplan-2.png)
+-   ... check out rest of Documentation
 
 Get a current list of protein coding genes
 ------------------------------------------
 
+Showing only a random sample of 15
+
 ``` r
 genes <- coding.genes()
 #> Coding genes from biomaRt: 22643 
-#>    Coding genes from CCDS: 34245 
+#>    Coding genes from CCDS: 35138 
 #>         Unique in biomaRt: 603 
-#>            Unique in CCDS: 1205 
+#>            Unique in CCDS: 1064 
 #> -------------------------------
-#>                     genes: 23144
+#>                     genes: 23145
 genes %>%
-  arrange(external_gene_name) %>%
-  head(n = 30) %>%
+  arrange(external_gene_name) %>% {
+   slice(., sample(seq(nrow(.)), 15)) 
+  } %>%
   knitr::kable()
 ```
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000121410   | A1BG                 |
-| ENSG00000148584   | A1CF                 |
-| ENSG00000175899   | A2M                  |
-| ENSG00000166535   | A2ML1                |
-| ENSG00000184389   | A3GALT2              |
-| ENSG00000128274   | A4GALT               |
-| ENSG00000118017   | A4GNT                |
-| ENSG00000094914   | AAAS                 |
-| ENSG00000081760   | AACS                 |
-| ENSG00000114771   | AADAC                |
-| ENSG00000197953   | AADACL2              |
-| ENSG00000261846   | AADACL2              |
-| ENSG00000188984   | AADACL3              |
-| ENSG00000204518   | AADACL4              |
-| ENSG00000109576   | AADAT                |
-| ENSG00000158122   | AAED1                |
-| ENSG00000103591   | AAGAB                |
-| ENSG00000115977   | AAK1                 |
-| ENSG00000087884   | AAMDC                |
-| ENSG00000127837   | AAMP                 |
-| ENSG00000129673   | AANAT                |
-| ENSG00000131043   | AAR2                 |
-| ENSG00000205002   | AARD                 |
-| ENSG00000090861   | AARS                 |
-| ENSG00000124608   | AARS2                |
-| ENSG00000266967   | AARSD1               |
-| ENSG00000157426   | AASDH                |
-| ENSG00000149313   | AASDHPPT             |
-| ENSG00000008311   | AASS                 |
-| ENSG00000215458   | AATBC                |
+| ENSG00000184911   | DMRTC1B              |
+| ENSG00000274926   | KIR2DL1              |
+| ENSG00000164535   | DAGLB                |
+| ENSG00000162496   | DHRS3                |
+| ENSG00000205549   | C9orf92              |
+| ENSG00000139624   | CERS5                |
+| ENSG00000198888   | MT-ND1               |
+| ENSG00000063176   | SPHK2                |
+| ENSG00000232180   | SLC44A4              |
+| ENSG00000137634   | NXPE4                |
+| ENSG00000143870   | PDIA6                |
+| ENSG00000128228   | SDF2L1               |
+| ENSG00000139645   | ANKRD52              |
+| ENSG00000240720   | LRRD1                |
+| ENSG00000176020   | AMIGO3               |
 
 Balanced test/train dataset
 ---------------------------
@@ -173,17 +139,17 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
 
     #> Using .2^|i-j| to generate co-variance matrix
     #> X generated
-    #>             X1         X2         X3         X4         X5
-    #> 1   0.09689175  0.9468821  1.3552340  1.2824676  0.4190769
-    #> 2   0.19084771 -0.4300693  1.5705338  0.2006243 -1.2941223
-    #> 3   0.93644208 -0.3945288 -0.0570492 -0.5691152  0.2626026
-    #> 4   0.07218033  0.3558250 -1.5559584 -1.0373982 -1.6702955
-    #> 5   0.49333811 -0.8816076 -0.9225416 -0.4309264  1.4476294
-    #> 6   0.24457253 -1.6353932 -0.6294087  1.3615857 -0.2112758
-    #> 7   1.59587882  1.7799506  0.1623247 -0.2918553 -0.1509117
-    #> 8  -1.42564382 -0.7091118  0.5150353 -1.7232931 -0.1749990
-    #> 9  -0.48595798  0.6337266  0.3455646  0.3907845  1.4462497
-    #> 10 -1.71854953  0.3343264 -0.7837344  0.8171261 -0.0739543
+    #>            X1         X2         X3         X4           X5
+    #> 1   0.1944384  0.7614053  1.5732604  1.0969908  0.516623623
+    #> 2  -0.2088722  0.3299644  0.6771205  0.9606580 -1.693842188
+    #> 3   0.5282128  0.3816847 -0.9694817  0.2070983 -0.145626644
+    #> 4   0.6035690 -0.6545657 -0.3682524 -2.0477890 -1.138906864
+    #> 5   0.1594990 -0.2468407 -1.6687048  0.2038405  1.113790270
+    #> 6   0.3644722 -1.8633723 -0.3614212  1.1336067 -0.091376129
+    #> 7   1.7395142  1.5068401  0.4833638 -0.5649658 -0.007276351
+    #> 8  -2.0126534  0.4070373 -0.7969888 -0.6071440 -0.762008597
+    #> 9  -0.4556821  0.5761596  0.4132342  0.3332174  1.476525617
+    #> 10 -0.9124980 -1.1983127  1.0178702 -0.7155129  0.732097263
     #> cov(X)
     #>       X1    X2   X3    X4     X5
     #> 1 1.0000 0.200 0.04 0.008 0.0016
@@ -209,11 +175,11 @@ xdata2 <- gen.synth.xdata(10, 5, .75)
     #> 10 -0.8256519 -1.0984336 -1.58766238 -1.33496740 -0.56300222
     #> cov(X)
     #>          X1       X2     X3       X4        X5
-    #> 1 1.0000000 0.750000 0.5625 0.421875 0.3164063
+    #> 1 1.0000000 0.750000 0.5625 0.421875 0.3164062
     #> 2 0.7500000 1.000000 0.7500 0.562500 0.4218750
     #> 3 0.5625000 0.750000 1.0000 0.750000 0.5625000
     #> 4 0.4218750 0.562500 0.7500 1.000000 0.7500000
-    #> 5 0.3164063 0.421875 0.5625 0.750000 1.0000000
+    #> 5 0.3164062 0.421875 0.5625 0.750000 1.0000000
 
 ![](man/figures/README-show.gen.synth-2.png)
 
@@ -250,7 +216,7 @@ n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
 # making sure cache is saved
 .Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/cb02/cache-generic_cache-H_cb024cf9bc8d7f9fe3449eebe6e19e4d7e1e192d96db53f2947e0d7dc45a7298.RData
+#> Saving in cache: ./run-cache/810e/cache-generic_cache-H_810e99c0e8b664f0dfb6064c2bebf88bcc58343803c8b78ba8331c17483b580d.RData
 run.cache.digest <- list(digest.cache(xdata))
 my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
 microbenchmark::microbenchmark(
@@ -262,17 +228,17 @@ microbenchmark::microbenchmark(
   times = 5)
 #> Unit: milliseconds
 #>                    expr         min          lq     mean      median
-#>     run.cche.non.cached 3992.690358 4807.912904 6858.171 5723.659815
-#>        run.cache.cached    7.377905   14.653382 1695.489   33.501477
-#>  run.cache.cached.speed    4.547437    4.932929 1282.990    9.750515
-#>         actual.function 2707.167269 3149.710286 3555.484 3444.362860
-#>           actual.4cores 2296.385403 5968.555472 5402.382 6143.925386
-#>          uq      max neval cld
-#>  9864.41188 9902.178     5   b
-#>    48.40172 8373.511     5  a 
-#>    10.50072 6385.218     5  a 
-#>  3980.43395 4495.746     5  ab
-#>  6261.03071 6342.014     5  ab
+#>     run.cche.non.cached 8349.513930 8432.082880 8474.695 8435.401947
+#>        run.cache.cached    7.896256    7.955970 1664.901    8.691958
+#>  run.cache.cached.speed    1.730319    2.861607 1673.365    3.034674
+#>         actual.function 8180.053693 8451.183702 8406.008 8453.705601
+#>           actual.4cores 2647.226229 2675.338533 2693.356 2708.798934
+#>           uq      max neval cld
+#>  8549.471131 8607.008     5   b
+#>     8.897919 8291.065     5  a 
+#>     3.044312 8356.152     5  a 
+#>  8454.365950 8490.730     5   b
+#>  2710.775582 2724.639     5  a
 ```
 
 Proper

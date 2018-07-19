@@ -1,6 +1,6 @@
 Package: loose.rock
-Title: Set of Decoupled Functions to Use in Machine Learning
-Version: 1.0.3
+Title: Set of Functions to Use Survival Analysis and in Data Science
+Version: 1.0.4
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
 Description: Collection of function to improve workflow in survival analysis and data science.
@@ -25,12 +25,11 @@ Imports: biomaRt,
     grDevices,
     MASS,
     methods,
-    plyr,
+    dplyr,
     reshape2,
     stats,
     survival,
-    testthat,
-    tidyr
+    testthat
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr

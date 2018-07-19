@@ -15,3 +15,6 @@ a table with gene information
 \description{
 Retrive coding genes from known databases
 }
+\examples{
+coding.genes()
+}
