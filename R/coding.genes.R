@@ -10,8 +10,12 @@
 #' coding.genes()
 coding.genes <- function (verbose = TRUE)
 {
-  ensembl <- biomaRt::useMart("ensembl")
-  dataset <- biomaRt::useDataset("hsapiens_gene_ensembl", mart = ensembl)
+  ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
+  dataset <- biomaRt::listDatasets(ensembl) %>%
+    filter(grepl('hsapien', dataset)) %>%
+    select(dataset) %>%
+    first %>%
+    biomaRt::useDataset(mart = ensembl)
   protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
                                    filters    = 'biotype',
                                    values     = c('protein_coding'),
