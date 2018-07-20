@@ -35,4 +35,6 @@ Suggests: knitr,
     devtools,
     roxygen2,
     microbenchmark
+Remotes:
+    js229/Vennerable
 VignetteBuilder: knitr
