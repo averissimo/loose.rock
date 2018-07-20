@@ -11,23 +11,32 @@
 coding.genes <- function (verbose = TRUE)
 {
   ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
+
+  #
+  # Uses hsapies from query
+
   dataset <- biomaRt::listDatasets(ensembl) %>%
-    filter(grepl('hsapien', dataset)) %>%
-    select(dataset) %>%
-    first %>%
+    dplyr::filter(grepl('hsapien', dataset)) %>%
+    dplyr::select(dataset) %>%
+    dplyr::first %>%
     biomaRt::useDataset(mart = ensembl)
+
+  #
   protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
                                    filters    = 'biotype',
                                    values     = c('protein_coding'),
                                    mart       = dataset,
                                    verbose    = FALSE)
 
-
-
   ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
                             sep = "\t", header = T, comment.char = "|", stringsAsFactors = FALSE)
 
-  ccds.genes <- ccds$gene
+  ccds$ccds_status <- factor(loose.rock::proper(ccds$ccds_status))
+
+  # Remove with ccds_status == Withdrawn
+  ccds       <- ccds %>% filter(!grepl('Withdrawm', ccds_status))
+  ccds.genes <- unique(ccds$gene)
+
   if (any(ccds.genes == '' || is.na(ccds.genes))) {
     warning('Some genes from ccds have empty gene_name, skipping those')
     ccds.genes <- ccds.genes[ccds.genes == '' || is.na(ccds.genes)]
@@ -42,7 +51,7 @@ coding.genes <- function (verbose = TRUE)
                            mart       = dataset)
   if (verbose) {
     cat('Coding genes from biomaRt:', nrow(protein.coding),'\n')
-    cat('   Coding genes from CCDS:', nrow(ccds), '\n')
+    cat('   Coding genes from CCDS:', length(ccds.genes), '\n')
     cat('        Unique in biomaRt:', sum(!ccds.genes %in% biomart.genes), '\n')
     cat('           Unique in CCDS:', sum(!biomart.genes %in% ccds.genes), '\n')
     cat('-------------------------------\n')

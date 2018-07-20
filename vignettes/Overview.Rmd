@@ -72,8 +72,7 @@ library(dplyr)
 Showing only a random sample of 15
 
 ```{r coding.genes, collapse=TRUE, message=FALSE, warning=FALSE}
-genes <- coding.genes()
-genes %>%
+coding.genes() %>%
   arrange(external_gene_name) %>% {
    slice(., sample(seq(nrow(.)), 15)) 
   } %>%
