@@ -33,4 +33,4 @@ deploy:
   file: "loose.rock*.t*gz"
   on:
     r: release
-    repo: averissimo/loose.rock
+    tags: true
