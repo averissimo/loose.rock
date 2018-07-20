@@ -33,7 +33,6 @@ deploy:
   file_glob: true
   file:
     - "loose.rock*.tar.gz"
-    - "../loose.rock*.tar.gz"
   on:
     condition: "$TRAVIS_OS_NAME = linux && $TRAVIS_R_VERSION_STRING = 'release'"
     tags: true
