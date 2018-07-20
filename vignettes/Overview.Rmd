@@ -145,7 +145,7 @@ all(a == b)
 
 run-cache was originaly intended to be used to calculate big correlation matrix
 
-```{r runcache-benchmark, cache=TRUE}
+```{r runcache-benchmark}
 n.rows <- 1000
 n.cols <- 50000
 xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
