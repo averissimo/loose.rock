@@ -13,7 +13,7 @@ coding.genes(verbose = TRUE)
 a table with gene information
 }
 \description{
-Retrive coding genes from known databases
+It retrieves from NCBI and
 }
 \examples{
 coding.genes()

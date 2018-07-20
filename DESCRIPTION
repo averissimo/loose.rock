@@ -31,5 +31,7 @@ Imports: biomaRt,
     survival,
     testthat
 Suggests: knitr,
-    rmarkdown
+    rmarkdown,
+    devtools,
+    roxygen2
 VignetteBuilder: knitr
