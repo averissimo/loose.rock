@@ -1,5 +1,5 @@
 Package: loose.rock
-Title: Set of Functions to Use Survival Analysis and in Data Science
+Title: Set of Functions to Use in Survival Analysis and in Data Science
 Version: 1.0.4
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
@@ -34,8 +34,7 @@ Suggests: knitr,
     rmarkdown,
     devtools,
     roxygen2,
-    testthat,
-    microbenchmark
+    testthat
 Remotes:
     js229/Vennerable
 VignetteBuilder: knitr
