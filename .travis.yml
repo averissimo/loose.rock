@@ -30,7 +30,10 @@ deploy:
   overwrite: true
   api_key:
     secure: ueAu6KXv16m6grXrkFI4M8u1nDm4BlE5O/iMyazXpQAoEXQEVvr1BdDFhc+SWUO6oS1ryrrm69VcMCk812TU3lPqxqsAP8kGSL+miuF1DgwlQ1VnjVx9Vo68ak0s5GocFI/2FvhmodSkyXAL0EIaEyJFwDyBqJKVHrlV84BWrZ0XPAGwBexcxPmYH4vcOxWt+8ot5JA+39XucVYih8lXs6dd5GKyJJ5yNn1FuVLevOuiJFAdSm3/9y2j6QdIIYaqRtBRkRkD2VOCoL0heh5BeDQ3NzC+J6KCeRqLdCgB9oScf5db+56gDHoSigWCUhjjmXoc+1cQDZL6TtHvA3cGTNSGmcMOxyDuNH3ZYagHuRGb/+YgzSSodAFukrVTmYf0v4vBOJbNLU1rUlEt02FNfY5RyuPMVws0Yh2dtkk2zk71xSmtn5FWi3ox0/yKYT6Fpdh6Wir4uOLLZhuF3SBk599qSDgrI2CWcUoaeTixNyOF7slaeTrGq59ZjcRppZbypcTdudTeM6EkkJ6e7FIopYhYb04oX+CmnSS4Y28gz6ynary5IjsEQjm6hP0UHhPSIG6Rcrb9D/w+ymAyHLIN74u0qPUPDtOuHLEtZWu1J9SALnJoZbSF9fMp4ZRKXvQzd80g7pfMcRPgEcZV0cFxBFuCzgq8PM02UAEIUlxnX88=
-  file: "../loose.rock*.t*gz"
+  file_glob: true
+  file:
+    - "loose.rock*.tar.gz"
+    - "../loose.rock*.tar.gz"
   on:
     condition: "$TRAVIS_OS_NAME = linux && $TRAVIS_R_VERSION_STRING = 'release'"
     tags: true
