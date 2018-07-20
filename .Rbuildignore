@@ -8,3 +8,4 @@ run-cache
 output
 README\.html
 LICENSE
+.*_cache$
