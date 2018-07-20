@@ -33,5 +33,6 @@ Imports: biomaRt,
 Suggests: knitr,
     rmarkdown,
     devtools,
-    roxygen2
+    roxygen2,
+    microbenchmark
 VignetteBuilder: knitr
