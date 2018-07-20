@@ -27,13 +27,14 @@ Imports: biomaRt,
     methods,
     dplyr,
     reshape2,
-    stats,
     survival,
-    testthat
+    rlang,
+    stats
 Suggests: knitr,
     rmarkdown,
     devtools,
     roxygen2,
+    testthat,
     microbenchmark
 Remotes:
     js229/Vennerable

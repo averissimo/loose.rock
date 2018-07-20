@@ -18,7 +18,7 @@ coding.genes <- function (verbose = TRUE)
   dataset <- biomaRt::listDatasets(ensembl) %>%
     dplyr::filter(grepl('hsapien', dataset)) %>%
     dplyr::select(dataset) %>%
-    dplyr::first %>%
+    dplyr::first() %>%
     biomaRt::useDataset(mart = ensembl)
 
   #
@@ -34,7 +34,7 @@ coding.genes <- function (verbose = TRUE)
   ccds$ccds_status <- factor(loose.rock::proper(ccds$ccds_status))
 
   # Remove with ccds_status == Withdrawn
-  ccds       <- ccds %>% filter(!grepl('Withdrawm', ccds_status))
+  ccds       <- ccds %>% dplyr::filter(!grepl('Withdrawm', rlang::UQ(as.name('ccds_status'))))
   ccds.genes <- unique(ccds$gene)
 
   if (any(ccds.genes == '' || is.na(ccds.genes))) {
