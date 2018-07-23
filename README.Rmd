@@ -147,25 +147,6 @@ b <- run.cache(rnorm, 5, seed = 2000)
 all(a == b)
 ```
 
-run-cache was originaly intended to be used to calculate big correlation matrix
-
-```{r runcache-benchmark, cache=TRUE}
-n.rows <- 1000
-n.cols <- 50000
-xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
-# making sure cache is saved
-.Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-run.cache.digest <- list(digest.cache(xdata))
-my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
-microbenchmark::microbenchmark(
-  run.cche.non.cached    = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
-  run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = run.cache.digest, show.message = FALSE),
-  actual.function        = sapply(2:n.cols, my.fun), 
-  actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
-  times = 5)
-```
-
 ## Proper
 
 One of such is a proper function that capitalizes a string.

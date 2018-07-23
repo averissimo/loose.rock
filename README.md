@@ -49,8 +49,8 @@ Showing only a random sample of 15
 ``` r
 genes <- coding.genes()
 #> Coding genes from biomaRt: 22643 
-#>    Coding genes from CCDS: 35138 
-#>         Unique in biomaRt: 603 
+#>    Coding genes from CCDS: 19631 
+#>         Unique in biomaRt: 537 
 #>            Unique in CCDS: 1064 
 #> -------------------------------
 #>                     genes: 23145
@@ -63,21 +63,21 @@ genes %>%
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000184911   | DMRTC1B              |
-| ENSG00000274926   | KIR2DL1              |
-| ENSG00000164535   | DAGLB                |
-| ENSG00000162496   | DHRS3                |
-| ENSG00000205549   | C9orf92              |
-| ENSG00000139624   | CERS5                |
-| ENSG00000198888   | MT-ND1               |
-| ENSG00000063176   | SPHK2                |
-| ENSG00000232180   | SLC44A4              |
-| ENSG00000137634   | NXPE4                |
-| ENSG00000143870   | PDIA6                |
-| ENSG00000128228   | SDF2L1               |
-| ENSG00000139645   | ANKRD52              |
-| ENSG00000240720   | LRRD1                |
-| ENSG00000176020   | AMIGO3               |
+| ENSG00000057468   | MSH4                 |
+| ENSG00000169047   | IRS1                 |
+| ENSG00000189266   | PNRC2                |
+| ENSG00000282838   | PRSS21               |
+| ENSG00000163497   | FEV                  |
+| ENSG00000141012   | GALNS                |
+| ENSG00000054219   | LY75                 |
+| ENSG00000164002   | EXO5                 |
+| ENSG00000060642   | PIGV                 |
+| ENSG00000169429   | CXCL8                |
+| ENSG00000167081   | PBX3                 |
+| ENSG00000171469   | ZNF561               |
+| ENSG00000262612   | TAS2R43              |
+| ENSG00000276600   | RAB7B                |
+| ENSG00000138411   | HECW2                |
 
 Balanced test/train dataset
 ---------------------------
@@ -206,39 +206,6 @@ b <- run.cache(rnorm, 5, seed = 2000)
 #> Loading from cache (not calculating): ./run-cache/ab76/cache-generic_cache-H_ab768ab59eab0e3848e3f5b8c133baaa381eb1e6d5fda439f10847d911b0ace7.RData
 all(a == b)
 #> [1] FALSE
-```
-
-run-cache was originaly intended to be used to calculate big correlation matrix
-
-``` r
-n.rows <- 1000
-n.cols <- 50000
-xdata <- matrix(rnorm(n.rows * n.cols), ncol = n.cols)
-# making sure cache is saved
-.Last.value <- run.cache(sapply, 2:n.cols, function(ix) {cor(xdata[,1], xdata[,ix])})
-#> Saving in cache: ./run-cache/810e/cache-generic_cache-H_810e99c0e8b664f0dfb6064c2bebf88bcc58343803c8b78ba8331c17483b580d.RData
-run.cache.digest <- list(digest.cache(xdata))
-my.fun <- function(ix) {cor(xdata[,1], xdata[,ix])}
-microbenchmark::microbenchmark(
-  run.cche.non.cached    = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE, force.recalc = T),
-  run.cache.cached       = run.cache(sapply, 2:n.cols, my.fun, show.message = FALSE),
-  run.cache.cached.speed = run.cache(sapply, 2:n.cols, my.fun, cache.digest = run.cache.digest, show.message = FALSE),
-  actual.function        = sapply(2:n.cols, my.fun), 
-  actual.4cores          = unlist(parallel::mclapply(2:n.cols, my.fun, mc.cores = 4)),
-  times = 5)
-#> Unit: milliseconds
-#>                    expr         min          lq     mean      median
-#>     run.cche.non.cached 8349.513930 8432.082880 8474.695 8435.401947
-#>        run.cache.cached    7.896256    7.955970 1664.901    8.691958
-#>  run.cache.cached.speed    1.730319    2.861607 1673.365    3.034674
-#>         actual.function 8180.053693 8451.183702 8406.008 8453.705601
-#>           actual.4cores 2647.226229 2675.338533 2693.356 2708.798934
-#>           uq      max neval cld
-#>  8549.471131 8607.008     5   b
-#>     8.897919 8291.065     5  a 
-#>     3.044312 8356.152     5  a 
-#>  8454.365950 8490.730     5   b
-#>  2710.775582 2724.639     5  a
 ```
 
 Proper

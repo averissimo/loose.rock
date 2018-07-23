@@ -44,7 +44,7 @@ source("https://bioconductor.org/biocLite.R")
 biocLite()
 
 # install the package
-biocLite('averissimo/loose.rock', dependencies = TRUE)
+biocLite('loose.rock', dependencies = TRUE)
 
 # use the package
 library(loose.rock)

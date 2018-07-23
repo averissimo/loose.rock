@@ -6,3 +6,5 @@ tests/testthat/run-cache-changed2/
 tests/testthat/run-cache/
 run-cache/
 inst/doc
+*_cache
+*.tar.gz

@@ -35,6 +35,4 @@ Suggests: knitr,
     devtools,
     roxygen2,
     testthat
-Remotes:
-    js229/Vennerable
 VignetteBuilder: knitr
