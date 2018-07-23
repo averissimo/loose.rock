@@ -51,9 +51,9 @@ setGeneric("run.cache", function(fun,
                                 show.message = NULL,
                                 force.recalc = FALSE,
                                 add.to.hash = NULL) {
-  cat('Wrong arguments, first argument must be a path and second a function!\n')
-  cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5)\n')
-  cat('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5, cache.prefix = \'someFileName\', force.recalc = TRUE)\n')
+  message('Wrong arguments, first argument must be a path and second a function!\n')
+  message('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5)\n')
+  message('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5, cache.prefix = \'someFileName\', force.recalc = TRUE)\n')
   stop('Arguments not supported.')
 })
 
