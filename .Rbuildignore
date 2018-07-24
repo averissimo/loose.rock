@@ -9,3 +9,4 @@ output
 README\.html
 LICENSE
 .*_cache$
+.*\.tar\.gz$
