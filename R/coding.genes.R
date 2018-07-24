@@ -7,7 +7,8 @@
 #' @return a table with gene information
 #' @export
 #' @examples
-#' coding.genes()
+#' # This can take a few minutes depending on the connection
+#' # coding.genes()
 coding.genes <- function (verbose = TRUE)
 {
   ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')

@@ -16,5 +16,6 @@ a table with gene information
 It retrieves from NCBI and
 }
 \examples{
-coding.genes()
+# This can take a few minutes depending on the connection
+# coding.genes()
 }
