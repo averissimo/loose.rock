@@ -129,13 +129,23 @@ draw.cov.matrix(xdata2, fun = cor, method = 'pearson') + ggplot2::ggtitle('X2 Pe
 
 Uses a cache to save and retrieve results. The cache is automatically created with the arguments and source code for function, so that if any of those changes, the cache is regenerated.
 
-Caution: Files are not deleted so the cache directory can become rather big.
+*Caution: Files are not deleted so the cache directory can become rather big.*
+
+Set a temporary directory to save all caches (optional)
+
+```{r}
+base.dir(tempdir())
+```
+
+Run sum function twice
 
 ```{r runcache1}
 a <- run.cache(sum, 1, 2)
 b <- run.cache(sum, 1, 2)
 all(a == b)
 ```
+
+Run rnorm function with an explicit seed *(otherwise it would return the same random number)*
 
 ```{r runcache2}
 a <- run.cache(rnorm, 5, seed = 1985)
