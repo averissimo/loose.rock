@@ -17,5 +17,7 @@ It retrieves from NCBI and
 }
 \examples{
 # This can take a few minutes depending on the connection
-# coding.genes()
+\dontrun{
+    coding.genes()
+}
 }

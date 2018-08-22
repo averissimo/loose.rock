@@ -8,7 +8,9 @@
 #' @export
 #' @examples
 #' # This can take a few minutes depending on the connection
-#' # coding.genes()
+#' \dontrun{
+#'     coding.genes()
+#' }
 coding.genes <- function (verbose = TRUE)
 {
   ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
