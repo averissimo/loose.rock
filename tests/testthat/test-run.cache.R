@@ -85,12 +85,13 @@ test_that("run.cache show.message option works", {
 test_that("run.cache base.dir option works", {
   output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache0, force.recalc = F, show.message = TRUE))
   expect_true(grepl(cache0, output))
-  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = F, show.message = TRUE, base.dir = cache1))
+  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache1, force.recalc = F, show.message = TRUE))
   expect_true(grepl(cache1, output))
   output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache0, force.recalc = F, show.message = TRUE))
   expect_true(grepl(cache0, output))
+
   base.dir(cache2)
-  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = F, show.message = TRUE))
+  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = FALSE, show.message = TRUE))
   expect_true(grepl(cache2, output))
 })
 
