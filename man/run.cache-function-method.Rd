@@ -29,6 +29,16 @@
 
 \item{add.to.hash}{something to add to the filename generation}
 }
+\value{
+the result of fun(...)
+}
 \description{
-This method saves the function that's being called
+Run function and save cache
+}
+\examples{
+run.cache(c, 1, 2, 3, 4)
+# next three should use the same cache
+run.cache(c, 1, 2, 3, 4)
+run.cache(c, 1, 2, 3, 4, cache.digest = list(digest.cache(1)))
+run.cache(c, a=1, 2, c=3, 4) # should get result from cache
 }
