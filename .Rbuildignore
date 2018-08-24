@@ -3,7 +3,8 @@
 ^README\.Rmd$
 ^README.*
 ^figures/README-.*\.png$
-^\.travis
+^\.travis\.yml
+^appveyor\.yml
 run-cache
 output
 README\.html
