@@ -83,15 +83,24 @@ test_that("run.cache show.message option works", {
 })
 
 test_that("run.cache base.dir option works", {
-  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache0, force.recalc = F, show.message = TRUE))
-  expect_true(grepl(cache0, output))
-  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache1, force.recalc = F, show.message = TRUE))
-  expect_true(grepl(cache1, output))
-  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache0, force.recalc = F, show.message = TRUE))
-  expect_true(grepl(cache0, output))
+  output1 <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache0, force.recalc = F, show.message = TRUE))
+  output2 <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache1, force.recalc = F, show.message = TRUE))
+  output3 <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, base.dir = cache0, force.recalc = F, show.message = TRUE))
 
   base.dir(cache2)
-  output <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = FALSE, show.message = TRUE))
-  expect_true(grepl(cache2, output))
-})
+  output4 <- capture_output(run.cache(sum, 1, 2, 3, 4, 5, force.recalc = FALSE, show.message = TRUE))
 
+  if (.Platform$OS.type == 'windows') {
+    cache0.os <- gsub('\\\\', '\\\\\\\\', cache0)
+    cache1.os <- gsub('\\\\', '\\\\\\\\', cache0)
+    cache2.os <- gsub('\\\\', '\\\\\\\\', cache0)
+  } else {
+    cache0.os <- cache0
+    cache1.os <- cache1
+    cache2.os <- cache2
+  }
+  expect_true(grepl(cache0.os, output1))
+  expect_true(grepl(cache1.os, output2))
+  expect_true(grepl(cache0.os, output3))
+  expect_true(grepl(cache2.os, output4))
+})
