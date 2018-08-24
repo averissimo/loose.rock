@@ -32,9 +32,9 @@ coding.genes <- function (verbose = TRUE)
                                    verbose    = FALSE)
 
   ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
-                            sep = "\t", header = T, comment.char = "|", stringsAsFactors = FALSE)
+                            sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
 
-  ccds$ccds_status <- factor(loose.rock::proper(ccds$ccds_status))
+  ccds$ccds_status <- factor(proper(ccds$ccds_status))
 
   # Remove with ccds_status == Withdrawn
   ccds       <- ccds %>% dplyr::filter(!grepl('Withdrawm', rlang::UQ(as.name('ccds_status'))))

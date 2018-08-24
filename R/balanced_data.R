@@ -19,7 +19,7 @@
 #' TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
 #' set2 <- !set1
 #' balanced.train.and.test(set1, set2, train.perc = .9)
-balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
+balanced.train.and.test <- function(..., train.perc = .9, join.all = TRUE) {
   # get arguments as list
   input.list <- list(...)
   # stop execution if train.perc is not between 1 and 0 (excluding 0)
@@ -67,8 +67,8 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
     master.train <- c()
     master.test <- c()
     for(ix in seq(train.set)) {
-        master.train <- c(master.train, train.set[[ix]])
-        master.test <- c(master.test, test.set[[ix]])
+      master.train <- c(master.train, train.set[[ix]])
+      master.test <- c(master.test, test.set[[ix]])
     }
     return(list(train = sort(master.train), test = sort(master.test)))
   }
@@ -90,7 +90,7 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = T) {
 balanced.cv.folds <- function(..., nfolds = 10) {
   input.list <- list(...)
   output.list <- list()
-  if (any(sapply(input.list, function(vec) {length(vec) < nfolds}))) {
+  if (any(vapply(input.list, function(vec) {length(vec) < nfolds}, TRUE))) {
     warning('Number of elements in vector (', length(unlist(input.list)), ') is less than \'nfolds\' (', nfolds, ')')
   }
   for (my.set in input.list) {

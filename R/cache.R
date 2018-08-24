@@ -1,5 +1,7 @@
 #' Default digest method
 #'
+#' Sets a default caching algorithm to use with run.cache
+#'
 #' @param val object to calculate hash over
 #'
 #' @return a hash of the sha256
@@ -7,6 +9,7 @@
 #'
 #' @examples
 #' digest.cache(c(1,2,3,4,5))
+#' digest.cache('some example')
 digest.cache <- function(val) {
   digest::digest(val, algo = 'sha256')
 }
@@ -43,14 +46,14 @@ tempdir.cache <- function() {
 #' run.cache(c, 1, 2, 3, 4, cache.digest = list(digest.cache(1)))
 #' run.cache(c, a=1, 2, c=3, 4) # should get result from cache
 setGeneric("run.cache", function(fun,
-                                ...,
-                                seed = NULL,
-                                base.dir = NULL,
-                                cache.prefix = 'generic_cache',
-                                cache.digest = list(),
-                                show.message = NULL,
-                                force.recalc = FALSE,
-                                add.to.hash = NULL) {
+                                 ...,
+                                 seed = NULL,
+                                 base.dir = NULL,
+                                 cache.prefix = 'generic_cache',
+                                 cache.digest = list(),
+                                 show.message = NULL,
+                                 force.recalc = FALSE,
+                                 add.to.hash = NULL) {
   message('Wrong arguments, first argument must be a path and second a function!\n')
   message('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5)\n')
   message('  Usage: run(tmpBaseDir, functionName, 1, 2, 3, 4, 5, cache.prefix = \'someFileName\', force.recalc = TRUE)\n')
@@ -59,17 +62,9 @@ setGeneric("run.cache", function(fun,
 
 #' Run function and save cache
 #'
-#' This method saves the function that's being called
-#'
-#' @param base.dir directory where data is stored
-#' @param fun function call name
-#' @param ... parameters for function call
-#' @param seed when function call is random, this allows to set seed beforehand
-#' @param cache.prefix prefix for file name to be generated from parameters (...)
-#' @param cache.digest cache of the digest for one or more of the parameters
-#' @param show.message show message that data is being retrieved from cache
-#' @param force.recalc force the recalculation of the values
-#' @param add.to.hash something to add to the filename generation
+#' @inheritParams run.cache
+#' @inherit run.cache return examples details
+#' @export
 setMethod('run.cache',
           signature('function'),
           function(fun,
@@ -102,11 +97,11 @@ setMethod('run.cache',
               }
               digest.cache(args[[ix]])
             })
-            if (class(fun) == 'function') {
-              args[['cache.fun']] <- digest.cache(toString(attributes(fun)$srcref))
-            } else if (class(fun) == 'standardGeneric') {
+            if (methods::is(fun, 'standardGeneric')) {
               aaa <- methods::findMethods(fun)
-              args[['cache.fun']] <- digest.cache(sapply(names(aaa), function(ix) { digest.cache(toString(attributes(aaa[[ix]])$srcref)) }))
+              args[['cache.fun']] <- digest.cache(vapply(names(aaa), function(ix) { digest.cache(toString(attributes(aaa[[ix]])$srcref)) }, 'string'))
+            } else if (methods::is(fun, 'function')) {
+              args[['cache.fun']] <- digest.cache(toString(attributes(fun)$srcref))
             } else {
               args[['cache.fun']] <- digest.cache(fun)
             }
@@ -142,12 +137,12 @@ setMethod('run.cache',
                 }
                 tryCatch({load(path)}, error = function(err) {
                   cat(sprintf('WARN:: %s -- file: %s.\n  -> Calculating again.\n', err, path))
-                  result <<- fun(...)
+                  result <- fun(...)
                   if (show.message) {
                     cat(sprintf('Saving in cache: %s\n', path))
                   }
                   save(result, file = path)
-                  })
+                })
               } else {
                 result <- fun(...)
                 if (show.message) {
