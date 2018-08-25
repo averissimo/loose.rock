@@ -30,7 +30,7 @@ branches:
 build_script:
   - echo Current directory=%CD%
   - travis-tool.sh install_r covr devtools roxygen2
-  - travis-tool.sh install_bioc BiocGenerics S4Vectors Biobase BiocStyle
+  - travis-tool.sh install_bioc BiocGenerics S4Vectors Biobase BiocStyle biomaRt
   - travis-tool.sh install_bioc_deps
 
 test_script:
