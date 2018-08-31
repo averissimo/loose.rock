@@ -5,7 +5,7 @@ loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" 
 
 > Set of Functions to Use Survival Analysis and in Data Science
 
-[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Coverage status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true)](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true) [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
 
 Collection of function to improve workflow in survival analysis and data science. Among the many features, the generation of balanced datasets, retrieval of protein coding genes from two public databases (live) and generation of random matrix based on covariance matrix.
 
@@ -50,8 +50,8 @@ Showing only a random sample of 15
 genes <- coding.genes()
 #> Coding genes from biomaRt: 22643 
 #>    Coding genes from CCDS: 19631 
-#>         Unique in biomaRt: 537 
-#>            Unique in CCDS: 1064 
+#>         Unique in biomaRt: 547 
+#>            Unique in CCDS: 1074 
 #> -------------------------------
 #>                     genes: 23145
 genes %>%
@@ -63,21 +63,21 @@ genes %>%
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000057468   | MSH4                 |
-| ENSG00000169047   | IRS1                 |
-| ENSG00000189266   | PNRC2                |
-| ENSG00000282838   | PRSS21               |
-| ENSG00000163497   | FEV                  |
-| ENSG00000141012   | GALNS                |
-| ENSG00000054219   | LY75                 |
-| ENSG00000164002   | EXO5                 |
-| ENSG00000060642   | PIGV                 |
-| ENSG00000169429   | CXCL8                |
-| ENSG00000167081   | PBX3                 |
-| ENSG00000171469   | ZNF561               |
-| ENSG00000262612   | TAS2R43              |
-| ENSG00000276600   | RAB7B                |
-| ENSG00000138411   | HECW2                |
+| ENSG00000228278   | ORM2                 |
+| ENSG00000165458   | INPPL1               |
+| ENSG00000120868   | APAF1                |
+| ENSG00000213901   | SLC23A3              |
+| ENSG00000167419   | LPO                  |
+| ENSG00000138161   | CUZD1                |
+| ENSG00000281877   | RPS6KA1              |
+| ENSG00000276196   | KIR3DL3              |
+| ENSG00000072121   | ZFYVE26              |
+| ENSG00000183647   | ZNF530               |
+| ENSG00000215045   | GRID2IP              |
+| ENSG00000095917   | TPSD1                |
+| ENSG00000281886   | TGM4                 |
+| ENSG00000140015   | KCNH5                |
+| ENSG00000072832   | CRMP1                |
 
 Balanced test/train dataset
 ---------------------------
