@@ -49,13 +49,13 @@ The only pre-requirement is to install `biomaRt` bioconductor package as it cann
 All other dependencies should be installed when running the install command.
 
 ```{r install, eval=FALSE}
-# install bioconductor
-## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite()
+# using default install function
+install.packages('loose.rock')
 
-# install the package
-biocLite('averissimo/loose.rock', dependencies = TRUE)
+# or to install biomaRt dependency automatically
+if (!require("BiocManager"))
+  install.packages("BiocManager")
+BiocManager::install("loose.rock")
 
 # use the package
 library(loose.rock)

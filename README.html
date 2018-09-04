@@ -36,13 +36,13 @@ body {
 <h3 id="install">Install</h3>
 <p>The only pre-requirement is to install <code>biomaRt</code> bioconductor package as it cannot be installed automatically via CRAN.</p>
 <p>All other dependencies should be installed when running the install command.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install bioconductor</span>
-## try http:// if https:// URLs are not supported
-<span class="kw">source</span>(<span class="st">&quot;https://bioconductor.org/biocLite.R&quot;</span>)
-<span class="kw">biocLite</span>()
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># using default install function</span>
+<span class="kw">install.packages</span>(<span class="st">'loose.rock'</span>)
 
-<span class="co"># install the package</span>
-<span class="kw">biocLite</span>(<span class="st">'averissimo/loose.rock'</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
+<span class="co"># or to install biomaRt dependency automatically</span>
+<span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;BiocManager&quot;</span>))
+  <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)
+BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;loose.rock&quot;</span>)
 
 <span class="co"># use the package</span>
 <span class="kw">library</span>(loose.rock)</code></pre></div>
