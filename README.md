@@ -5,7 +5,7 @@ loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" 
 
 > Set of Functions to Use Survival Analysis and in Data Science
 
-[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true)](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true) [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true)](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true) [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master) [![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock) [![CRAN](https://img.shields.io/cran/l/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
 
 Collection of function to improve workflow in survival analysis and data science. Among the many features, the generation of balanced datasets, retrieval of protein coding genes from two public databases (live) and generation of random matrix based on covariance matrix.
 
@@ -63,21 +63,21 @@ genes %>%
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000228278   | ORM2                 |
-| ENSG00000165458   | INPPL1               |
-| ENSG00000120868   | APAF1                |
-| ENSG00000213901   | SLC23A3              |
-| ENSG00000167419   | LPO                  |
-| ENSG00000138161   | CUZD1                |
-| ENSG00000281877   | RPS6KA1              |
-| ENSG00000276196   | KIR3DL3              |
-| ENSG00000072121   | ZFYVE26              |
-| ENSG00000183647   | ZNF530               |
-| ENSG00000215045   | GRID2IP              |
-| ENSG00000095917   | TPSD1                |
-| ENSG00000281886   | TGM4                 |
-| ENSG00000140015   | KCNH5                |
-| ENSG00000072832   | CRMP1                |
+| ENSG00000170788   | DYDC1                |
+| ENSG00000198130   | HIBCH                |
+| ENSG00000092847   | AGO1                 |
+| ENSG00000139505   | MTMR6                |
+| ENSG00000128040   | SPINK2               |
+| ENSG00000116221   | MRPL37               |
+| ENSG00000184108   | TRIML1               |
+| ENSG00000155066   | PROM2                |
+| ENSG00000171557   | FGG                  |
+| ENSG00000102984   | ZNF821               |
+| ENSG00000223852   | ZFP57                |
+| ENSG00000198168   | SVIP                 |
+| ENSG00000141456   | PELP1                |
+| ENSG00000117859   | OSBPL9               |
+| ENSG00000162461   | SLC25A34             |
 
 Balanced test/train dataset
 ---------------------------
