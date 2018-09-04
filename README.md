@@ -5,7 +5,7 @@ loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" 
 
 > Set of Functions to Use Survival Analysis and in Data Science
 
-[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/github/averissimo/loose.rock?branch=master&svg=true)](https://ci.appveyor.com/project/averissimo/loose-rock) [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master) [![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock) [![CRAN](https://img.shields.io/cran/l/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
+[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/github/averissimo/loose.rock?branch=master&svg=true)](https://ci.appveyor.com/project/averissimo/loose-rock) [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master) [![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
 
 Collection of function to improve workflow in survival analysis and data science. Among the many features, the generation of balanced datasets, retrieval of protein coding genes from two public databases (live) and generation of random matrix based on covariance matrix.
 
