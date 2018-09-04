@@ -5,7 +5,7 @@ loose rock <img src="man/figures/loose.rock_logo.svg" width="120" align="right" 
 
 > Set of Functions to Use Survival Analysis and in Data Science
 
-[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true)](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true) [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master) [![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock) [![CRAN](https://img.shields.io/cran/l/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
+[![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock) [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/github/averissimo/loose.rock?branch=master&svg=true)](https://ci.appveyor.com/project/averissimo/loose-rock) [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master) [![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock) [![CRAN](https://img.shields.io/cran/l/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
 
 Collection of function to improve workflow in survival analysis and data science. Among the many features, the generation of balanced datasets, retrieval of protein coding genes from two public databases (live) and generation of random matrix based on covariance matrix.
 
@@ -63,21 +63,21 @@ genes %>%
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000170788   | DYDC1                |
-| ENSG00000198130   | HIBCH                |
-| ENSG00000092847   | AGO1                 |
-| ENSG00000139505   | MTMR6                |
-| ENSG00000128040   | SPINK2               |
-| ENSG00000116221   | MRPL37               |
-| ENSG00000184108   | TRIML1               |
-| ENSG00000155066   | PROM2                |
-| ENSG00000171557   | FGG                  |
-| ENSG00000102984   | ZNF821               |
-| ENSG00000223852   | ZFP57                |
-| ENSG00000198168   | SVIP                 |
-| ENSG00000141456   | PELP1                |
-| ENSG00000117859   | OSBPL9               |
-| ENSG00000162461   | SLC25A34             |
+| ENSG00000227801   | COL11A2              |
+| ENSG00000137955   | RABGGTB              |
+| ENSG00000077235   | GTF3C1               |
+| ENSG00000158104   | HPD                  |
+| ENSG00000023608   | SNAPC1               |
+| ENSG00000082482   | KCNK2                |
+| ENSG00000126215   | XRCC3                |
+| ENSG00000049449   | RCN1                 |
+| ENSG00000177202   | SPACA4               |
+| ENSG00000196071   | OR2L13               |
+| ENSG00000187997   | C17orf99             |
+| ENSG00000172508   | CARNS1               |
+| ENSG00000278119   | AC243949.1           |
+| ENSG00000137074   | APTX                 |
+| ENSG00000279566   | ZNF43                |
 
 Balanced test/train dataset
 ---------------------------
