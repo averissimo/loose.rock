@@ -44,8 +44,9 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = TRUE) {
       # sample size to use
       sample.size  <- floor(train.perc * length(ixs))
       temp.set <- sample(ixs, size = sample.size)
-      if (length(temp.set) == length(my.set) && train.perc < 1)
-        warning('Training set is the same size as test set')
+      if ((length(temp.set) == length(my.set) && train.perc < 1) ||
+          (length(temp.set) == 0) && train.perc > 0)
+        warning('One of the sets is empty with train.perc = ', train.perc)
       temp.set <- seq_len(max.ix) %in% temp.set
       #
       train.set <- c(train.set, list(sort(which(temp.set))))

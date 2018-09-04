@@ -35,7 +35,8 @@ devtools::load_all(".")
 [![Travis-CI Build Status](https://travis-ci.org/averissimo/loose.rock.svg?branch=master)](https://travis-ci.org/averissimo/loose.rock)
 [![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true)](https://ci.appveyor.com/api/projects/status/qnc5ck55pf574qj6?svg=true)
 [![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
-
+[![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
+[![CRAN](https://img.shields.io/cran/l/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
 
 Collection of function to improve workflow in survival analysis and data science. Among the many features, the generation of balanced datasets, retrieval of protein coding genes from two public databases (live) and generation of random matrix based on covariance matrix.
 
