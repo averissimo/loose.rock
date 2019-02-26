@@ -1,6 +1,6 @@
 Package: loose.rock
 Title: Set of Functions to Use in Survival Analysis and in Data Science
-Version: 1.0.9
+Version: 1.0.10
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
 Description: Collection of functions to improve work-flow in survival analysis and data science.
@@ -15,7 +15,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: no
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Imports: biomaRt,
     digest,
     futile.options,

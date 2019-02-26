@@ -88,6 +88,7 @@ setMethod('run.cache',
             # base.dir
             if (is.null(base.dir)) { base.dir <- loose.rock.options('base.dir') }
             if (is.null(show.message)) { show.message <- loose.rock.options('show.message') }
+            compression <- loose.rock.options('compression')
             #
             #
             args <- list(...)
@@ -149,14 +150,14 @@ setMethod('run.cache',
                   if (show.message) {
                     cat(sprintf('Saving in cache: %s\n', path))
                   }
-                  save(result, file = path)
+                  save(result, file = path, compress = compression)
                 })
               } else {
                 result <- fun(...)
                 if (show.message) {
                   cat(sprintf('Saving in cache: %s\n', path))
                 }
-                save(result, file = path)
+                save(result, file = path, compress = compression)
               }
             } else {
               warning(sprintf('Could not save cache, possibly cannot create directory: %s or %s', base.dir, file.path(base.dir, parent.path)))

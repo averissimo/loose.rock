@@ -13,7 +13,22 @@
 #' @param simplify TODO
 #'
 #' @seealso \code{futile.options}
-loose.rock.options <- futile.options::OptionsManager('loose.rock', default = list(base.dir = tempdir.cache(), show.message = TRUE))
+loose.rock.options <- futile.options::OptionsManager('loose.rock', default = list(compression = 'gzip', base.dir = tempdir.cache(), show.message = TRUE))
+
+#' change cache.compression for run.cache
+#'
+#' @param compression see compression parameter in save function
+#'
+#' @return the new compression
+#' @export
+#'
+#' @examples
+#' cache.compression('bzip2')
+cache.compression <- function(compression = FALSE) {
+  if (!is.null(compression))
+    loose.rock.options(update = list('compression', compression))
+  return(loose.rock.options('compression'))
+}
 
 #' change base.dir for run.cache
 #'
