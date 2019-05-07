@@ -13,29 +13,39 @@
 #' }
 coding.genes <- function (verbose = TRUE)
 {
-  ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
 
-  #
-  # Uses hsapies from query
+  # if biomaRt is installed it retrieves from 2 sources, otherwise defaults
+  #  only to NCBI
+  biomartInstalled = require("biomaRt", quietly = TRUE)
 
-  dataset <- biomaRt::listDatasets(ensembl) %>%
-    dplyr::filter(grepl('hsapien', dataset)) %>%
-    dplyr::select(dataset) %>%
-    dplyr::first() %>%
-    biomaRt::useDataset(mart = ensembl)
+  if (biomartInstalled) {
+    ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
 
-  #
-  protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                                   filters    = 'biotype',
-                                   values     = c('protein_coding'),
-                                   mart       = dataset,
-                                   verbose    = FALSE)
+    #
+    # Uses hsapies from query
+
+    dataset <- biomaRt::listDatasets(ensembl) %>%
+      dplyr::filter(grepl('hsapien', dataset)) %>%
+      dplyr::select(dataset) %>%
+      dplyr::first() %>%
+      biomaRt::useDataset(mart = ensembl)
+
+    #
+    protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
+                                     filters    = 'biotype',
+                                     values     = c('protein_coding'),
+                                     mart       = dataset,
+                                     verbose    = FALSE)
+  } else {
+    message('biomaRt is not installed, only using genes from NCBI (CCDS)')
+    protein.coding <- c()
+  }
 
   tryCatch ({
-    ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
+    ccds <- utils::read.table(url("https://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
                               sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
   }, error = function(err) {
-    ccds <- utils::read.table(url("https://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
+    ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
                               sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
   })
 
@@ -54,10 +64,15 @@ coding.genes <- function (verbose = TRUE)
   biomart.genes    <- sort(unique(protein.coding$external_gene_name))
   ccds.extra.genes <- sort(ccds.genes[(!ccds.genes %in% biomart.genes)])
 
-  coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
+  if (biomartInstalled) {
+    coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
                            filters    = 'external_gene_name',
                            values     = c(biomart.genes, ccds.extra.genes),
                            mart       = dataset)
+  } else {
+    coding <- data.frame(ensembl_gene_id = ccds.extra.genes, external_gene_name = ccds.extra.genes)
+  }
+
   if (verbose) {
     cat('Coding genes from biomaRt:', nrow(protein.coding),'\n')
     cat('   Coding genes from CCDS:', length(ccds.genes), '\n')
