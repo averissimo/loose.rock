@@ -12,7 +12,6 @@ r_packages:
 bioc_required: true
 
 r:
-- 3.4
 - oldrel
 - devel
 - release
