@@ -16,7 +16,7 @@ coding.genes <- function (verbose = TRUE)
 
   # if biomaRt is installed it retrieves from 2 sources, otherwise defaults
   #  only to NCBI
-  biomartInstalled = require(biomaRt, quietly = TRUE)
+  biomartInstalled = requireNamespace("biomaRt", quietly = TRUE)
 
   if (biomartInstalled) {
     ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
