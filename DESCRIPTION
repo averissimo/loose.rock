@@ -18,15 +18,12 @@ NeedsCompilation: no
 RoxygenNote: 6.1.1
 Imports: digest,
     futile.options,
-    ggfortify,
     ggplot2,
     graphics,
-    grDevices,
     MASS,
     methods,
     dplyr,
-    reshape2,
-    stats
+    reshape2
 Suggests: biomaRt,
     knitr,
     rmarkdown,
