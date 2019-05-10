@@ -18,49 +18,65 @@ coding.genes <- function (verbose = TRUE)
   #  only to NCBI
   biomartInstalled = requireNamespace("biomaRt", quietly = TRUE)
 
+  protein.coding <- c() # initialize as empty array in case biomaRt is not installed or fails
   if (biomartInstalled) {
-    ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
+    ensembl <- NULL
+    tryCatch({
+      ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
 
-    #
-    # Uses hsapies from query
+      #
+      # Uses hsapies from query
+      dataset <- biomaRt::listDatasets(ensembl) %>%
+        dplyr::filter(grepl('hsapien', dataset)) %>%
+        dplyr::select(dataset) %>%
+        dplyr::first() %>%
+        biomaRt::useDataset(mart = ensembl)
 
-    dataset <- biomaRt::listDatasets(ensembl) %>%
-      dplyr::filter(grepl('hsapien', dataset)) %>%
-      dplyr::select(dataset) %>%
-      dplyr::first() %>%
-      biomaRt::useDataset(mart = ensembl)
-
-    #
-    protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                                     filters    = 'biotype',
-                                     values     = c('protein_coding'),
-                                     mart       = dataset,
-                                     verbose    = FALSE)
+      #
+      protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
+                                       filters    = 'biotype',
+                                       values     = c('protein_coding'),
+                                       mart       = dataset,
+                                       verbose    = FALSE)
+    }, error = function(err) {
+      warning('biomaRt call failed\n', err$message)
+    })
+    if (is.null(ensembl)) {
+      biomartInstalled <- FALSE
+    }
   } else {
     message('biomaRt is not installed, only using genes from NCBI (CCDS)')
-    protein.coding <- c()
   }
 
+  ccds <- NULL # initialize in case download from NCBI fails
   tryCatch ({
     ccds <- utils::read.table(url("https://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
                               sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
+
   }, error = function(err) {
-    ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
+    tryCatch({
+      ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
                               sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
+    }, error = function(err2) {
+      warning('Could not retrieve list from NCBI, try again later for this datasource.')
+    })
   })
 
+  ccds.genes <- c() # initialize as empty array in case ccds is not retrieved from NCBI
+  if (!is.null(ccds)) {
+    ccds$ccds_status <- factor(proper(ccds$ccds_status))
 
-  ccds$ccds_status <- factor(proper(ccds$ccds_status))
+    # Remove with ccds_status == Withdrawn
+    ccds       <- ccds %>% dplyr::filter(!grepl('Withdrawm', !!(as.name('ccds_status'))))
+    ccds.genes <- unique(ccds$gene)
 
-  # Remove with ccds_status == Withdrawn
-  ccds       <- ccds %>% dplyr::filter(!grepl('Withdrawm', !!(as.name('ccds_status'))))
-  ccds.genes <- unique(ccds$gene)
-
-  if (any(ccds.genes == '' | is.na(ccds.genes))) {
-    warning('Some genes from ccds have empty gene_name, skipping those')
-    ccds.genes <- ccds.genes[ccds.genes == '' || is.na(ccds.genes)]
+    if (any(ccds.genes == '' | is.na(ccds.genes))) {
+      warning('Some genes from ccds have empty gene_name, skipping those')
+      ccds.genes <- ccds.genes[ccds.genes == '' || is.na(ccds.genes)]
+    }
+    #
   }
-  #
+
   biomart.genes    <- sort(unique(protein.coding$external_gene_name))
   ccds.extra.genes <- sort(ccds.genes[(!ccds.genes %in% biomart.genes)])
 
