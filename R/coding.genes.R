@@ -19,8 +19,9 @@ coding.genes <- function (verbose = TRUE)
   biomartInstalled = requireNamespace("biomaRt", quietly = TRUE)
 
   protein.coding <- c() # initialize as empty array in case biomaRt is not installed or fails
+  dataset <- NULL
+  ensembl <- NULL
   if (biomartInstalled) {
-    ensembl <- NULL
     tryCatch({
       ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
 
@@ -34,10 +35,10 @@ coding.genes <- function (verbose = TRUE)
 
       #
       protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                                       filters    = 'biotype',
-                                       values     = c('protein_coding'),
-                                       mart       = dataset,
-                                       verbose    = FALSE)
+                                        filters    = 'biotype',
+                                        values     = c('protein_coding'),
+                                        mart       = dataset,
+                                        verbose    = FALSE)
     }, error = function(err) {
       warning('biomaRt call failed\n', err$message)
     })
@@ -53,14 +54,16 @@ coding.genes <- function (verbose = TRUE)
     ccds <- utils::read.table(url("https://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
                               sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
 
-  }, error = function(err) {
+  })
+
+  if (is.null(ccds)) {
     tryCatch({
       ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
-                              sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
+                                sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
     }, error = function(err2) {
       warning('Could not retrieve list from NCBI, try again later for this datasource.')
     })
-  })
+  }
 
   ccds.genes <- c() # initialize as empty array in case ccds is not retrieved from NCBI
   if (!is.null(ccds)) {
@@ -80,12 +83,22 @@ coding.genes <- function (verbose = TRUE)
   biomart.genes    <- sort(unique(protein.coding$external_gene_name))
   ccds.extra.genes <- sort(ccds.genes[(!ccds.genes %in% biomart.genes)])
 
-  if (biomartInstalled) {
-    coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                           filters    = 'external_gene_name',
-                           values     = c(biomart.genes, ccds.extra.genes),
-                           mart       = dataset)
+  coding <- NULL
+  if (!is.null(dataset) && biomartInstalled) {
+    tryCatch({
+      coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
+                               filters    = 'external_gene_name',
+                               values     = c(biomart.genes, ccds.extra.genes),
+                               mart       = dataset)
+    }, error = function(err) {
+      cat('Could not get external gene names from biomart. ', err, '\n')
+      # warning('Could not get external gene names from biomart.')
+    })
+    if  (is.null(coding)) {
+      coding <- data.frame(ensembl_gene_id = c(biomart.genes, ccds.genes), external_gene_name = c(biomart.genes, ccds.genes))
+    }
   } else {
+    cat('Skipping getBM', !is.null(dataset), biomartInstalled)
     coding <- data.frame(ensembl_gene_id = ccds.extra.genes, external_gene_name = ccds.extra.genes)
   }
 
