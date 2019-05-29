@@ -80,6 +80,7 @@ coding.genes() %>%
 ```
 
 ```{r, eval=FALSE, include=FALSE}
+# Build internal data for vignette
 coding.genes.cache <- coding.genes()
 usethis::use_data(coding.genes.cache, overwrite = TRUE)
 ```
