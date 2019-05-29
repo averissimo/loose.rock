@@ -71,13 +71,29 @@ library(dplyr)
 
 Showing only a random sample of 15
 
-```{r coding.genes, collapse=TRUE, message=FALSE, warning=FALSE}
+```{r coding.genes, collapse=TRUE, message=FALSE, warning=FALSE, eval=FALSE}
 coding.genes() %>%
   arrange(external_gene_name) %>% {
    slice(., sample(seq(nrow(.)), 15)) 
   } %>%
   knitr::kable()
 ```
+
+```{r, eval=FALSE, include=FALSE}
+coding.genes.cache <- coding.genes()
+usethis::use_data(coding.genes.cache, overwrite = TRUE)
+```
+
+
+```{r, echo=FALSE}
+data(coding.genes.cache)
+coding.genes.cache %>%
+  arrange(external_gene_name) %>% {
+   slice(., sample(seq(nrow(.)), 15)) 
+  } %>%
+  knitr::kable()
+```
+
 
 
 ## Balanced test/train dataset

@@ -18,7 +18,7 @@ coding.genes <- function (verbose = TRUE)
   #  only to NCBI
   biomartInstalled = requireNamespace("biomaRt", quietly = TRUE)
 
-  protein.coding <- c() # initialize as empty array in case biomaRt is not installed or fails
+  protein.coding <- NULL # initialize as empty array in case biomaRt is not installed or fails
   dataset <- NULL
   ensembl <- NULL
   if (biomartInstalled) {
@@ -80,30 +80,37 @@ coding.genes <- function (verbose = TRUE)
     #
   }
 
-  biomart.genes    <- sort(unique(protein.coding$external_gene_name))
+  biomart.genes <- c()
+  if (!is.null(protein.coding)) {
+    biomart.genes    <- unique(protein.coding$external_gene_name)
+  }
   ccds.extra.genes <- sort(ccds.genes[(!ccds.genes %in% biomart.genes)])
 
   coding <- NULL
   if (!is.null(dataset) && biomartInstalled) {
     tryCatch({
-      coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                               filters    = 'external_gene_name',
-                               values     = c(biomart.genes, ccds.extra.genes),
-                               mart       = dataset)
+      coding <- rbind(protein.coding,
+                      biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
+                                     filters    = 'external_gene_name',
+                                     values     = ccds.extra.genes,
+                                     mart       = dataset))
     }, error = function(err) {
-      cat('Could not get external gene names from biomart. ', err, '\n')
+      cat('Could not get external gene names from biomart. ', err$message, '\n')
       # warning('Could not get external gene names from biomart.')
     })
     if  (is.null(coding)) {
-      coding <- data.frame(ensembl_gene_id = c(biomart.genes, ccds.genes), external_gene_name = c(biomart.genes, ccds.genes))
+      coding <- rbind(data.frame(ensembl_gene_id    = ccds.genes,
+                                 external_gene_name = ccds.genes),
+                      protein.coding)
     }
   } else {
     cat('Skipping getBM', !is.null(dataset), biomartInstalled)
     coding <- data.frame(ensembl_gene_id = ccds.extra.genes, external_gene_name = ccds.extra.genes)
   }
+  coding <- coding %>% dplyr::arrange(!!as.name('external_gene_name'))
 
   if (verbose) {
-    cat('Coding genes from biomaRt:', nrow(protein.coding),'\n')
+    cat('Coding genes from biomaRt:', nrow(biomart.genes),'\n')
     cat('   Coding genes from CCDS:', length(ccds.genes), '\n')
     cat('        Unique in biomaRt:', sum(!ccds.genes %in% biomart.genes), '\n')
     cat('           Unique in CCDS:', sum(!biomart.genes %in% ccds.genes), '\n')
