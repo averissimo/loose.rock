@@ -87,7 +87,6 @@ usethis::use_data(coding.genes.cache, overwrite = TRUE)
 
 
 ```{r, echo=FALSE}
-data(coding.genes.cache)
 coding.genes.cache %>%
   arrange(external_gene_name) %>% {
    slice(., sample(seq(nrow(.)), 15)) 
