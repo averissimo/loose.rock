@@ -4,6 +4,10 @@ sudo: false
 
 cache: packages
 
+os:
+  - linux
+  - osx
+
 r_packages:
 - covr
 - devtools
