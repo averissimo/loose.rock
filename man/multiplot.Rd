@@ -21,7 +21,8 @@ If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),}
 nothing
 }
 \description{
-Not mine, taken from http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+Not mine, taken from
+http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
 }
 \examples{
 # First plot

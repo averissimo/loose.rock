@@ -13,6 +13,9 @@ loose.rock.options(..., simplify = FALSE, update = list())
 
 \item{update}{pair list of update to options}
 }
+\value{
+futile.options::OptionsManager object
+}
 \description{
 Log level constants and the logger options.
 }

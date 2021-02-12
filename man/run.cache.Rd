@@ -4,9 +4,17 @@
 \alias{run.cache}
 \title{Run function and save cache}
 \usage{
-run.cache(fun, ..., seed = NULL, base.dir = NULL,
-  cache.prefix = "generic_cache", cache.digest = list(),
-  show.message = NULL, force.recalc = FALSE, add.to.hash = NULL)
+run.cache(
+  fun,
+  ...,
+  seed = NULL,
+  base.dir = NULL,
+  cache.prefix = "generic_cache",
+  cache.digest = list(),
+  show.message = NULL,
+  force.recalc = FALSE,
+  add.to.hash = NULL
+)
 }
 \arguments{
 \item{fun}{function call name}
@@ -17,7 +25,8 @@ run.cache(fun, ..., seed = NULL, base.dir = NULL,
 
 \item{base.dir}{directory where data is stored}
 
-\item{cache.prefix}{prefix for file name to be generated from parameters (...)}
+\item{cache.prefix}{prefix for file name to be generated from
+parameters (...)}
 
 \item{cache.digest}{cache of the digest for one or more of the parameters}
 
@@ -42,7 +51,8 @@ base.dir(tempdir())
 run.cache(c, 1, 2, 3, 4)
 #
 # next three should use the same cache
-#  note, the middle call should be a little faster as digest is not calculated
+#  note, the middle call should be a little faster as digest is not
+#  calculated
 #   for the first argument
 run.cache(c, 1, 2, 3, 4)
 run.cache(c, 1, 2, 3, 4, cache.digest = list(digest.cache(1)))

@@ -1,6 +1,6 @@
 Package: loose.rock
 Title: Tools for Survival Analysis and Data Science
-Version: 1.0.16
+Version: 1.1.0
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
 Description: Collection of functions to improve work-flow in survival analysis and data science.
@@ -15,13 +15,14 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: no
 NeedsCompilation: no
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Imports: digest,
     futile.options,
     ggplot2,
     graphics,
     MASS,
     methods,
+    httr,
     dplyr,
     reshape2
 Suggests: biomaRt,

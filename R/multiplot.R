@@ -1,6 +1,7 @@
 #' Multiple plot
 #'
-#' Not mine, taken from http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+#' Not mine, taken from
+#' http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
 #'
 #' @param ... ggplot objects
 #' @param plotlist ggplot objects (alternative)
@@ -47,10 +48,12 @@ multiplot <- function(..., plotlist=NULL, ncol = 1, layout=NULL) {
   } else {
     # Set up the page
     grid::grid.newpage()
-    grid::pushViewport(grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))))
+    grid::pushViewport(
+      grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout)))
+    )
 
     # Make each plot, in the correct location
-    for (i in 1:numPlots) {
+    for (i in seq(numPlots)) {
       # Get the i,j matrix positions of the regions that contain this subplot
       matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
 

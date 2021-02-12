@@ -12,8 +12,17 @@
 #' @param ... TODO
 #' @param simplify TODO
 #'
+#' @return futile.options::OptionsManager object
+#'
 #' @seealso \code{futile.options}
-loose.rock.options <- futile.options::OptionsManager('loose.rock', default = list(compression = 'gzip', base.dir = tempdir.cache(), show.message = TRUE))
+loose.rock.options <- futile.options::OptionsManager(
+  'loose.rock',
+  default = list(
+    compression = 'gzip',
+    base.dir = tempdir.cache(),
+    show.message = TRUE
+  )
+)
 
 #' change cache.compression for run.cache
 #'

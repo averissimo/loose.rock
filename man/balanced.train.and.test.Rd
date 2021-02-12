@@ -11,10 +11,12 @@ balanced.train.and.test(..., train.perc = 0.9, join.all = TRUE)
 
 \item{train.perc}{percentage of dataset to be training set}
 
-\item{join.all}{join all index in the end in two vectors (train and test vectors)}
+\item{join.all}{join all index in the end in two vectors (train and
+test vectors)}
 }
 \value{
-train and test index vectors (two lists if `join.all = FALSE`, two vectors otherwise)
+train and test index vectors (two lists if `join.all = FALSE`,
+two vectors otherwise)
 }
 \description{
 Get a balanced test and train dataset

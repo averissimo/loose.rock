@@ -12,13 +12,14 @@ balanced.cv.folds(..., nfolds = 10)
 \item{nfolds}{number of folds to be created}
 }
 \value{
-list with given input, nfolds and result. The result is a list matching the input with foldid attributed to each position.
+list with given input, nfolds and result. The result is a list
+matching the input with foldid attributed to each position.
 }
 \description{
 Create balanced folds for cross validation
 }
 \examples{
-balanced.cv.folds(1:10, 11:15, nfolds = 2)
-balanced.cv.folds(1:10, 11:13, nfolds = 10) # will give a warning
-balanced.cv.folds(1:100, 101:133, nfolds = 10)
+balanced.cv.folds(seq(10), seq(11, 15), nfolds = 2)
+balanced.cv.folds(seq(10), seq(11, 13), nfolds = 10) # will give a warning
+balanced.cv.folds(seq(100), seq(101, 133), nfolds = 10)
 }

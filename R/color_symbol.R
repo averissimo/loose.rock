@@ -9,10 +9,12 @@
 #' my.colors()
 #' my.colors(5)
 my.colors <- function(ix = NULL){
-  ret.colors <- c('navyblue',  'forestgreen',  'tomato4',    'tan1',
-                  'turquoise', 'springgreen1', 'brown',      'violetred1',
-                  'ivory4',    'slateblue1',   'chocolate4', 'deeppink1',
-                  'slategray4','coral3',       'darkblue',   'mediumorchid1', 'black')
+  ret.colors <- c(
+    'navyblue',  'forestgreen',  'tomato4',    'tan1',
+    'turquoise', 'springgreen1', 'brown',      'violetred1',
+    'ivory4',    'slateblue1',   'chocolate4', 'deeppink1',
+    'slategray4','coral3',       'darkblue',   'mediumorchid1', 'black'
+  )
   if (is.null(ix)) {
     return(ret.colors)
   }

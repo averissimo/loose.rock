@@ -28,12 +28,25 @@ gen.synth.xdata <- function(n.obs, n.vars, rho, my.mean = rep(0, n.vars)) {
   }
   #
   # Covariance matrix
-  #  -> Matrix that has incremental index by column, starting in 1 and ending at n.vas * n.vars
-  sigma     <- matrix(1:(n.vars^2), nrow = n.vars, ncol = n.vars, byrow = TRUE)
+  #  -> Matrix that has incremental index by column,
+  #       starting in 1 and ending at n.vas * n.vars
+  sigma <- matrix(seq(n.vars^2), nrow = n.vars, ncol = n.vars, byrow = TRUE)
   # Calculate covariance matrix based on rho^|i-j|
-  cov.matrix <- rho^apply(sigma, c(1,2), function(ix, n.obs, n.vars) { ix.me(ix, n.obs, n.vars) }, n.obs , n.vars)
+  cov.matrix <- rho ^ apply(
+    sigma, c(1,2),
+    function(ix, n.obs, n.vars) {
+      ix.me(ix, n.obs, n.vars)
+    }, n.obs, n.vars # extra arguments for function
+  )
   # Generate using multivariate normal distribution
-  tentative.matrix <- MASS::mvrnorm(max(n.obs, n.vars + 1), my.mean, cov.matrix, empirical = TRUE)
-  if(nrow(tentative.matrix) > n.obs) { warning('Cannot guarantee covariance matrix as there are more (or the same) observations than variables.')}
+  tentative.matrix <- MASS::mvrnorm(
+    max(n.obs, n.vars + 1), my.mean, cov.matrix, empirical = TRUE
+  )
+  if(nrow(tentative.matrix) > n.obs) {
+    warning(
+      'Cannot guarantee covariance matrix as ',
+      'there are more (or the same) observations than variables.'
+    )
+  }
   return(tentative.matrix[seq(n.obs),])
 }

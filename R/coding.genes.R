@@ -1,49 +1,151 @@
-#' Retrive coding genes from known databases
+#' Workaround for bug with curl when fetching specific ensembl mirror
 #'
-#' It retrieves from NCBI and
+#' https://github.com/grimbough/biomaRt/issues/39
+#'
+#' @param expr expression
+#'
+#' @return result of expression
+#' @export
+#'
+#' @examples
+#' loose.rock:::curl.workaround({
+#'     biomaRt::useEnsembl(
+#'         biomart = "genes",
+#'         dataset = 'hsapiens_gene_ensembl')
+#' })
+curl.workaround <- function(expr) {
+  result <- tryCatch(
+    {expr},
+    error = function(err) {
+      err
+    })
+
+  if (inherits(result, 'error') || is.null(result)) {
+    warning(
+      "There was an problem, calling the function with ",
+      "ssl_verifypeer to FALSE", "\n\n\t error: ", result$message)
+    # httr::set_config(httr::config(
+    #    ssl_verifypeer = 0L,
+    #    ssl_verifyhost = 0L,
+    #    verbose = 0L))
+    result <- httr::with_config(
+      config = httr::config(
+        ssl_verifypeer = 0L,
+        ssl_verifyhost = 0L,
+        verbose = 1L
+      ),
+      {expr},
+      override = FALSE
+    )
+    # httr::reset_config()
+  }
+
+  return(result)
+}
+
+#' Ensembl coding genes, local function
 #'
 #' @param verbose show messages with number of genes retrieved
+#' @param useCache Boolean indicating whether the results cache
+#' should be used. Setting to FALSE will disable reading and
+#' writing of the cache. This argument is likely to disappear
+#' after the cache functionality has been tested more thoroughly.
+#'
+#' @return a list with coding genes, mart and whether biomaRt had
+#' a problem, indicating that it shouldn't be used.
+coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
+{
+  tryCatch({
+    #
+    # Uses hsapies from query
+    mart <- curl.workaround({
+      biomaRt::useEnsembl(
+        biomart = "genes",
+        dataset = 'hsapiens_gene_ensembl',
+        host = 'https://www.ensembl.org',
+        verbose = FALSE
+      )
+    })
+    #
+    protein.coding <- tryCatch({
+      curl.workaround({
+        biomaRt::getBM(
+          attributes = c("ensembl_gene_id","external_gene_name"),
+          filters    = 'biotype',
+          values     = c('protein_coding'),
+          mart       = mart,
+          verbose    = FALSE,
+          useCache   = useCache
+        )}
+    )}, error = function(err) {
+      if (useCache) {
+        warning(
+          'There was a problem getting the genes,',
+          ' trying without a cache.',
+          '\n\t',
+          err
+        )
+      } else {
+        stop('There was a problem with biomaRt::getBM()', '\n\t', err)
+      }
+      warning(err)
+    })
+
+    if ((inherits(protein.coding, 'error') ||
+         is.null(protein.coding)) && useCache) {
+      # retrying without cache
+      return(coding.genes.ensembl(verbose = verbose, useCache = FALSE))
+    }
+  }, error = function(err) {
+    warning('biomaRt call failed\n', err$message)
+  })
+  biomartInstalled <- TRUE
+  if (is.null(mart)) {
+    biomartInstalled <- FALSE
+  }
+  return(
+    list(
+      protein.coding   = protein.coding,
+      biomartInstalled = biomartInstalled,
+      mart             = mart
+    )
+  )
+}
+
+#' Retrive coding genes from known databases
+#'
+#' It retrieves from NCBI and ensembl
+#'
+#' @param verbose show messages with number of genes retrieved
+#' @param useCache Boolean indicating whether the results cache
+#' should be used. Setting to FALSE will disable reading and
+#' writing of the cache. This argument is likely to disappear
+#' after the cache functionality has been tested more thoroughly.
 #'
 #' @return a table with gene information
 #' @export
 #' @examples
 #' # This can take a few minutes depending on the connection
-#' \dontrun{
+#' \donttest{
 #'     coding.genes()
 #' }
-coding.genes <- function (verbose = TRUE)
+coding.genes <- function (verbose = FALSE, useCache = TRUE)
 {
-
   # if biomaRt is installed it retrieves from 2 sources, otherwise defaults
   #  only to NCBI
   biomartInstalled = requireNamespace("biomaRt", quietly = TRUE)
 
-  protein.coding <- NULL # initialize as empty array in case biomaRt is not installed or fails
-  dataset <- NULL
-  ensembl <- NULL
+  # initialize as empty array in case biomaRt is not installed or fails
+  protein.coding <- NULL
+  dataset        <- NULL
+
   if (biomartInstalled) {
-    tryCatch({
-      ensembl <- biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
+    result <- coding.genes.ensembl(verbose = verbose, useCache = useCache)
+    dataset <- result$mart
+    protein.coding <- result$protein.coding
 
-      #
-      # Uses hsapies from query
-      dataset <- biomaRt::listDatasets(ensembl) %>%
-        dplyr::filter(grepl('hsapien', dataset)) %>%
-        dplyr::select(dataset) %>%
-        dplyr::first() %>%
-        biomaRt::useDataset(mart = ensembl)
-
-      #
-      protein.coding <- biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                                        filters    = 'biotype',
-                                        values     = c('protein_coding'),
-                                        mart       = dataset,
-                                        verbose    = FALSE)
-    }, error = function(err) {
-      warning('biomaRt call failed\n', err$message)
-    })
-    if (is.null(ensembl)) {
-      biomartInstalled <- FALSE
+    if (!result$biomartInstalled) {
+      biomartInstalled <- result$biomartInstalled
     }
   } else {
     message('biomaRt is not installed, only using genes from NCBI (CCDS)')
@@ -51,26 +153,40 @@ coding.genes <- function (verbose = TRUE)
 
   ccds <- NULL # initialize in case download from NCBI fails
   tryCatch ({
-    ccds <- utils::read.table(url("https://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
-                              sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
-
+    ccds <- utils::read.table(
+      url("https://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
+      sep = "\t",
+      header = TRUE,
+      comment.char = "|",
+      stringsAsFactors = FALSE
+    )
   })
 
   if (is.null(ccds)) {
     tryCatch({
-      ccds <- utils::read.table(url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
-                                sep = "\t", header = TRUE, comment.char = "|", stringsAsFactors = FALSE)
+      ccds <- utils::read.table(
+        url("ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt"),
+        sep = "\t",
+        header = TRUE,
+        comment.char = "|",
+        stringsAsFactors = FALSE
+      )
     }, error = function(err2) {
-      warning('Could not retrieve list from NCBI, try again later for this datasource.')
+      warning(
+        'Could not retrieve list from NCBI, try again later ',
+        'for this datasource.'
+      )
     })
   }
 
-  ccds.genes <- c() # initialize as empty array in case ccds is not retrieved from NCBI
+  # initialize as empty array in case ccds is not retrieved from NCBI
+  ccds.genes <- c()
   if (!is.null(ccds)) {
     ccds$ccds_status <- factor(proper(ccds$ccds_status))
 
     # Remove with ccds_status == Withdrawn
-    ccds       <- ccds %>% dplyr::filter(!grepl('Withdrawm', !!(as.name('ccds_status'))))
+    ccds <- ccds %>%
+      dplyr::filter(!grepl('Withdrawm', !!(as.name('ccds_status'))))
     ccds.genes <- unique(ccds$gene)
 
     if (any(ccds.genes == '' | is.na(ccds.genes))) {
@@ -88,15 +204,24 @@ coding.genes <- function (verbose = TRUE)
 
   coding <- NULL
   if (!is.null(dataset) && biomartInstalled) {
-    tryCatch({
-      coding <- rbind(protein.coding,
-                      biomaRt::getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-                                     filters    = 'external_gene_name',
-                                     values     = ccds.extra.genes,
-                                     mart       = dataset))
+    coding <- tryCatch({
+      rbind(
+        protein.coding,
+          curl.workaround(
+            biomaRt::getBM(
+              attributes = c("ensembl_gene_id","external_gene_name"),
+              filters    = 'external_gene_name',
+              values     = ccds.extra.genes,
+              mart       = dataset,
+              verbose    = verbose,
+              useCache   = useCache
+            )
+          )
+        )
     }, error = function(err) {
       cat('Could not get external gene names from biomart. ', err$message, '\n')
       # warning('Could not get external gene names from biomart.')
+      NULL
     })
     if  (is.null(coding)) {
       coding <- rbind(data.frame(ensembl_gene_id    = ccds.genes,
@@ -105,17 +230,20 @@ coding.genes <- function (verbose = TRUE)
     }
   } else {
     cat('Skipping getBM', !is.null(dataset), biomartInstalled)
-    coding <- data.frame(ensembl_gene_id = ccds.extra.genes, external_gene_name = ccds.extra.genes)
+    coding <- data.frame(
+      ensembl_gene_id = ccds.extra.genes,
+      external_gene_name = ccds.extra.genes
+    )
   }
   coding <- coding %>% dplyr::arrange(!!as.name('external_gene_name'))
 
   if (verbose) {
-    cat('Coding genes from biomaRt:', nrow(biomart.genes),'\n')
-    cat('   Coding genes from CCDS:', length(ccds.genes), '\n')
-    cat('        Unique in biomaRt:', sum(!ccds.genes %in% biomart.genes), '\n')
-    cat('           Unique in CCDS:', sum(!biomart.genes %in% ccds.genes), '\n')
-    cat('-------------------------------\n')
-    cat('                    genes:', nrow(coding), '\n')
+    message('Coding genes from biomaRt:', nrow(biomart.genes))
+    message('   Coding genes from CCDS:', length(ccds.genes))
+    message('        Unique in biomaRt:', sum(!ccds.genes %in% biomart.genes))
+    message('           Unique in CCDS:', sum(!biomart.genes %in% ccds.genes))
+    message('-------------------------------')
+    message('                    genes:', nrow(coding))
   }
 
   return(coding)

@@ -3,8 +3,12 @@ context("Balanced data")
 test_that("train/test same size", {
   set1 <- c(1,2,3,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20)
   set2 <- c(4,16,21,22,23,24)
-  expect_warning(balanced.train.and.test(set1, set2, train.perc = 1-.999999999, join.all = TRUE),
-                 'One of the sets is empty with train.perc')
+  expect_warning(
+    balanced.train.and.test(
+      set1, set2, train.perc = 1-.999999999, join.all = TRUE
+    ),
+    'One of the sets is empty with train.perc'
+  )
 })
 
 test_that("train/test mixed indexes", {
@@ -69,7 +73,7 @@ test_that("train/test numeric indexes (join)", {
 
 
 test_that("train/test logical indexes (join)", {
-  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,T)
+  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
   set2 <- !set1
 
   result <- balanced.train.and.test(set1, set2, train.perc = .9, join.all = TRUE)
@@ -79,7 +83,7 @@ test_that("train/test logical indexes (join)", {
 })
 
 test_that("train/test logical indexes", {
-  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,T)
+  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
   set2 <- !set1
   result <- balanced.train.and.test(set1, set2, train.perc = .9, join.all = FALSE)
 
@@ -90,7 +94,7 @@ test_that("train/test logical indexes", {
 })
 
 test_that("finds sets with logical indexed vectors (join)", {
-  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,T)
+  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
   set2 <- !set1
 
   result <- balanced.train.and.test(set1, set2, train.perc = .9, join.all = TRUE)
@@ -103,7 +107,7 @@ context("Balanced cv folds")
 
 
 test_that("Only one set", {
-  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,T)
+  set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
   result <- balanced.cv.folds(set1, nfolds = 10)
 
   expect_false(is.list(result$train))
@@ -112,7 +116,7 @@ test_that("Only one set", {
 
 test_that('Creates nice cv folds', {
 
-  result <- balanced.cv.folds(1:10, 1:3, nfolds = 2)
+  result <- balanced.cv.folds(seq(10), 1:3, nfolds = 2)
   #
   result.c <- table(result$output[[1]])
   expect_equal(length(result.c), 2)
@@ -123,7 +127,7 @@ test_that('Creates nice cv folds', {
   expect_equal(as.vector(result.c), c(2,1))
   #
   #
-  result <- balanced.cv.folds(1:10, 1:3, nfolds = 3)
+  result <- balanced.cv.folds(seq(10), 1:3, nfolds = 3)
   #
   result.c <- table(result$output[[1]])
   expect_equal(length(result.c), 3)
@@ -133,5 +137,5 @@ test_that('Creates nice cv folds', {
   expect_equal(length(result.c), 3)
   expect_equal(as.vector(result.c), c(1,1,1))
   #
-  expect_warning(balanced.cv.folds(1:10, 1:3, nfolds = 10), 'Number of elements in vector [(][0-9]+[)] is less than \'nfolds\' [(][0-9]+[)]')
+  expect_warning(balanced.cv.folds(seq(10), 1:3, nfolds = 10), 'Number of elements in vector [(][0-9]+[)] is less than \'nfolds\' [(][0-9]+[)]')
 })

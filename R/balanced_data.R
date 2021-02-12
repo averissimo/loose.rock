@@ -2,9 +2,12 @@
 #'
 #' @param ... vectors of index (could be numeric or logical)
 #' @param train.perc percentage of dataset to be training set
-#' @param join.all join all index in the end in two vectors (train and test vectors)
+#' @param join.all join all index in the end in two vectors (train and
+#' test vectors)
 #'
-#' @return train and test index vectors (two lists if `join.all = FALSE`, two vectors otherwise)
+#' @return train and test index vectors (two lists if `join.all = FALSE`,
+#' two vectors otherwise)
+#'
 #' @export
 #'
 #' @examples
@@ -61,7 +64,10 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = TRUE) {
       }
 
     } else {
-      stop('Arguments must be either a logical or numeric vector, see help for more information.')
+      stop(
+        'Arguments must be either a logical or numeric ',
+        'vector, see help for more information.'
+      )
     }
   }
   if (join.all) {
@@ -82,18 +88,26 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = TRUE) {
 #' @param ... vectors representing data
 #' @param nfolds number of folds to be created
 #'
-#' @return list with given input, nfolds and result. The result is a list matching the input with foldid attributed to each position.
+#' @return list with given input, nfolds and result. The result is a list
+#' matching the input with foldid attributed to each position.
+#'
 #' @export
 #'
 #' @examples
-#' balanced.cv.folds(1:10, 11:15, nfolds = 2)
-#' balanced.cv.folds(1:10, 11:13, nfolds = 10) # will give a warning
-#' balanced.cv.folds(1:100, 101:133, nfolds = 10)
+#' balanced.cv.folds(seq(10), seq(11, 15), nfolds = 2)
+#' balanced.cv.folds(seq(10), seq(11, 13), nfolds = 10) # will give a warning
+#' balanced.cv.folds(seq(100), seq(101, 133), nfolds = 10)
 balanced.cv.folds <- function(..., nfolds = 10) {
   input.list <- list(...)
   output.list <- list()
   if (any(vapply(input.list, function(vec) {length(vec) < nfolds}, TRUE))) {
-    warning('Number of elements in vector (', length(unlist(input.list)), ') is less than \'nfolds\' (', nfolds, ')')
+    warning(
+      'Number of elements in vector (',
+      length(unlist(input.list)),
+      ') is less than \'nfolds\' (',
+      nfolds,
+      ')'
+    )
   }
   for (my.set in input.list) {
     #
@@ -106,7 +120,10 @@ balanced.cv.folds <- function(..., nfolds = 10) {
         my.tmp <- c(my.tmp, output.list[[ix]])
       }
       my.count <- graphics::hist(my.tmp, plot = FALSE, breaks = 0:nfolds)$counts
-      my.sample <- rep(seq(nfolds)[sort(my.count, index.return = TRUE)$ix], length = length(my.set))
+      my.sample <- rep(
+        seq(nfolds)[sort(my.count, index.return = TRUE)$ix],
+        length = length(my.set)
+      )
     }
     #
     output.list <- c(output.list, list(sample(my.sample)))
