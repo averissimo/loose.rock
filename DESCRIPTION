@@ -10,7 +10,7 @@ Description: Collection of functions to improve work-flow in survival analysis a
              This work was supported by two grants from the Portuguese Foundation for Science
              and technology, and the EU Commission under SOUND project.
 Depends:
-    R (>= 4.0)
+    R (>= 3.4)
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: no

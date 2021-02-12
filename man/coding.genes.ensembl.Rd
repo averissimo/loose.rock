@@ -21,3 +21,8 @@ a problem, indicating that it shouldn't be used.
 \description{
 Ensembl coding genes, local function
 }
+\examples{
+\donttest{
+  coding.genes.ensembl(TRUE, TRUE)
+}
+}

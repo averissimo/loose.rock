@@ -53,18 +53,44 @@ curl.workaround <- function(expr) {
 #'
 #' @return a list with coding genes, mart and whether biomaRt had
 #' a problem, indicating that it shouldn't be used.
+#'
+#' @examples
+#' \donttest{
+#'   coding.genes.ensembl(TRUE, TRUE)
+#' }
 coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
 {
   tryCatch({
     #
     # Uses hsapies from query
-    mart <- curl.workaround({
-      biomaRt::useEnsembl(
-        biomart = "genes",
-        dataset = 'hsapiens_gene_ensembl',
-        host = 'https://www.ensembl.org',
-        verbose = FALSE
-      )
+    mart <- tryCatch({
+      curl.workaround({
+        biomaRt::useEnsembl(
+          biomart = "genes",
+          dataset = 'hsapiens_gene_ensembl',
+          host = 'https://www.ensembl.org',
+          verbose = FALSE
+        )
+      })
+    }, error = function(err) {
+      #
+      #
+      # Legacy code so that it is compatible with earlier versions of R
+      if(grepl('Incorrect BioMart name', err)) {
+        ensembl <- curl.workaround({
+          biomaRt::useMart("ensembl", host = 'https://www.ensembl.org')
+        })
+
+        curl.workaround({
+            biomaRt::listDatasets(ensembl) %>%
+            dplyr::filter(grepl('hsapien', dataset)) %>%
+            dplyr::select(dataset) %>%
+            dplyr::first() %>%
+            biomaRt::useDataset(mart = ensembl)
+        })
+      } else {
+        stop(err)
+      }
     })
     #
     protein.coding <- tryCatch({
