@@ -23,6 +23,8 @@ It retrieves from NCBI and ensembl
 \examples{
 # This can take a few minutes depending on the connection
 \donttest{
-    coding.genes()
+  res <- coding.genes()
+  nrow(res)
+  head(res)
 }
 }

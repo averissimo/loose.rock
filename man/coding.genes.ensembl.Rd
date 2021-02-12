@@ -23,6 +23,8 @@ Ensembl coding genes, local function
 }
 \examples{
 \donttest{
-  coding.genes.ensembl(TRUE, TRUE)
+  res <- coding.genes.ensembl(TRUE, TRUE)
+  nrow(res)
+  head(res)
 }
 }
