@@ -20,7 +20,7 @@ Create directories for cache
 }
 \examples{
 loose.rock:::create.directory.for.cache(tempdir(), 'abcd')
-\dontrun{
+\donttest{
   loose.rock:::create.directory.for.cache(
     file.path(getwd(), 'run-cache'),
     'abcd'

@@ -122,7 +122,7 @@ build.function.digest <- function(fun) {
 #'
 #' @examples
 #' loose.rock:::create.directory.for.cache(tempdir(), 'abcd')
-#' \dontrun{
+#' \donttest{
 #'   loose.rock:::create.directory.for.cache(
 #'     file.path(getwd(), 'run-cache'),
 #'     'abcd'
@@ -303,7 +303,9 @@ calculate.result <- function(
           !is.null(tmp.env$epochMilliseconds) &&
           is.double(tmp.env$epochMilliseconds)
         ) {
-          my.msg <- paste0('Cache created at ', .POSIXct(tmp.env$epochMilliseconds/1000))
+          my.msg <- paste0(
+            'Cache created at ', .POSIXct(tmp.env$epochMilliseconds/1000)
+          )
           if (!is.null(tmp.env$spec) && !is.na(tmp.env$spec['version'])) {
             message(my.msg, ' using loose.rock v', tmp.env$spec['version'])
           } else {
