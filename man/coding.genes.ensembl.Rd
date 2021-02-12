@@ -23,7 +23,7 @@ Ensembl coding genes, local function
 }
 \examples{
 \donttest{
-  res <- coding.genes.ensembl(TRUE, TRUE)
+  res <- loose.rock:::coding.genes.ensembl(TRUE, TRUE)
   nrow(res)
   head(res)
 }

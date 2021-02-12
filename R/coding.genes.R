@@ -56,7 +56,7 @@ curl.workaround <- function(expr) {
 #'
 #' @examples
 #' \donttest{
-#'   res <- coding.genes.ensembl(TRUE, TRUE)
+#'   res <- loose.rock:::coding.genes.ensembl(TRUE, TRUE)
 #'   nrow(res)
 #'   head(res)
 #' }
