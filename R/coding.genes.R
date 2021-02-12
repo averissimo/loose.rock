@@ -56,7 +56,9 @@ curl.workaround <- function(expr) {
 #'
 #' @examples
 #' \donttest{
-#'   coding.genes.ensembl(TRUE, TRUE)
+#'   res <- coding.genes.ensembl(TRUE, TRUE)
+#'   nrow(res)
+#'   head(res)
 #' }
 coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
 {
@@ -153,7 +155,9 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
 #' @examples
 #' # This can take a few minutes depending on the connection
 #' \donttest{
-#'     coding.genes()
+#'   res <- coding.genes()
+#'   nrow(res)
+#'   head(res)
 #' }
 coding.genes <- function (verbose = FALSE, useCache = TRUE)
 {
