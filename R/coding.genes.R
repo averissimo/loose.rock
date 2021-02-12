@@ -18,7 +18,8 @@ curl.workaround <- function(expr) {
     {expr},
     error = function(err) {
       err
-    })
+    }
+  )
 
   if (inherits(result, 'error') || is.null(result)) {
     warning(
@@ -37,7 +38,6 @@ curl.workaround <- function(expr) {
       {expr},
       override = FALSE
     )
-    # httr::reset_config()
   }
 
   return(result)
@@ -79,6 +79,7 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
       #
       # Legacy code so that it is compatible with earlier versions of R
       if(grepl('Incorrect BioMart name', err)) {
+        warning('Incorrect BioMart name... trying to use older code...')
         ensembl <- curl.workaround({
           biomaRt::useMart("ensembl", host = 'https://www.ensembl.org')
         })
@@ -91,7 +92,7 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
             biomaRt::useDataset(mart = ensembl)
         })
       } else {
-        stop(err)
+        stop('Couldn\'t recover from error\n\n  ', err)
       }
     })
     #
