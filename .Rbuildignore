@@ -11,3 +11,7 @@ README\.html
 LICENSE
 .*_cache$
 .*\.tar\.gz$
+^\.github$
+^run-cache
+^vignettes/run-cache
+^runcache

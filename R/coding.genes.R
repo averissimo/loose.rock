@@ -85,8 +85,8 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
 
         curl.workaround({
             biomaRt::listDatasets(ensembl) %>%
-            dplyr::filter(grepl('hsapien', dataset)) %>%
-            dplyr::select(dataset) %>%
+            dplyr::filter(grepl('hsapien', !!as.name('dataset'))) %>%
+            dplyr::select(!!as.name('dataset')) %>%
             dplyr::first() %>%
             biomaRt::useDataset(mart = ensembl)
         })
