@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 ```
 
 # loose rock 
-<img src="../man/figu   res/loose.rock_logo.svg" width="120" align="right" />
+<img src="../man/figures/loose.rock_logo.svg" width="120" align="right" />
 
 > Set of Functions to Use in Survival Analysis and in Data Science
 
