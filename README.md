@@ -1,8 +1,3 @@
-Overview of loose.rock
-================
-André Veríssimo
-2021-02-13
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # loose rock
