@@ -8,3 +8,5 @@ run-cache/
 inst/doc
 *_cache
 *.tar.gz
+doc
+Meta

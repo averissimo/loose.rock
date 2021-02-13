@@ -15,3 +15,5 @@ LICENSE
 ^run-cache
 ^vignettes/run-cache
 ^runcache
+^doc$
+^Meta$

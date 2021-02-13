@@ -28,7 +28,6 @@ Imports: digest,
 Suggests: biomaRt,
     knitr,
     rmarkdown,
-    devtools,
     roxygen2,
     testthat,
     survival
