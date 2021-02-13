@@ -3,17 +3,19 @@
 #' https://github.com/grimbough/biomaRt/issues/39
 #'
 #' @param expr expression
+#' @param verbose if expression fails, then activates verbose on next
+#' call to curl.
 #'
 #' @return result of expression
 #' @export
 #'
 #' @examples
 #' loose.rock:::curl.workaround({
-#'     biomaRt::useEnsembl(
-#'         biomart = "genes",
+#'     biomaRt::useMart(
+#'         biomart = "ensembl",
 #'         dataset = 'hsapiens_gene_ensembl')
 #' })
-curl.workaround <- function(expr) {
+curl.workaround <- function(expr, verbose = FALSE) {
   result <- tryCatch(
     {expr},
     error = function(err) {
@@ -21,10 +23,18 @@ curl.workaround <- function(expr) {
     }
   )
 
+  verbose.flag <- if (verbose) {
+    1L
+  } else {
+    0L
+  }
+
   if (inherits(result, 'error') || is.null(result)) {
-    warning(
-      "There was an problem, calling the function with ",
-      "ssl_verifypeer to FALSE", "\n\n\t error: ", result$message)
+    if (verbose) {
+      warning(
+        "There was an problem, calling the function with ",
+        "ssl_verifypeer to FALSE", "\n\n\t error: ", result$message)
+    }
     # httr::set_config(httr::config(
     #    ssl_verifypeer = 0L,
     #    ssl_verifyhost = 0L,
@@ -33,9 +43,22 @@ curl.workaround <- function(expr) {
       config = httr::config(
         ssl_verifypeer = 0L,
         ssl_verifyhost = 0L,
-        verbose = 1L
+        verbose = verbose.flag
       ),
-      {expr},
+      withCallingHandlers(
+        expr,
+        warning = function(w) {
+          if (grepl('restarting interrupted promise evaluation', w$message)) {
+            invokeRestart("muffleWarning")
+          } else {
+            warning(w)
+            invokeRestart("muffleWarning")
+          }
+        },
+        error = function(err) {
+          stop(err)
+        }
+      ),
       override = FALSE
     )
   }
@@ -79,17 +102,21 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
       #
       # Legacy code so that it is compatible with earlier versions of R
       if(grepl('Incorrect BioMart name', err)) {
-        warning('Incorrect BioMart name... trying to use older code...')
+
         ensembl <- curl.workaround({
-          biomaRt::useMart("ensembl", host = 'https://www.ensembl.org')
+          biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
         })
 
-        curl.workaround({
+        tryCatch({
+          curl.workaround({
             biomaRt::listDatasets(ensembl) %>%
             dplyr::filter(grepl('hsapien', !!as.name('dataset'))) %>%
             dplyr::select(!!as.name('dataset')) %>%
             dplyr::first() %>%
             biomaRt::useDataset(mart = ensembl)
+          })
+        }, error = function(err2) {
+          stop('Couldn\'t rescue this.\n\n  ', err2)
         })
       } else {
         stop('Couldn\'t recover from error\n\n  ', err)
@@ -107,17 +134,19 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
           useCache   = useCache
         )}
     )}, error = function(err) {
-      if (useCache) {
+      if (useCache && verbose) {
         warning(
           'There was a problem getting the genes,',
           ' trying without a cache.',
           '\n\t',
           err
         )
+        err
+      } else if (useCache) {
+        err
       } else {
         stop('There was a problem with biomaRt::getBM()', '\n\t', err)
       }
-      warning(err)
     })
 
     if ((inherits(protein.coding, 'error') ||
@@ -150,6 +179,8 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
 #' should be used. Setting to FALSE will disable reading and
 #' writing of the cache. This argument is likely to disappear
 #' after the cache functionality has been tested more thoroughly.
+#' @param sub.call.verbose This will make all function calls
+#' verbose, which could be a lot of information.
 #'
 #' @return a table with gene information
 #' @export
@@ -160,18 +191,21 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
 #'   nrow(res)
 #'   head(res)
 #' }
-coding.genes <- function (verbose = FALSE, useCache = TRUE)
-{
+coding.genes <- function(
+  verbose = FALSE, useCache = TRUE, sub.call.verbose = FALSE
+) {
   # if biomaRt is installed it retrieves from 2 sources, otherwise defaults
   #  only to NCBI
-  biomartInstalled = requireNamespace("biomaRt", quietly = TRUE)
+  biomartInstalled <- requireNamespace("biomaRt", quietly = TRUE)
 
   # initialize as empty array in case biomaRt is not installed or fails
   protein.coding <- NULL
   dataset        <- NULL
 
   if (biomartInstalled) {
-    result <- coding.genes.ensembl(verbose = verbose, useCache = useCache)
+    result <- coding.genes.ensembl(
+      verbose = sub.call.verbose, useCache = useCache
+    )
     dataset <- result$mart
     protein.coding <- result$protein.coding
 
@@ -235,20 +269,34 @@ coding.genes <- function (verbose = FALSE, useCache = TRUE)
 
   coding <- NULL
   if (!is.null(dataset) && biomartInstalled) {
-    coding <- tryCatch({
-      rbind(
-        protein.coding,
-          curl.workaround(
-            biomaRt::getBM(
-              attributes = c("ensembl_gene_id","external_gene_name"),
-              filters    = 'external_gene_name',
-              values     = ccds.extra.genes,
-              mart       = dataset,
-              verbose    = verbose,
-              useCache   = useCache
-            )
-          )
+
+    ccds.extra.genes.add <- tryCatch({
+      curl.workaround(
+        biomaRt::getBM(
+          attributes = c("ensembl_gene_id","external_gene_name"),
+          filters    = 'external_gene_name',
+          values     = ccds.extra.genes,
+          mart       = dataset,
+          verbose    = sub.call.verbose,
+          useCache   = useCache
         )
+      )
+    }, error = function(err) {
+      # Trying without cache
+      curl.workaround(
+        biomaRt::getBM(
+          attributes = c("ensembl_gene_id","external_gene_name"),
+          filters    = 'external_gene_name',
+          values     = ccds.extra.genes,
+          mart       = dataset,
+          verbose    = sub.call.verbose,
+          useCache   = FALSE
+        )
+      )
+    })
+
+    coding <- tryCatch({
+      rbind(protein.coding, ccds.extra.genes.add)
     }, error = function(err) {
       cat('Could not get external gene names from biomart. ', err$message, '\n')
       # warning('Could not get external gene names from biomart.')
