@@ -85,6 +85,7 @@ curl.workaround <- function(expr, verbose = FALSE) {
 #' }
 coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
 {
+  mart <- NULL
   tryCatch({
     #
     # Uses hsapies from query
@@ -101,7 +102,7 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
       #
       #
       # Legacy code so that it is compatible with earlier versions of R
-      if(grepl('Incorrect BioMart name', err)) {
+      if(grepl('(Incorrect BioMart name)|(curl_fetch)', err)) {
 
         ensembl <- curl.workaround({
           biomaRt::useMart("ensembl", host = 'http://www.ensembl.org')
@@ -116,10 +117,10 @@ coding.genes.ensembl <- function(verbose = TRUE, useCache = TRUE)
             biomaRt::useDataset(mart = ensembl)
           })
         }, error = function(err2) {
-          stop('Couldn\'t rescue this.\n\n  ', err2)
+          message('Couldn\'t rescue this.\n\n  ', err2)
         })
       } else {
-        stop('Couldn\'t recover from error\n\n  ', err)
+        message('Couldn\'t recover from error.\n\n  ', err)
       }
     })
     #
