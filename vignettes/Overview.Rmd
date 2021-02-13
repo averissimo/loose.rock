@@ -10,7 +10,9 @@ vignette: >
 ---
 
 ```{r, eval=FALSE, include=FALSE}
-rmarkdown::render('Overview.Rmd', output_file = '../README.md')
+# before running this, change ../man/figures/loose.rock_logo.svg" width="120" align="right
+# and uncomment fig.path = "man/figures/README-"
+rmarkdown::render('Overview.Rmd', output_file = file.path(dirname(getwd()), 'README.md'), output_format = 'github_document')
 ```
 
 
@@ -18,6 +20,7 @@ rmarkdown::render('Overview.Rmd', output_file = '../README.md')
 
 ```{r setup, echo=FALSE, include=FALSE}
 knitr::opts_chunk$set(
+  # fig.path = "man/figures/README-",
   collapse = TRUE,
   comment = "#>"
 )
