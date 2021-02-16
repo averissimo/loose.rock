@@ -4,7 +4,7 @@
 \alias{coding.genes.ensembl}
 \title{Ensembl coding genes, local function}
 \usage{
-coding.genes.ensembl(verbose = TRUE, useCache = TRUE)
+coding.genes.ensembl(verbose = FALSE, useCache = TRUE)
 }
 \arguments{
 \item{verbose}{show messages with number of genes retrieved}

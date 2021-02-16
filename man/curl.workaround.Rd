@@ -19,9 +19,11 @@ result of expression
 https://github.com/grimbough/biomaRt/issues/39
 }
 \examples{
-loose.rock:::curl.workaround({
-    biomaRt::useMart(
-        biomart = "ensembl",
-        dataset = 'hsapiens_gene_ensembl')
-})
+\donttest{
+  loose.rock:::curl.workaround({
+      biomaRt::useMart(
+          biomart = "ensembl",
+          dataset = 'hsapiens_gene_ensembl')
+  })
+}
 }

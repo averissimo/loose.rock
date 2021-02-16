@@ -4,7 +4,7 @@
 \alias{coding.genes}
 \title{Retrive coding genes from known databases}
 \usage{
-coding.genes(verbose = FALSE, useCache = TRUE, sub.call.verbose = FALSE)
+coding.genes(verbose = TRUE, useCache = TRUE, extra.verbose = FALSE)
 }
 \arguments{
 \item{verbose}{show messages with number of genes retrieved}
@@ -14,7 +14,7 @@ should be used. Setting to FALSE will disable reading and
 writing of the cache. This argument is likely to disappear
 after the cache functionality has been tested more thoroughly.}
 
-\item{sub.call.verbose}{This will make all function calls
+\item{extra.verbose}{This will make all function calls
 verbose, which could be a lot of information.}
 }
 \value{

@@ -112,6 +112,40 @@ build.function.digest <- function(fun) {
   return(digest.cache(digest.fun))
 }
 
+#' Write a file in run-cache directory to explain the origin
+#'
+#' @param base.dir directory where to build this file
+#'
+#' @examples
+#' loose.rock:::write.readme(tempdir())
+write.readme <- function(base.dir) {
+  readme.path <- file.path(base.dir, "what_is_this_folder.txt")
+
+  readme.text <- c(
+    "This directory was automatically created in R when function 'run.cache'",
+    "was executed (from 'loose.rock' package). This might have been done by",
+    "you directly or by another function to cache results.",
+    "",
+    "This folder can be safely deleted as it only contains a cache of the",
+    "results of functions",
+    "",
+    "package link in CRAN: https://cran.r-project.org/package=loose.rock",
+    "github link: https://github.com/averissimo/loose.rock",
+    "",
+    "Have a great day"
+  )
+
+  if (!file.exists(readme.path)) {
+    tryCatch({
+      fileConn <- file(readme.path)
+      writeLines(readme.text, con = fileConn)
+      close(fileConn)
+    }, error = function(err) {
+      # do nothing as an error here should not block the main process
+    })
+  }
+}
+
 #' Create directories for cache
 #'
 #' @param base.dir tentative base dir to create.
@@ -129,6 +163,10 @@ build.function.digest <- function(fun) {
 #'   )
 #' }
 create.directory.for.cache <- function (base.dir, parent.path) {
+
+  # create the directory to store cache
+  dir.create(base.dir, showWarnings = FALSE)
+
   if (!dir.exists(base.dir)) {
     warning(
       'Could not create cache base folder at ',
@@ -138,6 +176,7 @@ create.directory.for.cache <- function (base.dir, parent.path) {
     base.dir <- file.path(getwd(), 'run-cache')
     dir.create(base.dir, showWarnings = FALSE)
   }
+
   parent.dir <- file.path(base.dir, parent.path)
   dir.create(parent.dir, showWarnings = FALSE)
 
@@ -147,10 +186,12 @@ create.directory.for.cache <- function (base.dir, parent.path) {
       base.dir,
       '.. trying to use current working directory'
     )
-    base.dir   <- file.path(getwd(), 'run-cache')
-    parent.dir <- file.path(base.dir, parent.path)
+    base.dir <- file.path(getwd(), 'run-cache')
+    parent.dir    <- file.path(base.dir, parent.path)
     dir.create(parent.dir, showWarnings = FALSE, recursive = TRUE)
   }
+
+  write.readme(base.dir)
 
   return(list(base.dir = base.dir, parent.dir = parent.dir))
 }
@@ -231,15 +272,13 @@ methods::setMethod(
   # digest all the arguments together
   my.digest <- digest.cache(args)
 
-  # create the directory to store cache
-  dir.create(base.dir, showWarnings = FALSE)
   filename    <- sprintf('cache-%s-H_%s.RData', cache.prefix, my.digest)
   parent.path <- strtrim(my.digest, width = 4)
 
   # create dir and update base.dir (in case it failed)
   cache.dir.paths <- create.directory.for.cache(base.dir, parent.path)
-  parent.dir      <- cache.dir.paths$parent.dir
-  base.dir        <- cache.dir.paths$base.dir
+  parent.dir <- cache.dir.paths$parent.dir
+  base.dir   <- cache.dir.paths$base.dir
 
   # Calculate
   result <- if (dir.exists(parent.dir)) {
@@ -304,7 +343,7 @@ calculate.result <- function(
           is.double(tmp.env$epochMilliseconds)
         ) {
           my.msg <- paste0(
-            'Cache created at ', .POSIXct(tmp.env$epochMilliseconds/1000)
+            'Cache was created at ', .POSIXct(tmp.env$epochMilliseconds/1000)
           )
           if (!is.null(tmp.env$spec) && !is.na(tmp.env$spec['version'])) {
             message(my.msg, ' using loose.rock v', tmp.env$spec['version'])
