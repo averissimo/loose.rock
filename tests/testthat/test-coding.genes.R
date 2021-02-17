@@ -2,13 +2,28 @@ context("coding.genes")
 
 mart <- loose.rock:::getHsapiensMart.internal()
 
+test_that("curl_workarund tests with ssl_verifypeer FALSE", {
+  expect_error(
+    expect_warning(
+      loose.rock:::curl.workaround({stop('me')}, verbose = TRUE),
+      'There was an problem, calling the function with ssl_verifypeer to FALSE'
+    ),
+    'me'
+  )
+})
+
+test_that("getBM.internal", {
+  expect_error(getBM.internal(), "You must provide a valid Mart object")
+  expect_error(getBM.internal(verbose = TRUE), "You must provide a valid Mart object")
+})
+
 test_that("coding genes retrieves some genes", {
   # Suppress warnings, as with R <3.6.3 will produce warnings
   #  with biomaRt failing
   genes <- if (R.Version()$major >= 4) {
-    coding.genes(verbose = FALSE)
+    coding.genes(verbose = TRUE)
   } else {
-    suppressWarnings(coding.genes(verbose = FALSE))
+    suppressWarnings(coding.genes(verbose = TRUE))
   }
   expect_true(
     all(

@@ -255,12 +255,15 @@ getBM.internal <- function(..., useCache = TRUE, verbose = FALSE) {
         NULL
       } else if (grepl("no applicable method for 'filter_'", err$message)) {
         stop(
-          "There was a problem with biomaRt call, ",
-          "please consider updating R version to a newer release.\n\n  ",
-          err$message)
+          simpleError(
+            "There was a problem with biomaRt call, ",
+            "please consider updating R version to a newer release.\n\n  ",
+            err$message
+          )
+        )
         NULL
       } else {
-        stop('There was a problem with biomaRt::getBM()', '\n\n  ', err$message)
+        stop(err)
       }
     }
   )
