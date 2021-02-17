@@ -89,8 +89,8 @@ Showing only a random sample of 15
 
 ```{r coding.genes, collapse=TRUE, message=FALSE, warning=FALSE}
 coding.genes() %>%
-  arrange(external_gene_name) %>% {
-   slice(., sample(seq(nrow(.)), 15)) 
+  dplyr::arrange(external_gene_name) %>% {
+   dplyr::slice(., sample(seq(nrow(.)), 15)) 
   } %>%
   knitr::kable()
 ```
