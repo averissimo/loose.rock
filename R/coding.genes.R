@@ -99,7 +99,8 @@ curl.workaround <- function(expr, verbose = FALSE) {
     if (verbose) {
       warning(
         "There was an problem, calling the function with ",
-        "ssl_verifypeer to FALSE", "\n\n\t error: ", result$message)
+        "ssl_verifypeer to FALSE", "\n\n\t error: ", result$message,
+        call. = FALSE)
     }
     # httr::set_config(httr::config(
     #    ssl_verifypeer = 0L,
@@ -117,7 +118,7 @@ curl.workaround <- function(expr, verbose = FALSE) {
           if (grepl('restarting interrupted promise evaluation', w$message)) {
             invokeRestart("muffleWarning")
           } else {
-            warning(w)
+            warning(w, call. = FALSE)
             invokeRestart("muffleWarning")
           }
         },
@@ -196,7 +197,8 @@ getHsapiensMart.internal <- function(verbose = FALSE, useCache = TRUE) {
         if (useCache) {
           run.cache(
             inside.fun, verbose,
-            base.dir = file.path(tempdir(), 'hsapiens')
+            base.dir = file.path(tempdir(), 'hsapiens'),
+            show.message = FALSE
           )
         } else {
           inside.fun(verbose)
@@ -236,20 +238,29 @@ getBM.internal <- function(..., useCache = TRUE, verbose = FALSE) {
   # Call getBM with curl.workaround wrapper to failback in case of problem
   #  with sslpeer check.
   # It also fallbacks to don't use cache in getBM
-  result <- tryCatch({
-    curl.workaround({biomaRt::getBM(...)})
-  }, error = function(err) {
+  result <- tryCatch(
+    {
+      curl.workaround({biomaRt::getBM(...)})
+    },
+    error = function(err) {
       if (useCache && verbose) {
         warning(
           'There was a problem getting the genes, trying without a cache.',
           '\n\t',
-          err
+          err,
+          call. = FALSE
         )
         NULL
       } else if (useCache) {
         NULL
+      } else if (grepl("no applicable method for 'filter_'", err$message)) {
+        stop(
+          "There was a problem with biomaRt call, ",
+          "please consider updating R version to a newer release.\n\n  ",
+          err$message)
+        NULL
       } else {
-        stop('There was a problem with biomaRt::getBM()', '\n\t', err)
+        stop('There was a problem with biomaRt::getBM()', '\n\n  ', err$message)
       }
     }
   )
@@ -293,7 +304,7 @@ coding.genes.ensembl <- function(verbose = FALSE, useCache = TRUE)
     mart <- tryCatch(
       {getHsapiensMart.internal(verbose)},
       error = function(err) {
-        warning('biomaRt call failed\n', err$message)
+        warning('biomaRt call failed\n', err$message, call. = FALSE)
         NULL
       }
     )
@@ -313,7 +324,7 @@ coding.genes.ensembl <- function(verbose = FALSE, useCache = TRUE)
           )
         },
         error = function(err) {
-          warning('biomaRt call failed\n', err$message)
+          warning('biomaRt call failed\n', err$message, call. = FALSE)
           NULL
         }
       )
@@ -361,7 +372,8 @@ ccds.genes.internal <- function() {
       error = function(err2) {
         warning(
           'Could not retrieve list from NCBI, try again later ',
-          'for this datasource.'
+          'for this datasource.',
+          call. = FALSE
         )
         return(NULL)
     })
@@ -475,7 +487,7 @@ join.ensembl.and.ccds <- function(
           )
 
           # if table is empty, no point in doing anything else
-          if (nrow(add.table.tmp) == 0) {
+          if (is.null(add.table.tmp) || nrow(add.table.tmp) == 0) {
             next
           }
 
@@ -497,8 +509,9 @@ join.ensembl.and.ccds <- function(
         add.table %>% dplyr::distinct()
       },
       error = function(err) {
-        message(
-          'Could not get ccds gene names from biomart. ', err$message, '\n'
+        warning(
+          'Could not get ccds gene names from biomart.',
+          call. = FALSE
         )
         NULL
       }
@@ -513,6 +526,9 @@ join.ensembl.and.ccds <- function(
       'is biomaRt installed?: ', isNamespaceLoaded('biomaRt'),
       ')'
     )
+  }
+
+  if (is.null(coding) || nrow(coding) == 0) {
     coding <- data.frame(
       ensembl_gene_id = ccds.genes$gene,
       external_gene_name = ccds.genes$gene
