@@ -4,7 +4,7 @@
 \alias{cache.compression}
 \title{change cache.compression for run.cache}
 \usage{
-cache.compression(compression = FALSE)
+cache.compression(compression = NULL)
 }
 \arguments{
 \item{compression}{see compression parameter in save function}
