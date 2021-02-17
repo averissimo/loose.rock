@@ -33,7 +33,7 @@ loose.rock.options <- futile.options::OptionsManager(
 #'
 #' @examples
 #' cache.compression('bzip2')
-cache.compression <- function(compression = FALSE) {
+cache.compression <- function(compression = NULL) {
   if (!is.null(compression))
     loose.rock.options(update = list('compression', compression))
   return(loose.rock.options('compression'))

@@ -2,6 +2,8 @@ context("coding.genes")
 
 mart <- loose.rock:::getHsapiensMart.internal()
 
+base.dir(file.path(tempdir(), 'coding_genes'))
+
 test_that("curl_workarund tests with ssl_verifypeer FALSE", {
   expect_error(
     expect_warning(
