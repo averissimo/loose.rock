@@ -14,7 +14,13 @@ test_that("curl_workarund tests with ssl_verifypeer FALSE", {
 
 test_that("getBM.internal", {
   expect_error(getBM.internal(), "You must provide a valid Mart object")
-  expect_error(getBM.internal(verbose = TRUE), "You must provide a valid Mart object")
+  expect_warning(
+    expect_error(
+      getBM.internal(mart = mart, verbose = TRUE),
+      "Argument 'attributes' must be specified"
+    ),
+    "Argument 'attributes' must be specified"
+  )
 })
 
 test_that("coding genes retrieves some genes", {
