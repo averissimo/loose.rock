@@ -4,12 +4,18 @@
 \alias{getHsapiensMart.internal}
 \title{Get hsapiens mart from biomaRt}
 \usage{
-getHsapiensMart.internal(verbose = FALSE, useCache = TRUE)
+getHsapiensMart.internal(
+  verbose = FALSE,
+  useCache = TRUE,
+  domain = listEnsemblMirrors()
+)
 }
 \arguments{
 \item{verbose}{add extra information in messages}
 
 \item{useCache}{use run.cache to speed up multiple calls}
+
+\item{domain}{vector of possible domains to call biomaRt}
 }
 \value{
 biomaRt hsapiens mart

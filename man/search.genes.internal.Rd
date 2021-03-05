@@ -26,7 +26,11 @@ Search genes in biomaRt
 \examples{
 \donttest{
   mart <- loose.rock:::getHsapiensMart.internal()
-  loose.rock:::search.genes.internal('entrezgene_accession', 'HHLA3', mart)
-  loose.rock:::search.genes.internal('external_gene_name', 'BRAC2', mart)
+  loose.rock:::search.genes.internal(
+    'entrezgene_accession', 'HHLA3', mart, useCache = FALSE
+  )
+  loose.rock:::search.genes.internal(
+    'external_gene_name', 'BRCA2', mart, useCache = FALSE
+  )
 }
 }

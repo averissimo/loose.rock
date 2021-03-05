@@ -17,3 +17,5 @@ LICENSE
 ^runcache
 ^doc$
 ^Meta$
+^CRAN-RELEASE$
+^.git/

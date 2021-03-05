@@ -482,3 +482,4 @@ test_that("run.cache base.dir option works", {
     cache2.os
   )
 })
+

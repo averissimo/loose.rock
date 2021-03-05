@@ -39,6 +39,7 @@ knitr::opts_chunk$set(
 
 ```{r, include=FALSE}
 library(loose.rock)
+loose.rock::base.dir(file.path(tempdir(), 'run-cache'))
 ```
 
 Collection of function to improve workflow in survival analysis and data 
@@ -164,7 +165,7 @@ changes, the cache is regenerated.
 Set a temporary directory to save all caches (optional)
 
 ```{r}
-base.dir(tempdir())
+base.dir(file.path(tempdir(), 'run-cache'))
 ```
 
 Run sum function twice

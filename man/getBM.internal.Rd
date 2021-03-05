@@ -4,15 +4,10 @@
 \alias{getBM.internal}
 \title{Internal call to biomaRt::getBM}
 \usage{
-getBM.internal(..., useCache = TRUE, verbose = FALSE)
+getBM.internal(...)
 }
 \arguments{
-\item{...}{Paramters for biomaRt::getBM}
-
-\item{useCache}{biomaRt::getBM parameter to use local cache or not. We use it
-to try again without cache in case of an error}
-
-\item{verbose}{show more verbose}
+\item{...}{see biomaRt::getBM as all parameters are the same}
 }
 \value{
 result of the biomaRt::getBM call
@@ -24,12 +19,16 @@ Depending on R version (<4.0.0) then it needs to have a special call
 \donttest{
   mart <- loose.rock:::getHsapiensMart.internal()
   res <- loose.rock:::getBM.internal(
-    attributes = c("ensembl_gene_id","external_gene_name"),
+    attributes = c('ensembl_gene_id','external_gene_name'),
     filters    = 'biotype',
     values     = c('protein_coding'),
     mart       = mart,
+    useCache   = FALSE
   )
   nrow(res)
   head(res)
 }
+}
+\seealso{
+biomaRt::getBM
 }

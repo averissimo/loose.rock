@@ -156,10 +156,9 @@ write.readme <- function(base.dir) {
 #'
 #' @examples
 #' loose.rock:::create.directory.for.cache(tempdir(), 'abcd')
-#' \donttest{
+#' \dontrun{
 #'   loose.rock:::create.directory.for.cache(
-#'     file.path(getwd(), 'run-cache'),
-#'     'abcd'
+#'     file.path(getwd(), 'run-cache'), 'abcd'
 #'   )
 #' }
 create.directory.for.cache <- function (base.dir, parent.path) {
@@ -170,11 +169,16 @@ create.directory.for.cache <- function (base.dir, parent.path) {
   if (!dir.exists(base.dir)) {
     warning(
       'Could not create cache base folder at ',
-      base.dir,
-      '.. trying to use current working directory'
+      '\'', base.dir, '\'',
+      '... trying to use current working directory'
     )
-    base.dir <- file.path(getwd(), 'run-cache')
+    base.dir      <- loose.rock.options('base.dir')
     dir.create(base.dir, showWarnings = FALSE)
+
+    if (!dir.exists(base.dir)) {
+      base.dir <- file.path(getwd(), 'run-cache')
+      dir.create(base.dir, showWarnings = FALSE)
+    }
   }
 
   parent.dir <- file.path(base.dir, parent.path)
@@ -184,11 +188,18 @@ create.directory.for.cache <- function (base.dir, parent.path) {
     warning(
       'Could not create cache folder inside base.dir at ',
       base.dir,
-      '.. trying to use current working directory'
+      '.. trying to use globally defined base.dir or ',
+      'if it fails current directory'
     )
-    base.dir <- file.path(getwd(), 'run-cache')
+    base.dir      <- loose.rock.options('base.dir')
     parent.dir    <- file.path(base.dir, parent.path)
     dir.create(parent.dir, showWarnings = FALSE, recursive = TRUE)
+
+    if (!dir.exists(parent.dir)) {
+      base.dir      <- base.dir <- file.path(getwd(), 'run-cache')
+      parent.dir    <- file.path(base.dir, parent.path)
+      dir.create(parent.dir, showWarnings = FALSE, recursive = TRUE)
+    }
   }
 
   write.readme(base.dir)

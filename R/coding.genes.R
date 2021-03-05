@@ -27,7 +27,7 @@ coding.genes <- function(
   biomartInstalled <- requireNamespace("biomaRt", quietly = TRUE)
 
   # initialize as empty array in case biomaRt is not installed or fails
-  protein.coding <- NULL
+  protein.coding <- dplyr::tibble()
   mart           <- NULL
 
   if (biomartInstalled) {
@@ -57,7 +57,7 @@ coding.genes <- function(
     message('   Coding genes from CCDS: ', length(unique(ccds.genes$gene)))
     message('            added by CCDS: ', nrow(coding) - nrow(protein.coding))
     message('-------------------------------')
-    message('    genes with ensembl_id: ', nrow(coding))
+    message('    total number of genes: ', nrow(coding))
   }
 
   return(coding)
@@ -137,6 +137,7 @@ curl.workaround <- function(expr, verbose = FALSE) {
 #'
 #' @param verbose add extra information in messages
 #' @param useCache use run.cache to speed up multiple calls
+#' @param domain vector of possible domains to call biomaRt
 #'
 #' @return biomaRt hsapiens mart
 #'
@@ -145,9 +146,15 @@ curl.workaround <- function(expr, verbose = FALSE) {
 #'   loose.rock:::getHsapiensMart.internal()
 #'   loose.rock:::getHsapiensMart.internal(verbose = TRUE, useCache = FALSE)
 #' }
-getHsapiensMart.internal <- function(verbose = FALSE, useCache = TRUE) {
+getHsapiensMart.internal <- function(
+  verbose = FALSE, useCache = TRUE,
+  domain = listEnsemblMirrors()
+) {
 
-  inside.fun <- function(verbose) {
+  inside.fun <- function(verbose, domain) {
+    host.https <- paste0('https://', domain)
+    host.http <- paste0('http://', domain)
+
     #
     # Uses hsapiens from query
     mart <- tryCatch({
@@ -155,7 +162,7 @@ getHsapiensMart.internal <- function(verbose = FALSE, useCache = TRUE) {
         biomaRt::useEnsembl(
           biomart = "genes",
           dataset = 'hsapiens_gene_ensembl',
-          host = 'https://www.ensembl.org',
+          host = host.https[1],
           verbose = verbose
         )
       })
@@ -168,7 +175,7 @@ getHsapiensMart.internal <- function(verbose = FALSE, useCache = TRUE) {
         ensembl <- curl.workaround({
           biomaRt::useMart(
             "ensembl",
-            host = 'http://www.ensembl.org',
+            host = host.http[1],
             verbose = verbose)
         })
 
@@ -181,11 +188,19 @@ getHsapiensMart.internal <- function(verbose = FALSE, useCache = TRUE) {
               biomaRt::useDataset(mart = ensembl, verbose = verbose)
           })
         }, error = function(err2) {
-          stop('Couldn\'t retrieve mart.\n\n  ', err2$message)
+          stop(
+            simpleError(
+              paste0('Couldn\'t retrieve mart.\n\n  ', err2$message),
+              call = err2$call)
+          )
         })
       } else {
         # else if error is not handled
-        stop('Couldn\'t retrieve mart.\n\n  ', err$messsage)
+        stop(
+          simpleError(
+            paste0('Couldn\'t retrieve mart.\n\n  ', err$message),
+            call = err$call)
+        )
       }
     })
     return(mart)
@@ -196,29 +211,52 @@ getHsapiensMart.internal <- function(verbose = FALSE, useCache = TRUE) {
       {
         if (useCache) {
           run.cache(
-            inside.fun, verbose,
+            inside.fun, verbose, domain,
             base.dir = file.path(tempdir(), 'hsapiens'),
             show.message = FALSE
           )
         } else {
-          inside.fun(verbose)
+          inside.fun(verbose, domain)
         }
       },
       error = function(err) {
-        message('Couldn\'t retrieve mart.\n\n  ', err$message)
+        if (
+          length(domain) > 0 &&
+          grepl('Consider trying one of the Ensembl mirrors', err$message)
+        ) {
+          return(getHsapiensMart.internal(
+            verbose = verbose,
+            useCache = useCache,
+            domain = domain[-1]
+          ))
+        }
+        stop(err)
       }
     )
   )
+}
+
+#' Internal function to list mirrors
+#'
+#' @return list of ensembl mirrors
+#'
+#' @examples
+#' loose.rock:::listEnsemblMirrors()
+listEnsemblMirrors <- function() {
+  return(c(
+    'www.ensembl.org',
+    'uswest.ensembl.org',
+    'useast.ensembl.org',
+    'asia.ensembl.org'
+  ))
 }
 
 #' Internal call to biomaRt::getBM
 #'
 #' Depending on R version (<4.0.0) then it needs to have a special call
 #'
-#' @param ... Paramters for biomaRt::getBM
-#' @param useCache biomaRt::getBM parameter to use local cache or not. We use it
-#' to try again without cache in case of an error
-#' @param verbose show more verbose
+#' @param ... see biomaRt::getBM as all parameters are the same
+#' @seealso biomaRt::getBM
 #'
 #' @return result of the biomaRt::getBM call
 #'
@@ -226,32 +264,46 @@ getHsapiensMart.internal <- function(verbose = FALSE, useCache = TRUE) {
 #' \donttest{
 #'   mart <- loose.rock:::getHsapiensMart.internal()
 #'   res <- loose.rock:::getBM.internal(
-#'     attributes = c("ensembl_gene_id","external_gene_name"),
+#'     attributes = c('ensembl_gene_id','external_gene_name'),
 #'     filters    = 'biotype',
 #'     values     = c('protein_coding'),
 #'     mart       = mart,
+#'     useCache   = FALSE
 #'   )
 #'   nrow(res)
 #'   head(res)
 #' }
-getBM.internal <- function(..., useCache = TRUE, verbose = FALSE) {
+getBM.internal <- function(...) {
   # Call getBM with curl.workaround wrapper to failback in case of problem
   #  with sslpeer check.
   # It also fallbacks to don't use cache in getBM
+  args <- list(...)
+  # Set verbose as FALSE if not present
+  if (is.null(args[['verbose']])) {
+    args[['verbose']] <- FALSE
+  }
+  # Set useCache as TRUE if not present
+  if (is.null(args[['useCache']])) {
+    args[['useCache']] <- TRUE
+  }
   result <- tryCatch(
     {
-      curl.workaround({biomaRt::getBM(...)})
+      curl.workaround({do.call(biomaRt::getBM, args)})
     },
     error = function(err) {
-      if (useCache && verbose) {
-        warning(
-          'There was a problem getting the genes, trying without a cache.',
-          '\n\t',
-          err,
-          call. = FALSE
-        )
+      #
+      if (args[['useCache']] && args[['verbose']]) {
+        simpleMessage(
+          paste0(
+            'Message: There was a problem getting the genes, ',
+            'trying without a cache.\n  ',
+            err$message,
+            '\n'
+          ),
+          call = err$call
+        ) %>% message
         NULL
-      } else if (useCache) {
+      } else if (args[['useCache']]) {
         NULL
       } else if (grepl("no applicable method for 'filter_'", err$message)) {
         stop(
@@ -260,19 +312,19 @@ getBM.internal <- function(..., useCache = TRUE, verbose = FALSE) {
               "There was a problem with biomaRt call, ",
               "please consider updating R version to a newer release.\n\n  ",
               err$message
-            )
+            ),
+            call = err$call
           )
         )
         NULL
       } else {
-        stop(err)
+        stop(simpleError(err$message, call = err$call))
       }
     }
   )
 
-  if ((inherits(result, 'error') || is.null(result)) && useCache) {
+  if ((inherits(result, 'error') || is.null(result)) && args[['useCache']]) {
     # retrying without cache
-    args <- list(...)
     args[['useCache']] <- FALSE
     return(do.call(getBM.internal, args))
   }
@@ -412,8 +464,12 @@ ccds.genes.internal <- function() {
 #' @examples
 #' \donttest{
 #'   mart <- loose.rock:::getHsapiensMart.internal()
-#'   loose.rock:::search.genes.internal('entrezgene_accession', 'HHLA3', mart)
-#'   loose.rock:::search.genes.internal('external_gene_name', 'BRAC2', mart)
+#'   loose.rock:::search.genes.internal(
+#'     'entrezgene_accession', 'HHLA3', mart, useCache = FALSE
+#'   )
+#'   loose.rock:::search.genes.internal(
+#'     'external_gene_name', 'BRCA2', mart, useCache = FALSE
+#'   )
 #' }
 search.genes.internal <- function(
   filters, values, mart, useCache = TRUE, verbose = FALSE
@@ -446,7 +502,11 @@ join.ensembl.and.ccds <- function(
 ) {
 
   # Find all unique external names in ensembl set of protein coding genes
-  biomart.genes <- unique(ensembl.genes$external_gene_name)
+  biomart.genes <- if(is.null(ensembl.genes) || nrow(ensembl.genes) == 0) {
+    c()
+  } else {
+    unique(ensembl.genes$external_gene_name)
+  }
 
   # filter out from ccds (if ensembl is empty, then this does nothing)
   ccds.filter <- ccds.genes %>%
@@ -526,7 +586,7 @@ join.ensembl.and.ccds <- function(
     coding <- dplyr::bind_rows(ensembl.genes, ccds.coding)
   } else {
     message(
-      'Skipping getBM',
+      'Skipping biomaRt',
       ' (is mart valid?: ', !is.null(mart), ' -- ',
       'is biomaRt installed?: ', isNamespaceLoaded('biomaRt'),
       ')'
