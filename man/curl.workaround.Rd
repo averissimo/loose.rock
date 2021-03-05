@@ -19,7 +19,7 @@ result of expression
 https://github.com/grimbough/biomaRt/issues/39
 }
 \examples{
-\donttest{
+\dontrun{
   loose.rock:::curl.workaround({
       biomaRt::useMart(
           biomart = "ensembl",

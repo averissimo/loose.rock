@@ -74,7 +74,7 @@ coding.genes <- function(
 #' @return result of expression
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'   loose.rock:::curl.workaround({
 #'       biomaRt::useMart(
 #'           biomart = "ensembl",
