@@ -282,52 +282,80 @@ getBM.internal <- function(...) {
   if (is.null(args[['verbose']])) {
     args[['verbose']] <- FALSE
   }
-  # Set useCache as TRUE if not present
-  if (is.null(args[['useCache']])) {
-    args[['useCache']] <- TRUE
+  args.call <- args
+  args.call[['failNullUseCache']] <- NULL
+
+  # set useCache to TRUE (default) if it's not deliberately calling
+  #  with failNullUseCache
+  # This allows to try to fallback to FALSE in case of error
+  if (is.null(args[['failNullUseCache']])) {
+    if (is.null(args.call['useCache'])) {
+      args.call[['useCache']] <- TRUE
+    }
   }
+
   result <- tryCatch(
     {
-      curl.workaround({do.call(biomaRt::getBM, args)})
+      curl.workaround({do.call(biomaRt::getBM, args.call)})
     },
     error = function(err) {
-      #
-      if (args[['useCache']] && args[['verbose']]) {
-        simpleMessage(
-          paste0(
-            'Message: There was a problem getting the genes, ',
-            'trying without a cache.\n  ',
-            err$message,
-            '\n'
-          ),
-          call = err$call
-        ) %>% message
-        NULL
-      } else if (args[['useCache']]) {
-        NULL
-      } else if (grepl("no applicable method for 'filter_'", err$message)) {
-        stop(
-          simpleError(
-            paste0(
-              "There was a problem with biomaRt call, ",
-              "please consider updating R version to a newer release.\n\n  ",
-              err$message
-            ),
-            call = err$call
-          )
-        )
-        NULL
-      } else {
+      # special flag to pass this function, but not getBM
+      #  says that it is trying without useCache parameter, but if it fails
+      #  then it doesn't recover (same behaviour as with useCache)
+      if (!is.null(args[['failNullUseCache']]) && args[['failNullUseCache']]) {
+        # nothing more to be done
+        #
+        # if useCache is NULL with initial call, it tries with useCache=TRUE
+        #  if it fails, then tries with useCache=FALSE
+        # if any of those fails with unused argument useCache, then
+        #  it tries with useCache=NULL for one single time.. if that fails
+        # we reach this point
         stop(simpleError(err$message, call = err$call))
+      } else {
+        # This will try to call this function again without cache
+        #  showing a message
+        #
+        # There are 2 cases where it will call again
+        #  1. If there's an error with 'unused argument (useCache'.
+        #     This will call again without useCache argument
+        #  2. If useCache==TRUE. This will call again without cache.
+        if (!is.null(args.call[['useCache']]) && args.call[['useCache']]) {
+          if (args.call[['verbose']]) {
+            simpleMessage(
+              paste0(
+                'Message: There was a problem getting the genes, ',
+                'trying without a cache.\n  ', err$message, '\n'
+              ),
+              call = err$call
+            ) %>% message()
+          }
+          args.call[['useCache']] <- FALSE #
+          do.call(getBM.internal, args.call)
+        } else if (grepl("unused argument (useCache", err$message)) {
+          args.without.cache <- args.call
+          args.without.cache[['useCache']] <- NULL
+          args.without.cache[['failNullUseCache']] <- TRUE
+
+          do.call(getBM.internal, args.without.cache)
+        } else {
+          if (grepl("no applicable method for 'filter_'", err$message)) {
+            stop(
+              simpleError(
+                paste0(
+                  "There was a problem with biomaRt call, ",
+                  "please consider updating R version to a newer release.\n\n",
+                  "  ", err$message, '\n'
+                )
+              )
+            )
+          } else {
+            stop(simpleError(err$message, call = err$call))
+          }
+        }
       }
     }
   )
 
-  if ((inherits(result, 'error') || is.null(result)) && args[['useCache']]) {
-    # retrying without cache
-    args[['useCache']] <- FALSE
-    return(do.call(getBM.internal, args))
-  }
   return(result)
 }
 

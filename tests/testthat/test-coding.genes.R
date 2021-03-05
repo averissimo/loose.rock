@@ -45,6 +45,33 @@ test_that("coding genes retrieves some genes", {
   )
 })
 
+test_that("getBM multiple combinations of useCache", {
+  args <- list(
+    attributes = c("ensembl_gene_id", "external_gene_name"),
+    filters    = "external_gene_name",
+    values     = c("BRCA1", "BRCA2", "CHADL", "BTBD8", "BCAS2", "AGAP1"),
+    mart       = mart,
+    useCache   = TRUE
+  )
+
+  args.2 <- args
+  args.2[['useCache']] <- FALSE
+
+  expect_identical(
+    do.call(loose.rock:::getBM.internal, args),
+    do.call(loose.rock:::getBM.internal, args.2)
+  )
+
+  args.3 <- args
+  args.3[['useCache']] <- NULL
+  args.3[['failNullUseCache']] <- TRUE
+
+  expect_identical(
+    do.call(loose.rock:::getBM.internal, args),
+    do.call(loose.rock:::getBM.internal, args.3)
+  )
+})
+
 test_that("getBM internal gets the same as biomaRt::getBM", {
   args <- list(
     attributes = c("ensembl_gene_id", "external_gene_name"),
