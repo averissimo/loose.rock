@@ -7,6 +7,12 @@ mart <- loose.rock:::getHsapiensMart.internal()
 
 base.dir(file.path(tempdir(), "coding_genes"))
 
+# Avoid some lifecycle warnings in versions of R < 4
+suppressWarnings({
+  dplyr::filter_(dplyr::tibble())
+  dplyr::select_(dplyr::tibble())
+})
+
 test_that("getHsapiensMart.internal works", {
   expect_identical(mart@biomart, "ENSEMBL_MART_ENSEMBL")
 })
@@ -23,11 +29,12 @@ test_that("curl_workarund tests with ssl_verifypeer FALSE", {
 
 test_that("getBM internal errors and messages", {
   expect_error(getBM.internal(), "You must provide a valid Mart object")
-  expect_message(
-    expect_error(
-      getBM.internal(mart = mart, verbose = TRUE),
-      "Argument 'attributes' must be specified"
-    ),
+  expect_error(
+    getBM.internal(mart = mart, verbose = TRUE),
+    "Argument 'attributes' must be specified"
+  )
+  expect_error(
+    getBM.internal(mart = mart, verbose = FALSE),
     "Argument 'attributes' must be specified"
   )
 })

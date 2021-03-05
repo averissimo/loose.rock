@@ -331,7 +331,7 @@ getBM.internal <- function(...) {
           }
           args.call[['useCache']] <- FALSE #
           do.call(getBM.internal, args.call)
-        } else if (grepl("unused argument (useCache", err$message)) {
+        } else if (grepl("unused argument [(]useCache", err$message)) {
           args.without.cache <- args.call
           args.without.cache[['useCache']] <- NULL
           args.without.cache[['failNullUseCache']] <- TRUE
