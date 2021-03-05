@@ -41,7 +41,8 @@ test_that("getBM internal errors and messages", {
 
 test_that("coding genes retrieves some genes", {
   # Depending on network connectivity or R version, biomaRt or ccds might
-  #  fail. So this test surppres
+  #  fail. So this test surppress warnings (as long as there are some genes)
+  #  then the function works (either just from ccds or from both sources)
   genes <- suppressWarnings(coding.genes(verbose = TRUE))
   expect_true(
     all(
@@ -69,13 +70,23 @@ test_that("getBM multiple combinations of useCache", {
     do.call(loose.rock:::getBM.internal, args.2)
   )
 
-  args.3 <- args
-  args.3[['useCache']] <- NULL
-  args.3[['failNullUseCache']] <- TRUE
+  if (R.Version()$major >= 4) {
+    args.3 <- args
+    args.3[['useCache']] <- NULL
+    args.3[['failNullUseCache']] <- TRUE
+
+    expect_identical(
+      do.call(loose.rock:::getBM.internal, args),
+      do.call(loose.rock:::getBM.internal, args.3)
+    )
+  }
+
+  args.4 <- args
+  args.4[['useCache']] <- NULL
 
   expect_identical(
     do.call(loose.rock:::getBM.internal, args),
-    do.call(loose.rock:::getBM.internal, args.3)
+    do.call(loose.rock:::getBM.internal, args.4)
   )
 })
 

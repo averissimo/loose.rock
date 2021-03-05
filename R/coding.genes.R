@@ -289,7 +289,7 @@ getBM.internal <- function(...) {
   #  with failNullUseCache
   # This allows to try to fallback to FALSE in case of error
   if (is.null(args[['failNullUseCache']])) {
-    if (is.null(args.call['useCache'])) {
+    if (is.null(args.call[['useCache']])) {
       args.call[['useCache']] <- TRUE
     }
   }
