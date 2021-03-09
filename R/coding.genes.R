@@ -416,7 +416,7 @@ coding.genes.ensembl <- function(verbose = FALSE, useCache = TRUE)
     }
   }
 
-  if (!exists('protein.coding')) {
+  if (!exists('protein.coding') || is.null(protein.coding)) {
     protein.coding <- dplyr::tibble()
   }
 
