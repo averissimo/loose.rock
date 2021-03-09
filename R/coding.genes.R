@@ -379,7 +379,7 @@ getBM.internal <- function(...) {
 coding.genes.ensembl <- function(verbose = FALSE, useCache = TRUE)
 {
   mart <- NULL
-  protein.coding <- NULL
+  protein.coding <- dplyr::tibble()
   biomartInstalled <- isNamespaceLoaded('biomaRt')
 
   if (biomartInstalled) {
@@ -414,6 +414,10 @@ coding.genes.ensembl <- function(verbose = FALSE, useCache = TRUE)
         }
       )
     }
+  }
+
+  if (!exists('protein.coding')) {
+    protein.coding <- dplyr::tibble()
   }
 
   return(

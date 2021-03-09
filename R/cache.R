@@ -227,7 +227,14 @@ save.run.cache <- function(result, path, compression, show.message) {
     epochMilliseconds <- as.double(Sys.time()) * 1000 # seconds
     #
     if (show.message) { message('Saving in cache:  ', path) }
-    save(result, epochMilliseconds, spec, file = path, compress = compression)
+    save(
+      result,
+      epochMilliseconds,
+      spec,
+      file = path,
+      compress = compression,
+      version = NULL
+    )
   }, error = function(err) {
     warning(
       'Problem when saving cache. Attempting to deliver results...\n\n',

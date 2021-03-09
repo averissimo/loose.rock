@@ -2,17 +2,22 @@
 title: "Overview of loose.rock"
 author: "André Veríssimo"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  github_document:
+    includes:
+      in_header: ../man/md/preamble.md
+  rmarkdown::html_vignette:
 vignette: >
   %\VignetteIndexEntry{Overview of loose.rock}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r, eval=FALSE, include=FALSE}
-# before running this, change ../man/figures/loose.rock_logo.svg" width="120" align="right
+# before running this, remove '../' from ../man/figures/loose.rock_logo.svg" width="120" align="right
 # and uncomment fig.path = "man/figures/README-"
 rmarkdown::render('Overview.Rmd', output_file = file.path(dirname(getwd()), 'README.md'), output_format = 'github_document')
+file.remove(file.path(dirname(getwd()), 'README.html'))
 ```
 
 
@@ -20,7 +25,7 @@ rmarkdown::render('Overview.Rmd', output_file = file.path(dirname(getwd()), 'REA
 
 ```{r setup, echo=FALSE, include=FALSE}
 knitr::opts_chunk$set(
-  # fig.path = "man/figures/README-",
+  fig.path = "man/figures/README-",
   collapse = TRUE,
   comment = "#>"
 )
@@ -28,14 +33,9 @@ knitr::opts_chunk$set(
 ```
 
 # loose rock 
-<img src="../man/figures/loose.rock_logo.svg" width="120" align="right" />
+<img src="man/figures/loose.rock_logo.png" width="120" align="right" />
 
 > Set of Functions to Use in Survival Analysis and in Data Science
-
-![R CMD check](https://github.com/averissimo/loose.rock/workflows/R-CMD-check/badge.svg)
-[![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
-[![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
-
 
 ```{r, include=FALSE}
 library(loose.rock)

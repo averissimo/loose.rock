@@ -19,3 +19,5 @@ LICENSE
 ^Meta$
 ^CRAN-RELEASE$
 ^.git/
+^man/md/
+^vignettes/man/

@@ -1,17 +1,19 @@
+Overview of loose.rock
+================
+André Veríssimo
+2021-03-09
+
+![R CMD check](https://github.com/averissimo/loose.rock/workflows/R-CMD-check/badge.svg)
+[![Coverage Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
+[![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # loose rock
 
-<img src="man/figures/loose.rock_logo.svg" width="120" align="right" />
+<img src="man/figures/loose.rock_logo.png" width="120" align="right" />
 
 > Set of Functions to Use in Survival Analysis and in Data Science
-
-![R CMD
-check](https://github.com/averissimo/loose.rock/workflows/R-CMD-check/badge.svg)
-[![Coverage
-Status](https://codecov.io/gh/averissimo/loose.rock/branch/master/graph/badge.svg)](https://codecov.io/github/averissimo/loose.rock?branch=master)
-[![CRAN
-Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
 
 Collection of function to improve workflow in survival analysis and data
 science. Among the many features, the generation of balanced datasets,
@@ -64,29 +66,29 @@ Showing only a random sample of 15
 
 ``` r
 coding.genes() %>%
-  arrange(external_gene_name) %>% {
-   slice(., sample(seq(nrow(.)), 15)) 
+  dplyr::arrange(external_gene_name) %>% {
+   dplyr::slice(., sample(seq(nrow(.)), 15)) 
   } %>%
   knitr::kable()
 ```
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000129152   | MYOD1                |
-| ENSG00000196539   | OR2T3                |
-| ENSG00000205269   | TMEM170B             |
-| ENSG00000100731   | PCNX1                |
-| ENSG00000115993   | TRAK2                |
-| ENSG00000186790   | FOXE3                |
-| ENSG00000135355   | GJA10                |
-| ENSG00000206478   | IER3                 |
-| ENSG00000178878   | APOLD1               |
-| ENSG00000143578   | CREB3L4              |
-| ENSG00000130816   | DNMT1                |
-| ENSG00000128218   | VPREB3               |
-| ENSG00000279000   | OR10A6               |
-| ENSG00000130540   | SULT4A1              |
-| ENSG00000176787   | OR52E2               |
+| ENSG00000136521   | NDUFB5               |
+| ENSG00000181752   | OR8K5                |
+| ENSG00000229341   | TNXB                 |
+| ENSG00000146247   | PHIP                 |
+| ENSG00000229549   | TSPY8                |
+| ENSG00000187889   | FYB2                 |
+| ENSG00000116906   | GNPAT                |
+| ENSG00000138684   | IL21                 |
+| ENSG00000101199   | ARFGAP1              |
+| ENSG00000214756   | CSKMT                |
+| ENSG00000177103   | DSCAML1              |
+| ENSG00000161179   | YDJC                 |
+| ENSG00000176540   | OR4C5                |
+| ENSG00000121314   | TAS2R8               |
+| ENSG00000083454   | P2RX5                |
 
 ## Balanced test/train dataset
 
@@ -181,8 +183,8 @@ big.*
 Set a temporary directory to save all caches (optional)
 
 ``` r
-base.dir(tempdir())
-#> [1] "/tmp/Rtmp6IRosQ"
+base.dir(file.path(tempdir(), 'run-cache'))
+#> [1] "/tmp/RtmpmlO8rJ/run-cache"
 ```
 
 Run sum function twice
@@ -190,12 +192,12 @@ Run sum function twice
 ``` r
 a <- run.cache(sum, 1, 2)
 #> Loading from cache (not calculating):
-#>   /tmp/Rtmp6IRosQ/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
-#> Cache created at 2021-02-13 02:59:07 using loose.rock v1.1.0
+#>   /tmp/RtmpmlO8rJ/run-cache/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
+#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
 b <- run.cache(sum, 1, 2)
 #> Loading from cache (not calculating):
-#>   /tmp/Rtmp6IRosQ/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
-#> Cache created at 2021-02-13 02:59:07 using loose.rock v1.1.0
+#>   /tmp/RtmpmlO8rJ/run-cache/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
+#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
 all(a == b)
 #> [1] TRUE
 ```
@@ -206,12 +208,12 @@ same random number)*
 ``` r
 a <- run.cache(rnorm, 5, seed = 1985)
 #> Loading from cache (not calculating):
-#>   /tmp/Rtmp6IRosQ/9fda/cache-generic_cache-H_9fdab5baa36653c6d435ce2d68ec6651845f679861f463fe065f38115dc7acbe.RData
-#> Cache created at 2021-02-13 02:59:07 using loose.rock v1.1.0
+#>   /tmp/RtmpmlO8rJ/run-cache/9fda/cache-generic_cache-H_9fdab5baa36653c6d435ce2d68ec6651845f679861f463fe065f38115dc7acbe.RData
+#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
 b <- run.cache(rnorm, 5, seed = 2000)
 #> Loading from cache (not calculating):
-#>   /tmp/Rtmp6IRosQ/2ada/cache-generic_cache-H_2adac402358921459b509ec972477640ce54df8436844fb57f761cbe49a3296d.RData
-#> Cache created at 2021-02-13 02:59:07 using loose.rock v1.1.0
+#>   /tmp/RtmpmlO8rJ/run-cache/2ada/cache-generic_cache-H_2adac402358921459b509ec972477640ce54df8436844fb57f761cbe49a3296d.RData
+#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
 all(a == b)
 #> [1] FALSE
 ```
