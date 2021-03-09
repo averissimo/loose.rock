@@ -5,7 +5,8 @@ output:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r setup, echo=FALSE, include=FALSE}
+```{r setup_readme, echo=FALSE, include=FALSE}
+dont_run_setup <- TRUE
 knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   collapse = TRUE,
@@ -24,7 +25,7 @@ knitr::opts_chunk$set(
 [![CRAN Version](https://img.shields.io/cran/v/loose.rock.svg)](https://cran.r-project.org/package=loose.rock)
 
 
-```{r, child='vignettes/_main.Rmd'}
+```{r, child='vignettes/Overview.Rmd'}
 ```
 
 

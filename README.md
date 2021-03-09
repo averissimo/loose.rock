@@ -73,21 +73,21 @@ coding.genes() %>%
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000136521   | NDUFB5               |
-| ENSG00000181752   | OR8K5                |
-| ENSG00000229341   | TNXB                 |
-| ENSG00000146247   | PHIP                 |
-| ENSG00000229549   | TSPY8                |
-| ENSG00000187889   | FYB2                 |
-| ENSG00000116906   | GNPAT                |
-| ENSG00000138684   | IL21                 |
-| ENSG00000101199   | ARFGAP1              |
-| ENSG00000214756   | CSKMT                |
-| ENSG00000177103   | DSCAML1              |
-| ENSG00000161179   | YDJC                 |
-| ENSG00000176540   | OR4C5                |
-| ENSG00000121314   | TAS2R8               |
-| ENSG00000083454   | P2RX5                |
+| ENSG00000174106   | LEMD3                |
+| ENSG00000181513   | ACBD4                |
+| ENSG00000185294   | SPPL2C               |
+| ENSG00000188295   | ZNF669               |
+| ENSG00000181847   | TIGIT                |
+| ENSG00000275935   | LENG1                |
+| ENSG00000057935   | MTA3                 |
+| ENSG00000160326   | SLC2A6               |
+| ENSG00000084110   | HAL                  |
+| ENSG00000138315   | OIT3                 |
+| ENSG00000131871   | SELENOS              |
+| ENSG00000121057   | AKAP1                |
+| ENSG00000007392   | LUC7L                |
+| ENSG00000188816   | HMX2                 |
+| ENSG00000130528   | HRC                  |
 
 ## Balanced test/train dataset
 
