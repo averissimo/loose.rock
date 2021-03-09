@@ -1,5 +1,8 @@
 on:
   push:
+    paths:
+      - 'R/*.R'
+      - 'vignettes/*.Rmd'
     branches:
       - master
   pull_request:
