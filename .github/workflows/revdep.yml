@@ -72,7 +72,7 @@ jobs:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: |
           options(crayon.enabled = TRUE)
-          revdepcheck::revdep_check(num_workers = 4, timeout = diff.time(90, units = "mins"))
+          revdepcheck::revdep_check(timeout = as.difftime(90, units = "mins"), bioc = TRUE)
         shell: Rscript {0}
 
       - name: Upload check results
