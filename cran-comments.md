@@ -26,7 +26,6 @@ It also covers more tests and simplifies some of the code logic.
 * rhub::check_for_cran(platforms= c('windows-x86_64-oldrel'))
     * R_COMPILE_AND_INSTALL_PACKAGES = "always" needed as utf8 fails in windows
 
-
 ### R CMD check results _(release: 4.0.0)_
 
 ── R CMD check results ─────────────────────────────────── loose.rock 1.1.1 ────
@@ -34,6 +33,13 @@ It also covers more tests and simplifies some of the code logic.
 Duration: 5m 26.1s
 
 0 errors ✓ | 0 warnings ✓ | 0 notes ✓
+
+### revdepcheck results
+
+We checked 1 reverse dependencies (0 from CRAN + 1 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
 
 ## HOWTO
 

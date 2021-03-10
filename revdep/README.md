@@ -1,5 +1,3 @@
-These are *partial* results!
-
 # Platform
 
 |field    |value                                     |
