@@ -21,3 +21,4 @@ LICENSE
 ^.git/
 ^man/md/
 ^vignettes/man/
+^cran-comments.md
