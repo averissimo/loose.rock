@@ -5,6 +5,7 @@ on:
     paths:
       - 'R/*.R'
       - 'vignettes/*.Rmd'
+      - '.github/workflows/*.yml'
     branches:
       - master
   pull_request:
