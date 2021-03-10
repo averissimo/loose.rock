@@ -11,10 +11,10 @@ on:
     branches:
       - master
 
-name: REVDEP
+name: rev-dep
 
 jobs:
-  R-REV-DEPk:
+  R-rev-dep:
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -72,7 +72,7 @@ jobs:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: |
           options(crayon.enabled = TRUE)
-          revdepcheck::revdep_check(num_workers = 4)
+          revdepcheck::revdep_check(num_workers = 4, timeout = diff.time(90, units = "mins"))
         shell: Rscript {0}
 
       - name: Upload check results
