@@ -74,7 +74,7 @@ jobs:
         run: |
           options(crayon.enabled = TRUE)
           revdepcheck::revdep_check(timeout = as.difftime(90, units = "mins"), bioc = TRUE, env = revdepcheck::revdep_env_vars(force_suggests = TRUE))
-          revdep_details(, "glmSparseNet")
+          revdepcheck::revdep_details(".", "glmSparseNet")
         shell: Rscript {0}
 
       - name: Upload check results
