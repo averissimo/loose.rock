@@ -170,7 +170,11 @@ getHsapiensMart.internal <- function(
       #
       #
       # Legacy code so that it is compatible with earlier versions of R
-      if(grepl('(Incorrect BioMart name)|(curl_fetch)', err)) {
+      if(
+        grepl(
+          '(Incorrect BioMart name)|(curl_fetch)|(Check the following URL)',
+          err)
+      ) {
 
         ensembl <- curl.workaround({
           biomaRt::useMart(
