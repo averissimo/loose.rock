@@ -8,13 +8,11 @@ suppressWarnings({
 })
 
 # Make sure cache is clear to avoid corruption
-#if (R.Version()$major >= 4 || (R.Version()$major == 3 && R.Version()$minor >= 6.3)) {
+#if (R.Version()$major >= 4) {
   # Cache is not used is versions before 4.0.0
   #  Also corrects nagging bug with Mac OSX and R 3.6.2 where biomartCacheClear
-  #  seems to be not exported
-  #tryCatch({
+  #  has not been included ()
   biomaRt::biomartCacheClear()
-  #}, error = function(err) {})
 #}
 
 # Get a mart object
