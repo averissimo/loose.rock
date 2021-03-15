@@ -12,7 +12,9 @@ suppressWarnings({
   # Cache is not used is versions before 4.0.0
   #  Also corrects nagging bug with Mac OSX and R 3.6.2 where biomartCacheClear
   #  seems to be not exported
+  #tryCatch({
   biomaRt::biomartCacheClear()
+  #}, error = function(err) {})
 #}
 
 # Get a mart object
