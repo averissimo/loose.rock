@@ -8,12 +8,12 @@ suppressWarnings({
 })
 
 # Make sure cache is clear to avoid corruption
-#if (R.Version()$major >= 4) {
+if (R.Version()$major >= 4) {
   # Cache is not used is versions before 4.0.0
   #  Also corrects nagging bug with Mac OSX and R 3.6.2 where biomartCacheClear
   #  has not been included ()
   biomaRt::biomartCacheClear()
-#}
+}
 
 # Get a mart object
 mart <- loose.rock:::getHsapiensMart.internal()
@@ -164,9 +164,17 @@ test_that("getBM internal gets the same as biomaRt::getBM", {
       do.call(biomaRt::getBM, args)
     )
   } else {
-    expect_error(do.call(biomaRt::getBM, args))
+    err.msg <- expect_error(do.call(biomaRt::getBM, args))
     args.pre4 <- args
-    args.pre4$useCache <- FALSE
+
+    # In case of Bioconductor version < 3.10 then useCache is not
+    #  an argument. getBM.internal handles it, but biomaRt::getBM does not.
+    if (grepl('unused argument [(]useCache [=]', err.msg)) {
+      args.pre4$useCache <- NULL
+    } else {
+      args.pre4$useCache <- FALSE
+    }
+
     expect_identical(
       do.call(loose.rock:::getBM.internal, args.pre4),
       do.call(biomaRt::getBM, args.pre4)

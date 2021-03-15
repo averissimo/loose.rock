@@ -1,0 +1,9 @@
+.git
+run-cache
+.Rproj.user
+.Rhistory
+.RData
+inst
+doc
+Meta
+.Rproj

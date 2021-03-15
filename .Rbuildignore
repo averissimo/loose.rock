@@ -1,13 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^README\.Rmd$
-^README.*
 ^figures/README-.*\.png$
+^README\.Rmd
 ^\.travis\.yml
 ^appveyor\.yml
 run-cache
 output
-README\.html
 LICENSE
 .*_cache$
 .*\.tar\.gz$
@@ -23,3 +21,5 @@ LICENSE
 ^vignettes/man/
 ^cran-comments.md
 ^revdep$
+Dockerfile
+.dockerignore

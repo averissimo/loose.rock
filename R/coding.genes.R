@@ -172,7 +172,7 @@ getHsapiensMart.internal <- function(
       # Legacy code so that it is compatible with earlier versions of R
       if(
         grepl(
-          '(Incorrect BioMart name)|(curl_fetch)|(Check the following URL)',
+          '(Incorrect BioMart name)|(curl_fetch)|(argument is of length zero)',
           err)
       ) {
 
