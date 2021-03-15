@@ -1,3 +1,8 @@
+## version 1.1.2
+
+- Supports R versions down to R 3.4.0 _(was failing with R <=3.5.2 or any that used Bioconductor 3.9 or below)_
+- Test more R versions in github actions
+
 ## version 1.1.1
 
 - Corrects problem with CRAN macosx oldrel by accounting for a new fringe scenario

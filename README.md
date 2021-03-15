@@ -73,21 +73,21 @@ coding.genes() %>%
 
 | ensembl\_gene\_id | external\_gene\_name |
 |:------------------|:---------------------|
-| ENSG00000174106   | LEMD3                |
-| ENSG00000181513   | ACBD4                |
-| ENSG00000185294   | SPPL2C               |
-| ENSG00000188295   | ZNF669               |
-| ENSG00000181847   | TIGIT                |
-| ENSG00000275935   | LENG1                |
-| ENSG00000057935   | MTA3                 |
-| ENSG00000160326   | SLC2A6               |
-| ENSG00000084110   | HAL                  |
-| ENSG00000138315   | OIT3                 |
-| ENSG00000131871   | SELENOS              |
-| ENSG00000121057   | AKAP1                |
-| ENSG00000007392   | LUC7L                |
-| ENSG00000188816   | HMX2                 |
-| ENSG00000130528   | HRC                  |
+| ENSG00000163626   | COX18                |
+| ENSG00000197208   | SLC22A4              |
+| ENSG00000115806   | GORASP2              |
+| ENSG00000125414   | MYH2                 |
+| ENSG00000196453   | ZNF777               |
+| ENSG00000082556   | OPRK1                |
+| ENSG00000185475   | TMEM179B             |
+| ENSG00000058272   | PPP1R12A             |
+| ENSG00000132446   | FTHL17               |
+| ENSG00000230268   | SSU72P8              |
+| ENSG00000274540   | PRR23D1              |
+| ENSG00000128342   | LIF                  |
+| ENSG00000196371   | FUT4                 |
+| ENSG00000103932   | RPAP1                |
+| ENSG00000123473   | STIL                 |
 
 ## Balanced test/train dataset
 
@@ -183,20 +183,18 @@ Set a temporary directory to save all caches (optional)
 
 ``` r
 base.dir(file.path(tempdir(), 'run-cache'))
-#> [1] "/tmp/RtmpmlO8rJ/run-cache"
+#> [1] "/tmp/Rtmpd4sOlL/run-cache"
 ```
 
 Run sum function twice
 
 ``` r
 a <- run.cache(sum, 1, 2)
-#> Loading from cache (not calculating):
-#>   /tmp/RtmpmlO8rJ/run-cache/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
-#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
+#> Saving in cache:  /tmp/Rtmpd4sOlL/run-cache/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
 b <- run.cache(sum, 1, 2)
 #> Loading from cache (not calculating):
-#>   /tmp/RtmpmlO8rJ/run-cache/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
-#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
+#>   /tmp/Rtmpd4sOlL/run-cache/8ca6/cache-generic_cache-H_8ca697a81d8184a82de72523a678a4290375a07e304dd20a78bd488827978af3.RData
+#> Cache was created at 2021-03-15 16:24:17 using loose.rock v1.1.2
 all(a == b)
 #> [1] TRUE
 ```
@@ -206,13 +204,9 @@ same random number)*
 
 ``` r
 a <- run.cache(rnorm, 5, seed = 1985)
-#> Loading from cache (not calculating):
-#>   /tmp/RtmpmlO8rJ/run-cache/9fda/cache-generic_cache-H_9fdab5baa36653c6d435ce2d68ec6651845f679861f463fe065f38115dc7acbe.RData
-#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
+#> Saving in cache:  /tmp/Rtmpd4sOlL/run-cache/9fda/cache-generic_cache-H_9fdab5baa36653c6d435ce2d68ec6651845f679861f463fe065f38115dc7acbe.RData
 b <- run.cache(rnorm, 5, seed = 2000)
-#> Loading from cache (not calculating):
-#>   /tmp/RtmpmlO8rJ/run-cache/2ada/cache-generic_cache-H_2adac402358921459b509ec972477640ce54df8436844fb57f761cbe49a3296d.RData
-#> Cache was created at 2021-03-09 16:44:34 using loose.rock v1.1.1
+#> Saving in cache:  /tmp/Rtmpd4sOlL/run-cache/2ada/cache-generic_cache-H_2adac402358921459b509ec972477640ce54df8436844fb57f761cbe49a3296d.RData
 all(a == b)
 #> [1] FALSE
 ```
