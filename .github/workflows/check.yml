@@ -84,8 +84,9 @@ jobs:
         shell: Rscript {0}
       - name: R and Bioconductor versions
         run: |
-          R.Version()$version.string
+          sprintf('%s', R.Version()$version.string)
           sprintf('Bioconductor: %s', BiocManager::version())
+        shell: Rscript {0}
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
