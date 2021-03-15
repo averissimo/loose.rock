@@ -35,7 +35,6 @@ rmarkdown::render(
   output_file = file.path(getwd(), 'README.md'), 
   output_format = 'github_document'
 )
-file.remove(file.path(getwd(), 'README.html'))
 ```
 
 
