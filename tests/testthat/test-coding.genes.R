@@ -1,22 +1,56 @@
 context("coding.genes")
 
-# Make sure cache is clear to avoid corruption
-biomaRt::biomartCacheClear()
-
-mart <- loose.rock:::getHsapiensMart.internal()
-
-base.dir(file.path(tempdir(), "coding_genes"))
-
 # Avoid some lifecycle warnings in versions of R < 4
+#  this mostly relates to using cache in biomaRt
 suppressWarnings({
   dplyr::filter_(dplyr::tibble())
   dplyr::select_(dplyr::tibble())
 })
 
+# Make sure cache is clear to avoid corruption
+#if (R.Version()$major >= 4 || (R.Version()$major == 3 && R.Version()$minor >= 6.3)) {
+  # Cache is not used is versions before 4.0.0
+  #  Also corrects nagging bug with Mac OSX and R 3.6.2 where biomartCacheClear
+  #  seems to be not exported
+  biomaRt::biomartCacheClear()
+#}
+
+# Get a mart object
+mart <- loose.rock:::getHsapiensMart.internal()
+
+# use a temporary path to store cache
+base.dir(file.path(tempdir(), "coding_genes"))
+
+###################################################################################
+#
+#              _   _    _                 _                __  __            _
+#             | | | |  | |               (_)              |  \/  |          | |
+#    __ _  ___| |_| |__| |___  __ _ _ __  _  ___ _ __  ___| \  / | __ _ _ __| |_
+#   / _` |/ _ \ __|  __  / __|/ _` | '_ \| |/ _ \ '_ \/ __| |\/| |/ _` | '__| __|
+#  | (_| |  __/ |_| |  | \__ \ (_| | |_) | |  __/ | | \__ \ |  | | (_| | |  | |_
+#   \__, |\___|\__|_|  |_|___/\__,_| .__/|_|\___|_| |_|___/_|  |_|\__,_|_|   \__|
+#    __/ |                         | |
+#   |___/                          |_|
+#
+#  getHsapiensMart
+##################################################################################
 test_that("getHsapiensMart.internal works", {
   expect_identical(mart@biomart, "ENSEMBL_MART_ENSEMBL")
 })
 
+###################################################################################
+#
+#                   _                      _                                   _
+#                  | |                    | |                                 | |
+#    ___ _   _ _ __| | __      _____  _ __| | ____ _ _ __ ___  _   _ _ __   __| |
+#   / __| | | | '__| | \ \ /\ / / _ \| '__| |/ / _` | '__/ _ \| | | | '_ \ / _` |
+#  | (__| |_| | |  | |  \ V  V / (_) | |  |   < (_| | | | (_) | |_| | | | | (_| |
+#   \___|\__,_|_|  |_|   \_/\_/ \___/|_|  |_|\_\__,_|_|  \___/ \__,_|_| |_|\__,_|
+#
+#
+#
+#  curl workaround
+##################################################################################
 test_that("curl_workarund tests with ssl_verifypeer FALSE", {
   expect_error(
     expect_warning(
@@ -27,18 +61,19 @@ test_that("curl_workarund tests with ssl_verifypeer FALSE", {
   )
 })
 
-test_that("getBM internal errors and messages", {
-  expect_error(getBM.internal(), "You must provide a valid Mart object")
-  expect_error(
-    getBM.internal(mart = mart, verbose = TRUE),
-    "Argument 'attributes' must be specified"
-  )
-  expect_error(
-    getBM.internal(mart = mart, verbose = FALSE),
-    "Argument 'attributes' must be specified"
-  )
-})
-
+###############################################################
+#
+#                 _ _
+#                | (_)
+#    ___ ___   __| |_ _ __   __ _   __ _  ___ _ __   ___  ___
+#   / __/ _ \ / _` | | '_ \ / _` | / _` |/ _ \ '_ \ / _ \/ __|
+#  | (_| (_) | (_| | | | | | (_| || (_| |  __/ | | |  __/\__ \
+#   \___\___/ \__,_|_|_| |_|\__, (_)__, |\___|_| |_|\___||___/
+#                            __/ |  __/ |
+#                           |___/  |___/
+#
+#  coding.genes
+##############################################################
 test_that("coding genes retrieves some genes", {
   # Depending on network connectivity or R version, biomaRt or ccds might
   #  fail. So this test surppress warnings (as long as there are some genes)
@@ -50,6 +85,30 @@ test_that("coding genes retrieves some genes", {
         "BRCA1", "BRCA2", "CHADL", "BTBD8", "BCAS2", "AGAP1"
       ) %in% genes$external_gene_name
     )
+  )
+})
+
+##########################################################
+#
+#    _______  _______ .___________..______   .___  ___.
+#   /  _____||   ____||           ||   _  \  |   \/   |
+#  |  |  __  |  |__   `---|  |----`|  |_)  | |  \  /  |
+#  |  | |_ | |   __|      |  |     |   _  <  |  |\/|  |
+#  |  |__| | |  |____     |  |     |  |_)  | |  |  |  |
+#   \______| |_______|    |__|     |______/  |__|  |__|
+#
+#
+#  getBM
+#########################################################
+test_that("getBM internal errors and messages", {
+  expect_error(getBM.internal(), "You must provide a valid Mart object")
+  expect_error(
+    getBM.internal(mart = mart, verbose = TRUE),
+    "Argument 'attributes' must be specified"
+  )
+  expect_error(
+    getBM.internal(mart = mart, verbose = FALSE),
+    "Argument 'attributes' must be specified"
   )
 })
 
