@@ -1,6 +1,7 @@
 context("Balanced CV folds from vector")
 
-set1 <- sample(c(TRUE, FALSE), 20, replace = TRUE)
+set.seed(1985)
+set1 <- sample(c(rep(TRUE, 10), rep(FALSE, 10)), 20)
 set1.1 <- c(set1, rep(TRUE, 12))
 
 set3 <- sample(c(1, 2, 3), 30, replace = TRUE)
@@ -8,7 +9,7 @@ set4 <- sample(c('aa', 'bb', 'cc'), 30, replace = TRUE)
 set5 <- factor(sample(c('aa', 'bb', 'cc'), 29, replace = TRUE))
 
 test_that("Only one set", {
-  result <- balanced.cv.folds(set1, nfolds = 10)
+  result <- balanced.cv.folds.from.vector(set1, nfolds = 2)
 
   expect_false(is.list(result$train))
   expect_false(is.list(result$test))
@@ -32,7 +33,7 @@ test_that("Only one set and join", {
   expect_equal(sum(set1.1[result.1 == 1] == TRUE), sum(set1.1[result.1 == 2] == TRUE))
   expect_equal(sum(set1.1[result.1 == 1] == FALSE), sum(set1.1[result.1 == 2] == FALSE))
 
-  expect_gt(sum(set1.1[result.1 == 1] == FALSE), sum(set1.1[result.1 == 1] == TRUE))
+  expect_lt(sum(set1.1[result.1 == 1] == FALSE), sum(set1.1[result.1 == 1] == TRUE))
 })
 
 test_that('Creates nice cv folds', {
@@ -60,3 +61,4 @@ test_that('Creates nice cv folds', {
   #
   expect_warning(balanced.cv.folds.from.vector(set5, nfolds = 10), 'Number of elements in vector [(][0-9]+[)] is less than \'nfolds\' [(][0-9]+[)]')
 })
+
