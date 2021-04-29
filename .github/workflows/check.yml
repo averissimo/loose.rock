@@ -88,6 +88,7 @@ jobs:
       - name: R version
         run: |
           sprintf('%s', R.Version()$version.string)
+          sprintf('R v%s.%s', R.Version()$major, R.Version()$minor)
           for (ix in names(R.Version())) { cat(sprintf("%s: %s\n", ix, R.Version()[[ix]])) }
         shell: Rscript {0}
 
@@ -100,6 +101,7 @@ jobs:
       - name: R and Bioconductor versions
         run: |
           sprintf('%s', R.Version()$version.string)
+          sprintf('R v%s.%s', R.Version()$major, R.Version()$minor)
           sprintf('Bioconductor: %s', BiocManager::version())
         shell: Rscript {0}
       - name: Check
