@@ -139,6 +139,7 @@ balanced.cv.folds <- function(..., nfolds = 10) {
 #'
 #' @param dat vectors representing data
 #' @param nfolds number of folds to be created
+#' @param join.all join foldids in a single vector
 #'
 #' @return list with given input, nfolds and result. The result is a list
 #' matching the input with foldid attributed to each position.

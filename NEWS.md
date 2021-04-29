@@ -1,3 +1,8 @@
+## version 1.2.0
+
+- adds functions for generating balanced training/test sets and cross-validation folds that accepts a single vector
+    - From the vector it determines all existing classes and divides the data accordingly
+
 ## version 1.1.2
 
 - Supports R versions down to R 3.4.0 _(was failing with R <=3.5.2 or any that used Bioconductor 3.9 or below)_

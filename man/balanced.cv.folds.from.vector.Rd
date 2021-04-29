@@ -10,6 +10,8 @@ balanced.cv.folds.from.vector(dat, nfolds = 10, join.all = FALSE)
 \item{dat}{vectors representing data}
 
 \item{nfolds}{number of folds to be created}
+
+\item{join.all}{join foldids in a single vector}
 }
 \value{
 list with given input, nfolds and result. The result is a list
