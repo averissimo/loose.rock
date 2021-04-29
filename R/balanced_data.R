@@ -34,6 +34,12 @@ balanced.train.and.test <- function(..., train.perc = .9, join.all = TRUE) {
   test.set  <- list()
   # iterate on elipsis
   for (my.set in input.list) {
+    if (is.vector(my.set) && is.numeric(my.set) && length(unique(my.set)) != length(my.set)) {
+      stop(
+        'Redundant indices in one of the sets given as input ',
+        ', see help for more information.'
+      )
+    }
     # check if is vector of logical or numeric indexes
     if (is.vector(my.set) && (is.numeric(my.set) || is.logical(my.set))) {
       # make user ixs is a numbered index vector

@@ -1,5 +1,16 @@
 context("Balanced data")
 
+test_that("Error with redundant indices", {
+  set1 <- c(1,2,3,4)
+  expect_silent(balanced.train.and.test(set1, train.perc = .5, join.all = TRUE))
+
+  set2 <- c(1,2,3,4,2)
+  expect_error(
+    balanced.train.and.test(set2, train.perc = .5, join.all = TRUE),
+    "Redundant indices in one"
+  )
+})
+
 test_that("train/test same size", {
   set1 <- c(1,2,3,5,6,7,8,9,10,11,12,13,14,15,17,18,19,20)
   set2 <- c(4,16,21,22,23,24)

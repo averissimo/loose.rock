@@ -88,7 +88,7 @@ coding.genes() %>%
 ## Balanced test/train dataset
 
 This is specially relevant in survival or binary output with few cases of 
-one category that need to be well distributed among test/train datasets or 
+one category that need to be well distributed among test/train data sets or 
 in cross-validation folds.
 
 Example below sets aside 90% of the data to the training set. As samples are 
