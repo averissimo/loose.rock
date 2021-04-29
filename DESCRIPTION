@@ -1,6 +1,6 @@
 Package: loose.rock
 Title: Tools for Survival Analysis and Data Science
-Version: 1.1.2
+Version: 1.2.0
 Authors@R: c(person("André", "Veríssimo", email = "andre.verissimo@tecnico.ulisboa.pt", role = c("aut", "cre")),
              person("Susana", "Vinga", email = "susanavinga@tecnico.ulisboa.pt", role = "aut"))
 Description: Collection of functions to improve work-flow in survival analysis and data science.

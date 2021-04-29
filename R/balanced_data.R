@@ -134,3 +134,98 @@ balanced.cv.folds <- function(..., nfolds = 10) {
   }
   return(list(input = input.list, output = output.list, nfolds = nfolds))
 }
+
+#' Create balanced folds for cross validation
+#'
+#' @param dat vectors representing data
+#' @param nfolds number of folds to be created
+#'
+#' @return list with given input, nfolds and result. The result is a list
+#' matching the input with foldid attributed to each position.
+#'
+#' @export
+#'
+#' @examples
+#' dat <- sample(c(TRUE, FALSE), 150, replace = TRUE)
+#' balanced.cv.folds.from.vector(dat, nfolds = 2)
+#' balanced.cv.folds.from.vector(dat, nfolds = 10)
+#' balanced.cv.folds.from.vector(dat, nfolds = 10, join.all = TRUE)
+#' balanced.cv.folds.from.vector(dat[1:5], nfolds = 10) # will give a warning
+#' balanced.cv.folds.from.vector(dat[1:10], nfolds = 10) # will give a warning
+balanced.cv.folds.from.vector <- function(dat, nfolds = 10, join.all = FALSE) {
+  dat.types <- unique(dat) # get unique
+  args <- list()
+  for (ix in seq_along(dat.types)) {
+    args[[ix]] <- which(dat == dat.types[ix])
+  }
+  args$nfolds <- nfolds
+
+  # Call balanced cv folds
+  foldout <- do.call(balanced.cv.folds, args)
+
+  if (!join.all) {
+    return(foldout)
+  }
+  # else continue
+
+  len.out <- max(sapply(foldout$input, max))
+  if (len.out != length(dat)) {
+    stop("An inconsistency in sizes was detected.")
+  }
+
+  foldid <- rep(-1, len.out)
+  for (ix in seq_along(foldout$input)) {
+    for (jx in seq_along(foldout$input[[ix]])) {
+      foldid[foldout$input[[ix]][jx]] <- foldout$output[[ix]][jx]
+    }
+  }
+
+  if (any(foldid == -1)) {
+    stop("An inconsistency in the resulting foldid was detected.")
+  }
+  return(foldid)
+}
+
+#' Get a balanced test and train dataset
+#'
+#' @param dat vector of different types in data
+#' @param train.perc percentage of dataset to be training set
+#' @param join.all join all index in the end in two vectors (train and
+#' test vectors)
+#'
+#' @return train and test index vectors (two lists if `join.all = FALSE`,
+#' two vectors otherwise)
+#'
+#' @export
+#'
+#' @examples
+#' set.seed(1985)
+#' set1 <- rbinom(20, prob = 3/20, size = 1) == 1
+#' balanced.train.and.test.from.vector(set1, train.perc = .9)
+#' ####
+#' set1 <- c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,
+#' TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
+#' set2 <- !set1
+#' balanced.train.and.test.from.vector(c(set1, set2), train.perc = .9)
+#' balanced.train.and.test.from.vector(c(set1, set2), train.perc = .9, join.all = FALSE)
+balanced.train.and.test.from.vector <- function(dat, train.perc = .9, join.all = TRUE) {
+  dat.types <- unique(dat) # get unique
+  args <- list()
+  for (ix in seq_along(dat.types)) {
+    args[[ix]] <- which(dat == dat.types[ix])
+  }
+  args$train.perc <- train.perc
+  args$join.all <- join.all
+
+  # Call balanced cv folds
+  return(do.call(balanced.train.and.test, args))
+}
+
+
+
+
+
+
+
+
+
