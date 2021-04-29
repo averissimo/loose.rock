@@ -88,6 +88,7 @@ jobs:
       - name: R version
         run: |
           sprintf('%s', R.Version()$version.string)
+          for (ix in names(R.Version())) { cat(sprintf("%s: %s\n", ix, R.Version()[[ix]])) }
         shell: Rscript {0}
 
       - name: Install dependencies
