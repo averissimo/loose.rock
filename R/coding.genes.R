@@ -41,8 +41,22 @@ coding.genes <- function(
   }
 
   # Get CCDS genes
-  ccds.genes <- ccds.genes.internal()
-
+  ccds.genes <- tryCatch({
+   suppressWarnings(ccds.genes.internal())
+  }, error = function(err) {
+      return(NULL)
+  })
+  
+  if (is.null(ccds.genes)) {
+    message("Could not resolve ccds host")
+  }
+  
+  if (is.null(ccds.genes) && !biomartInstalled) {
+    return(NULL)
+  } else if (is.null(ccds.genes)) {
+    ccds.genes <- dplyr::tibble()
+  }
+  
   # Join both
   coding <- join.ensembl.and.ccds(
     ensembl.genes = protein.coding,
@@ -150,7 +164,7 @@ getHsapiensMart.internal <- function(
   verbose = FALSE, useCache = TRUE,
   domain = listEnsemblMirrors()
 ) {
-
+  
   inside.fun <- function(verbose, domain) {
     host.https <- paste0('https://', domain)
     host.http <- paste0('http://', domain)
@@ -179,7 +193,7 @@ getHsapiensMart.internal <- function(
         ensembl <- curl.workaround({
           biomaRt::useMart(
             "ensembl",
-            host = host.http[1],
+            host = host.https[1],
             verbose = verbose)
         })
 

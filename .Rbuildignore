@@ -2,6 +2,8 @@
 ^\.Rproj\.user$
 ^figures/README-.*\.png$
 ^README\.Rmd
+^README\.md
+^README\.html
 ^\.travis\.yml
 ^appveyor\.yml
 run-cache
@@ -24,3 +26,4 @@ LICENSE
 Dockerfile
 .dockerignore
 ^README\.html
+man/aux/before_body.txt

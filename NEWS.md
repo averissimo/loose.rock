@@ -1,3 +1,7 @@
+## version 1.2.1
+
+- Fails gracefully on tests when there's no remote connection to ensembl servers (via bioconductor package biomaRt)
+
 ## version 1.2.0
 
 - adds functions for generating balanced training/test sets and cross-validation folds that accepts a single vector
