@@ -3,7 +3,7 @@ title: "Overview of loose.rock"
 author: "André Veríssimo"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::pdf_document:
+  rmarkdown::md_document:
 #  rmarkdown::html_vignette:
 #    includes:
 #      before_body: ../man/aux/before_body.txt
