@@ -7,10 +7,9 @@ biomart.req <- tryCatch(
   ), error = function(err) { return(NULL) }
 )
 
-
-
 # Only test if biomaRt is installed and the REST ap is responding
-if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
+if (Sys.getenv("_R_LOOSE_ROCK_FORCE_CODING_GENES_TEST") == "TRUE" &&
+    biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
 
   # Avoid some lifecycle warnings in versions of R < 4
   #  this mostly relates to using cache in biomaRt
