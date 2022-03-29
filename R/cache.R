@@ -18,8 +18,8 @@ digest.cache <- function(val) {
 #'
 #' @return a path to a temporary directory used by runCache
 tempdir.cache <- function() {
-  base.dir <- '.'
-  return(file.path(dirname(base.dir), 'run-cache'))
+  base.dir <- tempdir()
+  return(file.path(base.dir, 'run-cache'))
 }
 
 #' Run function and save cache
@@ -44,7 +44,7 @@ tempdir.cache <- function() {
 #' # [optional] save cache in a temporary directory
 #' # otherwise it writes to the current directory
 #' # to folder named run-cache
-#' base.dir(tempdir())
+#' base.dir(".")
 #' #
 #' run.cache(c, 1, 2, 3, 4)
 #' #
@@ -55,6 +55,7 @@ tempdir.cache <- function() {
 #' run.cache(c, 1, 2, 3, 4)
 #' run.cache(c, 1, 2, 3, 4, cache.digest = list(digest.cache(1)))
 #' run.cache(c, a=1, 2, c= 3, 4)
+#' run.cache(c, 1, 2, 3, 4, base.dir = "runcache")
 methods::setGeneric("run.cache", function(fun,
                                  ...,
                                  seed = NULL,

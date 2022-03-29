@@ -42,7 +42,7 @@ test_that('digest cache is consistent', {
 })
 
 test_that('tempdir is correct', {
-  expect_equal(loose.rock:::tempdir.cache(), file.path('.', 'run-cache'))
+  expect_equal(loose.rock:::tempdir.cache(), file.path(tempdir(), 'run-cache'))
 })
 
 test_that("run.cache fails with arguments", {

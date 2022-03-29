@@ -46,7 +46,7 @@ Run function and save cache
 # [optional] save cache in a temporary directory
 # otherwise it writes to the current directory
 # to folder named run-cache
-base.dir(tempdir())
+base.dir(".")
 #
 run.cache(c, 1, 2, 3, 4)
 #
@@ -57,4 +57,5 @@ run.cache(c, 1, 2, 3, 4)
 run.cache(c, 1, 2, 3, 4)
 run.cache(c, 1, 2, 3, 4, cache.digest = list(digest.cache(1)))
 run.cache(c, a=1, 2, c= 3, 4)
+run.cache(c, 1, 2, 3, 4, base.dir = "runcache")
 }
