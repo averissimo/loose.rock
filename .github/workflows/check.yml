@@ -81,7 +81,6 @@ jobs:
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
-          apt install -y texlive texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
           while read -r cmd
           do
             eval sudo $cmd
@@ -100,7 +99,7 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
       #- name: setup-r-dep
-      #  uses: r-lib/actions/setup-r-dependencies
+      #  uses: r-lib/actions/setup-r-dependencies@v2
       #  env:
       #    _R_CHECK_FORCE_SUGGESTS_: false
       - name: R and Bioconductor versions
