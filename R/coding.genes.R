@@ -46,17 +46,17 @@ coding.genes <- function(
   }, error = function(err) {
       return(NULL)
   })
-  
+
   if (is.null(ccds.genes)) {
     message("Could not resolve ccds host")
   }
-  
+
   if (is.null(ccds.genes) && !biomartInstalled) {
     return(NULL)
   } else if (is.null(ccds.genes)) {
     ccds.genes <- dplyr::tibble()
   }
-  
+
   # Join both
   coding <- join.ensembl.and.ccds(
     ensembl.genes = protein.coding,
@@ -164,7 +164,7 @@ getHsapiensMart.internal <- function(
   verbose = FALSE, useCache = TRUE,
   domain = listEnsemblMirrors()
 ) {
-  
+
   inside.fun <- function(verbose, domain) {
     host.https <- paste0('https://', domain)
     host.http <- paste0('http://', domain)
@@ -187,15 +187,25 @@ getHsapiensMart.internal <- function(
       if(
         grepl(
           '(Incorrect BioMart name)|(curl_fetch)|(argument is of length zero)',
-          err)
+          err$message)
       ) {
 
-        ensembl <- curl.workaround({
-          biomaRt::useMart(
-            "ensembl",
-            host = host.https[1],
-            verbose = verbose)
+        ensembl <- tryCatch(
+          curl.workaround({
+            biomaRt::useMart(
+              "ensembl",
+              host = host.https[1],
+              verbose = verbose)
+          })
+        , error = function(err) {
+          cat('inside error\n')
+          message(err$message)
+          return(NULL)
         })
+
+        if (is.null(ensembl)) {
+          return(NULL)
+        }
 
         tryCatch({
           curl.workaround({
@@ -206,19 +216,22 @@ getHsapiensMart.internal <- function(
               biomaRt::useDataset(mart = ensembl, verbose = verbose)
           })
         }, error = function(err2) {
-          stop(
-            simpleError(
-              paste0('Couldn\'t retrieve mart.\n\n  ', err2$message),
-              call = err2$call)
-          )
+          se <- simpleError(
+            paste0('Couldn\'t retrieve mart.\n\n  ', err2$message),
+            call = err2$call)
+          message(se$message)
+          message(paste(se$call, collapse = " > "))
+          return(NULL)
         })
       } else {
         # else if error is not handled
-        stop(
-          simpleError(
-            paste0('Couldn\'t retrieve mart.\n\n  ', err$message),
-            call = err$call)
+        se <- simpleError(
+          paste0('Couldn\'t retrieve mart.\n\n  ', err$message),
+          call = err$call
         )
+        message(se$message)
+        message("  ", paste(se$call, collapse = " > "))
+        return(NULL)
       }
     })
     return(mart)
@@ -228,11 +241,20 @@ getHsapiensMart.internal <- function(
     tryCatch(
       {
         if (useCache) {
-          run.cache(
+          ret <- run.cache(
             inside.fun, verbose, domain,
             base.dir = file.path(tempdir(), 'hsapiens'),
             show.message = FALSE
           )
+          # A null cache is a bad cache!
+          if (is.null(ret)) {
+            run.cache(
+              inside.fun, verbose, domain,
+              base.dir = file.path(tempdir(), 'hsapiens'),
+              show.message = FALSE, force.recalc = TRUE
+            )
+          }
+          ret
         } else {
           inside.fun(verbose, domain)
         }
@@ -248,7 +270,8 @@ getHsapiensMart.internal <- function(
             domain = domain[-1]
           ))
         }
-        stop(err)
+        message(err$message)
+        return(NULL)
       }
     )
   )
@@ -312,6 +335,10 @@ getBM.internal <- function(...) {
     }
   }
 
+  if (is.null(args.call[['mart']])) {
+    return(NULL)
+  }
+
   result <- tryCatch(
     {
       curl.workaround({do.call(biomaRt::getBM, args.call)})
@@ -328,7 +355,8 @@ getBM.internal <- function(...) {
         # if any of those fails with unused argument useCache, then
         #  it tries with useCache=NULL for one single time.. if that fails
         # we reach this point
-        stop(simpleError(err$message, call = err$call))
+        message(simpleError(err$message, call = err$call))
+        return(NULL)
       } else {
         # This will try to call this function again without cache
         #  showing a message
@@ -357,7 +385,7 @@ getBM.internal <- function(...) {
           do.call(getBM.internal, args.without.cache)
         } else {
           if (grepl("no applicable method for 'filter_'", err$message)) {
-            stop(
+            message(
               simpleError(
                 paste0(
                   "There was a problem with biomaRt call, ",
@@ -366,8 +394,10 @@ getBM.internal <- function(...) {
                 )
               )
             )
+            return(NULL)
           } else {
-            stop(simpleError(err$message, call = err$call))
+            message(simpleError(err$message, call = err$call))
+            return(NULL)
           }
         }
       }
@@ -477,10 +507,9 @@ ccds.genes.internal <- function() {
     ccds <- download.ccds(
       "ftp://ftp.ncbi.nih.gov/pub/CCDS/current_human/CCDS.current.txt",
       error = function(err2) {
-        warning(
+        message(
           'Could not retrieve list from NCBI, try again later ',
-          'for this datasource.',
-          call. = FALSE
+          'for this datasource.'
         )
         return(NULL)
     })
