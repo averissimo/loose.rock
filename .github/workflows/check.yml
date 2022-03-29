@@ -99,7 +99,8 @@ jobs:
       #    remotes::install_deps(dependencies = TRUE)
       #    remotes::install_cran("rcmdcheck")
       #  shell: Rscript {0}
-      - uses: r-lib/actions/setup-r-dependencies
+      - name: setup-r-dep
+        uses: r-lib/actions/setup-r-dependencies
         env:
           _R_CHECK_FORCE_SUGGESTS_: false
       - name: R and Bioconductor versions
