@@ -336,7 +336,7 @@ getBM.internal <- function(...) {
   }
 
   if (is.null(args.call[['mart']])) {
-    return(NULL)
+    stop("You must provide a valid Mart object")
   }
 
   result <- tryCatch(

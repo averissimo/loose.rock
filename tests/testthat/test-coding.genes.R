@@ -7,6 +7,8 @@ biomart.req <- tryCatch(
   ), error = function(err) { return(NULL) }
 )
 
+
+
 # Only test if biomaRt is installed and the REST ap is responding
 if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
 
@@ -16,7 +18,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
     dplyr::filter_(dplyr::tibble())
     dplyr::select_(dplyr::tibble())
   })
-  
+
   # Make sure cache is clear to avoid corruption
   if (R.Version()$major >= 4) {
     # Cache is not used is versions before 4.0.0
@@ -24,19 +26,19 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
     #  has not been included ()
     biomaRt::biomartCacheClear()
   }
-  
+
   # Get a mart object (this is an internal function, and only used to cache the
   #  results)
   mart <- tryCatch(
     loose.rock:::getHsapiensMart.internal(),
     error = function(error) {
-      return(NULL)   
+      return(NULL)
   })
   if (!is.null(mart)) {
-    
+
     # use a temporary path to store cache
     base.dir(file.path(tempdir(), "coding_genes"))
-    
+
     ###################################################################################
     #
     #              _   _    _                 _                __  __            _
@@ -53,7 +55,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
     test_that("getHsapiensMart.internal works", {
       expect_identical(mart@biomart, "ENSEMBL_MART_ENSEMBL")
     })
-    
+
     ###################################################################################
     #
     #                   _                      _                                   _
@@ -76,7 +78,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
         "me"
       )
     })
-    
+
     ###############################################################
     #
     #                 _ _
@@ -103,7 +105,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
         )
       )
     })
-    
+
     ##########################################################
     #
     #    _______  _______ .___________..______   .___  ___.
@@ -127,7 +129,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
         "Argument 'attributes' must be specified"
       )
     })
-    
+
     test_that("getBM multiple combinations of useCache", {
       args <- list(
         attributes = c("ensembl_gene_id", "external_gene_name"),
@@ -136,35 +138,35 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
         mart       = mart,
         useCache   = TRUE
       )
-    
+
       args.2 <- args
       args.2[['useCache']] <- FALSE
-    
+
       expect_identical(
         do.call(loose.rock:::getBM.internal, args),
         do.call(loose.rock:::getBM.internal, args.2)
       )
-    
+
       if (R.Version()$major >= 4) {
         args.3 <- args
         args.3[['useCache']] <- NULL
         args.3[['failNullUseCache']] <- TRUE
-    
+
         expect_identical(
           do.call(loose.rock:::getBM.internal, args),
           do.call(loose.rock:::getBM.internal, args.3)
         )
       }
-    
+
       args.4 <- args
       args.4[['useCache']] <- NULL
-    
+
       expect_identical(
         do.call(loose.rock:::getBM.internal, args),
         do.call(loose.rock:::getBM.internal, args.4)
       )
     })
-    
+
     test_that("getBM internal gets the same as biomaRt::getBM", {
       args <- list(
         attributes = c("ensembl_gene_id", "external_gene_name"),
@@ -173,7 +175,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
         mart       = mart,
         useCache   = TRUE
       )
-    
+
       if (R.Version()$major >= 4) {
         expect_identical(
           do.call(loose.rock:::getBM.internal, args),
@@ -182,7 +184,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
       } else {
         err.msg <- expect_error(do.call(biomaRt::getBM, args))
         args.pre4 <- args
-    
+
         # In case of Bioconductor version < 3.10 then useCache is not
         #  an argument. getBM.internal handles it, but biomaRt::getBM does not.
         if (grepl('unused argument [(]useCache [=]', err.msg)) {
@@ -190,7 +192,7 @@ if (biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
         } else {
           args.pre4$useCache <- FALSE
         }
-    
+
         expect_identical(
           do.call(loose.rock:::getBM.internal, args.pre4),
           do.call(biomaRt::getBM, args.pre4)

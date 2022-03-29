@@ -44,7 +44,7 @@ tempdir.cache <- function() {
 #' # [optional] save cache in a temporary directory
 #' # otherwise it writes to the current directory
 #' # to folder named run-cache
-#' base.dir(".")
+#' base.dir("runcache")
 #' #
 #' run.cache(c, 1, 2, 3, 4)
 #' #
