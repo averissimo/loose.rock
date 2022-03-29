@@ -93,16 +93,16 @@ jobs:
           for (ix in names(R.Version())) { cat(sprintf("%s: %s\n", ix, R.Version()[[ix]])) }
         shell: Rscript {0}
 
-      #- name: Install dependencies
-      #  run: |
-      #    BiocManager::install(remotes::local_package_deps(dependencies = TRUE))
-      #    remotes::install_deps(dependencies = TRUE)
-      #    remotes::install_cran("rcmdcheck")
-      #  shell: Rscript {0}
-      - name: setup-r-dep
-        uses: r-lib/actions/setup-r-dependencies
-        env:
-          _R_CHECK_FORCE_SUGGESTS_: false
+      - name: Install dependencies
+        run: |
+          BiocManager::install(remotes::local_package_deps(dependencies = TRUE))
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
+      #- name: setup-r-dep
+      #  uses: r-lib/actions/setup-r-dependencies
+      #  env:
+      #    _R_CHECK_FORCE_SUGGESTS_: false
       - name: R and Bioconductor versions
         run: |
           sprintf('%s', R.Version()$version.string)
