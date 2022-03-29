@@ -81,7 +81,7 @@ jobs:
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
-          apt install -y texlive
+          apt install -y texlive texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
           while read -r cmd
           do
             eval sudo $cmd
