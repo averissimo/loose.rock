@@ -2,7 +2,7 @@ _note to self_: check howto in the bottom
 
 ## version 1.2.1
 
-This build protects the test against errors and maintenance on biomaRt.
+This build further protects the package against errors and maintenance on biomaRt (especially while in devel, where biomaRt might be unstable). Previously, it would catch the errors and in unknown situations throw them again. Now it returns NULL and writes messages with the problem.
 
 It builds on r-devel 4.2.0 without warning or checks
 

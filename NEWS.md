@@ -1,6 +1,7 @@
 ## version 1.2.1
 
 - Fails gracefully on tests when there's no remote connection to ensembl servers (via bioconductor package biomaRt)
+- Catches all errors from biomaRt and returns an appropriate empty object or NULL with a message detailing the problem.
 
 ## version 1.2.0
 
