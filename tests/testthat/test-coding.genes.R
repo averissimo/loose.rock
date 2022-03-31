@@ -7,7 +7,7 @@ biomart.req <- tryCatch(
   ), error = function(err) { return(NULL) }
 )
 
-# Only test if biomaRt is installed and the REST ap is responding
+# Only test if biomaRt is installed and the REST api is responding
 if (Sys.getenv("_R_LOOSE_ROCK_FORCE_CODING_GENES_TEST") == "TRUE" &&
     biomartInstalled && !is.null(biomart.req) && biomart.req$status == 200) {
 
