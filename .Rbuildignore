@@ -27,3 +27,4 @@ Dockerfile
 .dockerignore
 ^README\.html
 man/aux/before_body.txt
+^CRAN-SUBMISSION$
